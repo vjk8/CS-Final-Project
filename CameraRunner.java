@@ -1,7 +1,7 @@
 import org.opencv.core.*;
 import java.util.Queue;
 
-public class CameraRunner
+public class CameraRunner implements Runnable
 {
     private Queue<SingleFrame> toBeProcessed;
     private CompositeFrame finishImage;
@@ -20,6 +20,10 @@ public class CameraRunner
 
     public CompositeFrame getImage() {
         // TODO complete getter
+        return null;
+    }
+
+    public Mat pause() {
         return null;
     }
 

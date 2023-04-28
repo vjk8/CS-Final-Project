@@ -26,4 +26,12 @@ public class DraggableLine implements Comparable {
         // TODO complete comparator
         return 0;
     }
+
+    public void processEvent(MouseEvent e) {
+
+    }
+
+    public void paintComponent(Graphics g) {
+        
+    }
 }
