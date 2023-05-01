@@ -6,32 +6,37 @@ public class DraggableLine implements Comparable {
     private String hipNumberLabel;
     private int xPos;
 
-    public DraggableLine() {
+    public DraggableLine()
+    {
         // TODO complete no-args constructor
     }
 
-    public DraggableLine(TimeFormat t, String h, int x) {
+    public DraggableLine(TimeFormat t, String h, int x)
+    {
         // TODO complete constructor
     }
 
-    public void setColor() {
+    public void setColor()
+    {
         // TODO complete method
     }
 
-    public void updateTimestamp() {
+    public void updateTimestamp()
+    {
         // TODO complete method
     }
 
-    public int compareTo(Object other) {
+    public int compareTo(Object other)
+    {
         // TODO complete comparator
         return 0;
     }
 
-    public void processEvent(MouseEvent e) {
-
+    public void processEvent(MouseEvent e)
+    {
     }
 
-    public void paintComponent(Graphics g) {
-        
+    public void paintComponent(Graphics g)
+    {
     }
 }
