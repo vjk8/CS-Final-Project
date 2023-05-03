@@ -42,11 +42,6 @@ public class TimeFormat implements Comparable {
         millis = ms;
     }
 
-    public TimeFormat(String init)
-    {
-        // TODO complete constructor
-    }
-
     public int compareTo(Object other) {
         TimeFormat ot = (TimeFormat) other;
         long thisTotal = getHours() * 3600000 + getMinutes() * 60000 + getSeconds() * 1000 + getMilliseconds() * 10;
