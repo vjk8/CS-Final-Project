@@ -7,32 +7,36 @@ public class CompositeFrame {
     private double startTime;
     private ArrayList<TimeFormat> timestamps;
 
-    public CompositeFrame() {
+    public CompositeFrame()
+    {
         // TODO complete constructor
     }
 
-    public void processFrame(SingleFrame s) {
+    public void processFrame(SingleFrame s)
+    {
         // TODO complete method
     }
 
-    public TimeFormat getTimeAtPixel() {
+    public TimeFormat getTimeAtPixel()
+    {
         // TODO complete method
         return null;
     }
 
-    public void addPause() {
+    public void addPause()
+    {
         // TODO complete method
     }
 
-    public Mat getMat() {
+    public Mat getMat()
+    {
         // TODO complete getter
         return null;
     }
 
-    public BufferedImage getImage() {
+    public BufferedImage getImage()
+    {
         // TODO complete converter
         return null;
     }
-
-
 }

@@ -5,41 +5,48 @@ public class Athlete {
     private TimeFormat PR;
     private TimeFormat seed;
 
-    public Athlete() {
+    public Athlete()
+    {
         // TODO complete no-args constructor
     }
 
     // TODO add extra constructors with logical subsets of field arguments
-    // TODO e.g. a constructor with just name, school, and grade, no PR, no seed, etc.
+    // TODO e.g. a constructor with just name, school, and grade, no PR, no
+    // seed, etc.
 
-    public int hashCode() {
+    public int hashCode()
+    {
         // TODO be creative with this one
         return 0;
     }
 
-    public String getName() {
+    public String getName()
+    {
         // TODO complete getter
         return null;
     }
 
-    public String getSchool() {
+    public String getSchool()
+    {
         // TODO complete getter
         return null;
     }
 
-    public int getGrade() {
+    public int getGrade()
+    {
         // TODO complete getter
         return 0;
     }
 
-    public TimeFormat getPR() {
+    public TimeFormat getPR()
+    {
         // TODO complete getter
         return null;
     }
 
-    public TimeFormat getSeed() {
+    public TimeFormat getSeed()
+    {
         // TODO complete getter
         return null;
     }
-
 }

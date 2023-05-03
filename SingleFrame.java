@@ -10,20 +10,21 @@ public class SingleFrame {
         t = time;
     }
 
-    public Mat getMat() {
+    public Mat getMat()
+    {
         // TODO complete getter
         return null;
     }
 
-    public double getTime() {
+    public double getTime()
+    {
         // TODO complete getter
         return 0.0;
     }
 
-    public BufferedImage getImage() {
+    public BufferedImage getImage()
+    {
         // TODO complete converter
         return null;
     }
-
-
 }

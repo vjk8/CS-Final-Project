@@ -1,28 +1,33 @@
-import org.opencv.core.*;
 import java.util.Queue;
+import org.opencv.core.*;
 
-public class CameraRunner
-{
+public class CameraRunner implements Runnable {
     private Queue<SingleFrame> toBeProcessed;
     private CompositeFrame finishImage;
 
-    public CameraRunner() {
+    public CameraRunner()
+    {
         // TODO complete constructor
     }
 
-    public void run() {
+    public void run()
+    {
         // TODO complete method
     }
 
-    public void receiveMessage() {
+    public void receiveMessage()
+    {
         // TODO complete method
     }
 
-    public CompositeFrame getImage() {
+    public CompositeFrame getImage()
+    {
         // TODO complete getter
         return null;
     }
 
+    public Mat pause()
+    {
+        return null;
+    }
 }
-
-

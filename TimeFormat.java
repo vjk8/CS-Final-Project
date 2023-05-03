@@ -42,7 +42,8 @@ public class TimeFormat implements Comparable {
         millis = ms;
     }
 
-    public TimeFormat(String init) {
+    public TimeFormat(String init)
+    {
         // TODO complete constructor
     }
 
@@ -91,6 +92,4 @@ public class TimeFormat implements Comparable {
     public int getMilliseconds() {
         return millis;
     }
-
-
 }
