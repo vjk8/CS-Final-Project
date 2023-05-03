@@ -6,7 +6,8 @@ public class SingleFrame {
     private double time;
 
     public SingleFrame(Mat m, double t) {
-        // TODO complete constructor
+        frame = m;
+        t = time;
     }
 
     public Mat getMat() {
