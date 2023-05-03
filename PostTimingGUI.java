@@ -7,7 +7,7 @@ public class PostTimingGUI extends JPanel {
     private Mat finishImage;
     private OutputProcessor processor;
 
-    public PostTimingGUI() {
+    public PostTimingGUI(Mat image) {
         // TODO complete constructor
     }
 
