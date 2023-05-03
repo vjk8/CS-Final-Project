@@ -5,7 +5,8 @@ public class SingleFrame {
     private Mat frame;
     private double time;
 
-    public SingleFrame(Mat m, double t) {
+    public SingleFrame(Mat m, double t)
+    {
         frame = m;
         t = time;
     }
