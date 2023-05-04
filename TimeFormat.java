@@ -108,7 +108,9 @@ public class TimeFormat implements Comparable {
         return millis;
     }
 
-    public int intValue() {
-        return getHours() * 3600000 + getMinutes() * 60000 + getSeconds() * 1000 + getMilliseconds() * 10;
+    public int intValue()
+    {
+        return getHours() * 3600000 + getMinutes() * 60000 +
+            getSeconds() * 1000 + getMilliseconds() * 10;
     }
 }

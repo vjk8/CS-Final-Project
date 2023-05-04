@@ -26,5 +26,4 @@ public class CameraStarter {
 }
 
 class PlotSoundData { // for testing purposed later
-
 }
