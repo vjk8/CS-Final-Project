@@ -1,31 +1,37 @@
 import java.awt.image.BufferedImage;
 import org.opencv.core.*;
+import java.awt.image.DataBufferByte;
 
 public class SingleFrame {
     private Mat frame;
-    private double time;
+    private TimeFormat time;
 
-    public SingleFrame(Mat m, double t)
+    public SingleFrame(Mat m, int t, int startTime)
     {
         frame = m;
-        t = time;
+        time = new TimeFormat(t - startTime);
     }
 
     public Mat getMat()
     {
-        // TODO complete getter
-        return null;
+        return frame;
     }
 
-    public double getTime()
+    public TimeFormat getTime()
     {
-        // TODO complete getter
-        return 0.0;
+        return time;
     }
 
-    public BufferedImage getImage()
+    public BufferedImage getBufferedImage()
     {
-        // TODO complete converter
-        return null;
+        int type = BufferedImage.TYPE_3BYTE_BGR;
+        int bufferSize = frame.channels() * frame.cols() * frame.rows();
+        byte[] b = new byte[bufferSize];
+        frame.get(0, 0, b); // get all the pixels
+        BufferedImage image = new BufferedImage(frame.cols(), frame.rows(), type);
+        final byte[] targetPixels = ((DataBufferByte)image.getRaster().getDataBuffer()).getData();
+        System.arraycopy(b, 0, targetPixels, 0, b.length);
+        System.out.println(image.toString());
+        return image;
     }
 }
