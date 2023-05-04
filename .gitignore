@@ -2,3 +2,7 @@ opencv_java470.dll
 opencv-470.jar
 
 archive/
+
+OCR_server/venv/
+
+__pycache__/
