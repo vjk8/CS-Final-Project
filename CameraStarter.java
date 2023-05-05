@@ -1,5 +1,5 @@
-import javax.sound.sampled.*;
 import java.util.*;
+import javax.sound.sampled.*;
 
 public class CameraStarter {
     private int threshold;
@@ -25,7 +25,8 @@ public class CameraStarter {
         long startTime = System.currentTimeMillis();
         while (System.currentTimeMillis() - startTime < 1000) {
             numBytesRead = line.read(data, 0, data.length);
-            System.out.println(numBytesRead + " bytes read at time " + (System.currentTimeMillis() - startTime));
+            System.out.println(numBytesRead + " bytes read at time " +
+                               (System.currentTimeMillis() - startTime));
             System.out.print("Sample data: [");
             for (int i = 0; i < 10; i++) {
                 System.out.print(data[i] + ",");
@@ -38,7 +39,8 @@ public class CameraStarter {
         return null;
     }
 
-    private static TargetDataLine getTargetDataLine() {
+    private static TargetDataLine getTargetDataLine()
+    {
         AudioFormat format = new AudioFormat(44100f, 8, 1, true, true);
         TargetDataLine line;
         DataLine.Info info = new DataLine.Info(TargetDataLine.class, format);
@@ -60,7 +62,8 @@ public class CameraStarter {
         return line;
     }
 
-    public static void main(String[] args) { // for testing purposes only
+    public static void main(String[] args)
+    { // for testing purposes only
         TimeFormat t = getStartTime();
         DataPlotter dp = new DataPlotter();
         dp.run();
@@ -68,9 +71,10 @@ public class CameraStarter {
 }
 
 class DataPlotter { // for testing purposes later
-    public DataPlotter() {};
+    public DataPlotter(){};
 
-    public static void run() {
+    public static void run()
+    {
         // TODO figure out how to plot data
     }
 }
