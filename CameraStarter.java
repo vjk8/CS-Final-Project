@@ -27,13 +27,15 @@ public class CameraStarter {
         long startTime = System.currentTimeMillis();
         while (System.currentTimeMillis() - startTime < 1000) {
             numBytesRead = line.read(data, 0, data.length);
-            System.out.println(numBytesRead + " bytes read at time " + (System.currentTimeMillis() - startTime));
+            System.out.println(numBytesRead + " bytes read at time " +
+                               (System.currentTimeMillis() - startTime));
         }
         // TODO complete method
         return null;
     }
 
-    private static TargetDataLine getTargetDataLine() {
+    private static TargetDataLine getTargetDataLine()
+    {
         AudioFormat format = new AudioFormat(44100.0f, 64, 1, false, true);
         TargetDataLine line;
         DataLine.Info info = new DataLine.Info(TargetDataLine.class, format);
@@ -53,7 +55,8 @@ public class CameraStarter {
         return line;
     }
 
-    public static void main(String[] args) { // for testing purposed only
+    public static void main(String[] args)
+    { // for testing purposed only
         TimeFormat t = getStartTime();
     }
 }
