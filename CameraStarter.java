@@ -43,7 +43,7 @@ public class CameraStarter {
             return null;
         }
         try {
-            line = (TargetDataLine) AudioSystem.getLine(info);
+            line = (TargetDataLine)AudioSystem.getLine(info);
             line.open(format);
         }
         catch (LineUnavailableException ex) {
