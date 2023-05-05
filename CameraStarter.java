@@ -1,5 +1,6 @@
 import java.util.*;
 import java.util.Arrays;
+import javax.sound.sampled.*;
 
 public class CameraStarter {
     private static int threshold;
