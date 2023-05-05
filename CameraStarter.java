@@ -25,7 +25,8 @@ public class CameraStarter {
         return null;
     }
 
-    private TargetDataLine getTargetDataLine() {
+    private TargetDataLine getTargetDataLine()
+    {
         AudioFormat format = new AudioFormat(44100.0f, 64, 1, false, true);
         TargetDataLine line;
         DataLine.Info info = new DataLine.Info(TargetDataLine.class, format);
@@ -35,7 +36,7 @@ public class CameraStarter {
             return null;
         }
         try {
-            line = (TargetDataLine) AudioSystem.getLine(info);
+            line = (TargetDataLine)AudioSystem.getLine(info);
             line.open(format);
         }
         catch (LineUnavailableException ex) {
