@@ -1,4 +1,3 @@
-import javax.sound.sampled.*;
 import java.util.*;
 import java.util.Arrays;
 
@@ -95,7 +94,8 @@ public class CameraStarter {
         return line;
     }
 
-    public static void main(String[] args) { // for testing purposes only
+    public static void main(String[] args)
+    { // for testing purposes only
         TimeFormat t = getStartTime();
         DataPlotter dp = new DataPlotter();
         dp.run();
@@ -103,9 +103,10 @@ public class CameraStarter {
 }
 
 class DataPlotter { // for testing purposes later
-    public DataPlotter() {};
+    public DataPlotter(){};
 
-    public static void run() {
+    public static void run()
+    {
         // TODO figure out how to plot data
     }
 }
