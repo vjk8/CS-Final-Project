@@ -21,7 +21,7 @@ public class CameraStarter {
         TargetDataLine line = getTargetDataLine();
         if (line == null) return null;
         int numBytesRead;
-        byte[] data = new byte[(int) (line.getBufferSize() * 2 * fractOfSecond)];
+        byte[] data = new byte[(int)(line.getBufferSize() * 2 * fractOfSecond)];
         line.start();
         long startTime = System.currentTimeMillis();
         while (System.currentTimeMillis() - startTime < 1000) {
@@ -29,9 +29,11 @@ public class CameraStarter {
             numBytesRead = line.read(data, 0, data.length);
             int[] RI = rangeAndMaxIndex(data);
             if (RI[0] > threshold) {
-                return new TimeFormat((int) (sampleTime - startTime + RI[1] / 8));
+                return new TimeFormat(
+                    (int)(sampleTime - startTime + RI[1] / 8));
             }
-            System.out.println(numBytesRead + " bytes read starting at time " + (sampleTime - startTime));
+            System.out.println(numBytesRead + " bytes read starting at time " +
+                               (sampleTime - startTime));
             for (byte b : data) {
                 allData.add(b);
             }
@@ -39,7 +41,8 @@ public class CameraStarter {
         return null;
     }
 
-    private static int[] rangeAndMaxIndex(byte[] a) {
+    private static int[] rangeAndMaxIndex(byte[] a)
+    {
         byte max = Byte.MIN_VALUE;
         byte min = Byte.MAX_VALUE;
         int absMax = Byte.MIN_VALUE;
@@ -48,19 +51,20 @@ public class CameraStarter {
             byte b = a[i];
             if (b < min) {
                 min = b;
-            } 
+            }
             if (b > max) {
                 max = b;
-            } 
+            }
             if (Math.abs(b) > absMax) {
                 absMax = Math.abs(b);
                 maxIndex = i;
             }
         }
-        return new int[]{(int) (max-min), maxIndex};
+        return new int[] {(int)(max - min), maxIndex};
     }
 
-    private int indexOfMax(byte[] a) { // superseded by rangeAndMaxIndex
+    private int indexOfMax(byte[] a)
+    { // superseded by rangeAndMaxIndex
         int max = Byte.MIN_VALUE;
         int maxIndex = 0;
         for (int i = 0; i < a.length; i++) {
@@ -72,7 +76,8 @@ public class CameraStarter {
         return maxIndex;
     }
 
-    private static TargetDataLine getTargetDataLine() {
+    private static TargetDataLine getTargetDataLine()
+    {
         AudioFormat format = new AudioFormat(8000f, 8, 1, true, true);
         TargetDataLine line;
         DataLine.Info info = new DataLine.Info(TargetDataLine.class, format);
