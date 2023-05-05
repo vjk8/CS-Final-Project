@@ -1,5 +1,4 @@
 import javax.sound.sampled.*;
-import javax.xml.crypto.Data;
 import java.util.*;
 
 public class CameraStarter {
