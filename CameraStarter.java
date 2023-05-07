@@ -1,22 +1,43 @@
 import java.util.*;
-import java.util.Arrays;
 import javax.sound.sampled.*;
+import java.awt.*;
+import java.awt.event.KeyEvent;
 
 public class CameraStarter {
     private static int threshold;
+    private static boolean isSound;
+    private static final int DEFAULT_THRESHOLD = 128;
 
-    public CameraStarter()
+    public CameraStarter() {
+        threshold = DEFAULT_THRESHOLD;
+        isSound = true;
+    }
+
+    public CameraStarter(boolean soundBased)
     {
-        threshold = 0; // some default value
+        threshold = DEFAULT_THRESHOLD;
+        isSound = soundBased;
+    }
+
+    public CameraStarter(int th, boolean soundBased)
+    {
+        threshold = th;
+        isSound = soundBased;
     }
 
     public CameraStarter(int th)
     {
         threshold = th;
+        isSound = true;
     }
 
     public static TimeFormat getStartTime()
     {
+        if (isSound) return getSoundStartTime();
+        else return getKeyboardStartTime();
+    }
+
+    private static TimeFormat getSoundStartTime() {
         double fractOfSecond = 0.05;
         ArrayList<Byte> allData = new ArrayList<Byte>();
         TargetDataLine line = getTargetDataLine();
@@ -25,18 +46,34 @@ public class CameraStarter {
         byte[] data = new byte[(int)(line.getBufferSize() * 2 * fractOfSecond)];
         line.start();
         long startTime = System.currentTimeMillis();
-        while (System.currentTimeMillis() - startTime < 1000) {
+        while (System.currentTimeMillis() - startTime < 10000) { // checks for 10 seconds
             long sampleTime = System.currentTimeMillis();
             numBytesRead = line.read(data, 0, data.length);
             int[] RI = rangeAndMaxIndex(data);
             if (RI[0] > threshold) {
-                return new TimeFormat(
-                    (int)(sampleTime - startTime + RI[1] / 8));
+                TimeFormat ret = new TimeFormat((int)(sampleTime - startTime + RI[1] / 8));
+                System.out.println(ret);
+                return ret;
             }
             System.out.println(numBytesRead + " bytes read starting at time " +
                                (sampleTime - startTime));
             for (byte b : data) {
                 allData.add(b);
+            }
+        }
+        return null;
+    }
+
+    private static TimeFormat getKeyboardStartTime() {
+        KeyboardListener kbl = new KeyboardListener();
+        long startTime = System.currentTimeMillis();
+        long sampleTime = System.currentTimeMillis();
+        while (sampleTime - startTime < 10000) {
+            sampleTime = System.currentTimeMillis();
+            if (kbl.isKeyPressed(KeyEvent.VK_ENTER) || kbl.isKeyPressed(KeyEvent.VK_SPACE)) {
+                TimeFormat ret = new TimeFormat((int) (sampleTime - startTime));
+                System.out.println(ret);
+                return ret;
             }
         }
         return null;
@@ -105,6 +142,30 @@ public class CameraStarter {
         TimeFormat t = getStartTime();
         DataPlotter dp = new DataPlotter();
         dp.run();
+    }
+}
+
+class KeyboardListener {
+    private static Map<Integer, Boolean> pressedKeys = new HashMap<Integer, Boolean>();
+
+    // no-args constructor by default
+
+    static {
+        KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(event -> {
+            synchronized (KeyboardListener.class) {
+                if (event.getID() == KeyEvent.KEY_PRESSED) pressedKeys.put(event.getKeyCode(), true);
+                else if (event.getID() == KeyEvent.KEY_RELEASED) pressedKeys.put(event.getKeyCode(), false);
+                return false;
+            }
+        });
+    }
+
+    public static boolean isKeyPressed(int keyCode) {
+        return pressedKeys.getOrDefault(keyCode, false);
+    }
+
+    public static boolean isKeyPressed() {
+        return !pressedKeys.isEmpty();
     }
 }
 
