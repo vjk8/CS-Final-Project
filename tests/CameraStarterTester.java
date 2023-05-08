@@ -1,5 +1,5 @@
 package tests;
-
+// some git error
 import org.junit.Assert.*;
 import org.junit.Test;
 import components.CameraStarter;
