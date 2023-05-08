@@ -4,8 +4,7 @@ import org.junit.Test;
 
 public class CameraStarterTester {
 
-    @Test
-    public void testSoundBasedStarting() {
-
+    @Test public void testSoundBasedStarting()
+    {
     }
 }
