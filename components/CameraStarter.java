@@ -21,15 +21,15 @@ public class CameraStarter {
         isSound = soundBased;
     }
 
-    public CameraStarter(int th, boolean soundBased)
+    public CameraStarter(int soundThreshold, boolean soundBased)
     {
-        threshold = th;
+        threshold = soundThreshold;
         isSound = soundBased;
     }
 
-    public CameraStarter(int th)
+    public CameraStarter(int soundThreshold)
     {
-        threshold = th;
+        threshold = soundThreshold;
         isSound = true;
     }
 
@@ -61,7 +61,7 @@ public class CameraStarter {
                 System.out.println(ret);
                 return ret;
             }
-            System.out.println(numBytesRead + " bytes read starting at time " +
+            System.out.println(RI[0] + " range at time " +
                                (sampleTime - startTime));
             for (byte b : data) {
                 allData.add(b);
