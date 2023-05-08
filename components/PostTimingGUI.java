@@ -1,3 +1,4 @@
+package components;
 import java.util.*;
 import javax.swing.JPanel;
 import org.opencv.core.*;

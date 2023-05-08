@@ -1,3 +1,4 @@
+package components;
 public class Athlete {
     private String name;
     private String school;

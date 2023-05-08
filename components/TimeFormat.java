@@ -1,3 +1,4 @@
+package components;
 public class TimeFormat implements Comparable {
     private int hours;
     private int minutes;

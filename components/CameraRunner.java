@@ -1,3 +1,4 @@
+package components;
 import java.util.Queue;
 import org.opencv.core.*;
 

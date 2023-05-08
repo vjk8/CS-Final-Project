@@ -1,3 +1,4 @@
+package components;
 import java.awt.Color;
 
 public class DraggableLine implements Comparable {
