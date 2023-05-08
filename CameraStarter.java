@@ -1,14 +1,15 @@
-import java.util.*;
-import javax.sound.sampled.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.util.*;
+import javax.sound.sampled.*;
 
 public class CameraStarter {
     private static int threshold;
     private static boolean isSound;
     private static final int DEFAULT_THRESHOLD = 200;
 
-    public CameraStarter() {
+    public CameraStarter()
+    {
         threshold = DEFAULT_THRESHOLD;
         isSound = true;
     }
@@ -33,8 +34,10 @@ public class CameraStarter {
 
     public static long getStartTime()
     {
-        if (isSound) return getSoundStartTime();
-        else return getKeyboardStartTime();
+        if (isSound)
+            return getSoundStartTime();
+        else
+            return getKeyboardStartTime();
     }
 
     private static long getSoundStartTime() {
@@ -46,7 +49,8 @@ public class CameraStarter {
         byte[] data = new byte[(int)(line.getBufferSize() * 2 * fractOfSecond)];
         line.start();
         long startTime = System.currentTimeMillis();
-        while (System.currentTimeMillis() - startTime < 10000) { // checks for 10 seconds
+        while (System.currentTimeMillis() - startTime <
+               10000) { // checks for 10 seconds
             long sampleTime = System.currentTimeMillis();
             numBytesRead = line.read(data, 0, data.length);
             int[] RI = rangeAndMaxIndex(data);
@@ -145,27 +149,31 @@ public class CameraStarter {
 }
 
 class KeyboardListener {
-    private static Map<Integer, Boolean> pressedKeys = new HashMap<Integer, Boolean>();
+    private static Map<Integer, Boolean> pressedKeys =
+        new HashMap<Integer, Boolean>();
 
     // no-args constructor by default
 
-    static {
+    static
+    {
         KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(event -> {
             synchronized (KeyboardListener.class) {
                 if (event.getID() == KeyEvent.KEY_PRESSED) pressedKeys.put(event.getKeyCode(), true);
                 else if (event.getID() == KeyEvent.KEY_RELEASED) pressedKeys.put(event.getKeyCode(), false);
                 return false;
-            }
-        });
     }
+});
+}
 
-    public static boolean isKeyPressed(int keyCode) {
-        return pressedKeys.getOrDefault(keyCode, false);
-    }
+public static boolean isKeyPressed(int keyCode)
+{
+    return pressedKeys.getOrDefault(keyCode, false);
+}
 
-    public static boolean isKeyPressed() {
-        return !pressedKeys.isEmpty();
-    }
+public static boolean isKeyPressed()
+{
+    return !pressedKeys.isEmpty();
+}
 }
 
 class DataPlotter { // for testing purposes later
