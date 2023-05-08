@@ -35,7 +35,8 @@ public class CameraStarter {
             return getKeyboardStartTime();
     }
 
-    private static long getSoundStartTime() {
+    private static long getSoundStartTime()
+    {
         double fractOfSecond = 0.05;
         ArrayList<Byte> allData = new ArrayList<Byte>();
         TargetDataLine line = getTargetDataLine();
@@ -63,13 +64,15 @@ public class CameraStarter {
         return -1;
     }
 
-    private static long getKeyboardStartTime() {
+    private static long getKeyboardStartTime()
+    {
         KeyboardListener kbl = new KeyboardListener();
         long startTime = System.currentTimeMillis();
         long sampleTime = System.currentTimeMillis();
         while (sampleTime - startTime < 10000) {
             sampleTime = System.currentTimeMillis();
-            if (kbl.isKeyPressed(KeyEvent.VK_ENTER) || kbl.isKeyPressed(KeyEvent.VK_SPACE)) {
+            if (kbl.isKeyPressed(KeyEvent.VK_ENTER) ||
+                kbl.isKeyPressed(KeyEvent.VK_SPACE)) {
                 System.out.println(sampleTime);
                 return sampleTime;
             }
