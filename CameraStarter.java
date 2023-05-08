@@ -6,7 +6,7 @@ import java.awt.event.KeyEvent;
 public class CameraStarter {
     private static int threshold;
     private static boolean isSound;
-    private static final int DEFAULT_THRESHOLD = 128;
+    private static final int DEFAULT_THRESHOLD = 200;
 
     public CameraStarter() {
         threshold = DEFAULT_THRESHOLD;
@@ -31,17 +31,17 @@ public class CameraStarter {
         isSound = true;
     }
 
-    public static TimeFormat getStartTime()
+    public static long getStartTime()
     {
         if (isSound) return getSoundStartTime();
         else return getKeyboardStartTime();
     }
 
-    private static TimeFormat getSoundStartTime() {
+    private static long getSoundStartTime() {
         double fractOfSecond = 0.05;
         ArrayList<Byte> allData = new ArrayList<Byte>();
         TargetDataLine line = getTargetDataLine();
-        if (line == null) return null;
+        if (line == null) return -1;
         int numBytesRead;
         byte[] data = new byte[(int)(line.getBufferSize() * 2 * fractOfSecond)];
         line.start();
@@ -51,7 +51,7 @@ public class CameraStarter {
             numBytesRead = line.read(data, 0, data.length);
             int[] RI = rangeAndMaxIndex(data);
             if (RI[0] > threshold) {
-                TimeFormat ret = new TimeFormat((int)(sampleTime - startTime + RI[1] / 8));
+                long ret = sampleTime + RI[1] / 8;
                 System.out.println(ret);
                 return ret;
             }
@@ -61,22 +61,21 @@ public class CameraStarter {
                 allData.add(b);
             }
         }
-        return null;
+        return -1;
     }
 
-    private static TimeFormat getKeyboardStartTime() {
+    private static long getKeyboardStartTime() {
         KeyboardListener kbl = new KeyboardListener();
         long startTime = System.currentTimeMillis();
         long sampleTime = System.currentTimeMillis();
         while (sampleTime - startTime < 10000) {
             sampleTime = System.currentTimeMillis();
             if (kbl.isKeyPressed(KeyEvent.VK_ENTER) || kbl.isKeyPressed(KeyEvent.VK_SPACE)) {
-                TimeFormat ret = new TimeFormat((int) (sampleTime - startTime));
-                System.out.println(ret);
-                return ret;
+                System.out.println(sampleTime);
+                return sampleTime;
             }
         }
-        return null;
+        return -1;
     }
 
     private static int[] rangeAndMaxIndex(byte[] a)
