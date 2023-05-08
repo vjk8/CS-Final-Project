@@ -1,3 +1,4 @@
+package tests;
 public class random_tests {
     // testing out millisecond timing
     public static void main(String[] args)

@@ -8,32 +8,27 @@ public class CameraStarter {
     private static boolean isSound;
     private static final int DEFAULT_THRESHOLD = 200;
 
-    public CameraStarter()
-    {
+    public CameraStarter() {
         threshold = DEFAULT_THRESHOLD;
         isSound = true;
     }
 
-    public CameraStarter(boolean soundBased)
-    {
+    public CameraStarter(boolean soundBased) {
         threshold = DEFAULT_THRESHOLD;
         isSound = soundBased;
     }
 
-    public CameraStarter(int th, boolean soundBased)
-    {
+    public CameraStarter(int th, boolean soundBased) {
         threshold = th;
         isSound = soundBased;
     }
 
-    public CameraStarter(int th)
-    {
+    public CameraStarter(int th) {
         threshold = th;
         isSound = true;
     }
 
-    public static long getStartTime()
-    {
+    public static long getStartTime() {
         if (isSound)
             return getSoundStartTime();
         else
@@ -44,13 +39,13 @@ public class CameraStarter {
         double fractOfSecond = 0.05;
         ArrayList<Byte> allData = new ArrayList<Byte>();
         TargetDataLine line = getTargetDataLine();
-        if (line == null) return -1;
+        if (line == null)
+            return -1;
         int numBytesRead;
-        byte[] data = new byte[(int)(line.getBufferSize() * 2 * fractOfSecond)];
+        byte[] data = new byte[(int) (line.getBufferSize() * 2 * fractOfSecond)];
         line.start();
         long startTime = System.currentTimeMillis();
-        while (System.currentTimeMillis() - startTime <
-               10000) { // checks for 10 seconds
+        while (System.currentTimeMillis() - startTime < 10000) { // checks for 10 seconds
             long sampleTime = System.currentTimeMillis();
             numBytesRead = line.read(data, 0, data.length);
             int[] RI = rangeAndMaxIndex(data);
@@ -60,7 +55,7 @@ public class CameraStarter {
                 return ret;
             }
             System.out.println(numBytesRead + " bytes read starting at time " +
-                               (sampleTime - startTime));
+                    (sampleTime - startTime));
             for (byte b : data) {
                 allData.add(b);
             }
@@ -82,8 +77,7 @@ public class CameraStarter {
         return -1;
     }
 
-    private static int[] rangeAndMaxIndex(byte[] a)
-    {
+    private static int[] rangeAndMaxIndex(byte[] a) {
         byte max = Byte.MIN_VALUE;
         byte min = Byte.MAX_VALUE;
         int absMax = Byte.MIN_VALUE;
@@ -101,11 +95,10 @@ public class CameraStarter {
                 maxIndex = i;
             }
         }
-        return new int[] {(int)(max - min), maxIndex};
+        return new int[] { (int) (max - min), maxIndex };
     }
 
-    private int indexOfMax(byte[] a)
-    { // superseded by rangeAndMaxIndex
+    private int indexOfMax(byte[] a) { // superseded by rangeAndMaxIndex
         int max = Byte.MIN_VALUE;
         int maxIndex = 0;
         for (int i = 0; i < a.length; i++) {
@@ -117,8 +110,7 @@ public class CameraStarter {
         return maxIndex;
     }
 
-    private static TargetDataLine getTargetDataLine()
-    {
+    private static TargetDataLine getTargetDataLine() {
         AudioFormat format = new AudioFormat(8000f, 8, 1, true, true);
         TargetDataLine line;
         DataLine.Info info = new DataLine.Info(TargetDataLine.class, format);
@@ -130,57 +122,38 @@ public class CameraStarter {
             return null;
         }
         try {
-            line = (TargetDataLine)AudioSystem.getLine(info);
+            line = (TargetDataLine) AudioSystem.getLine(info);
             line.open(format);
-        }
-        catch (LineUnavailableException ex) {
+        } catch (LineUnavailableException ex) {
             System.out.println("AUDIO LINE UNAVAILABLE");
             return null;
         }
         return line;
     }
-
-    public static void main(String[] args)
-    { // for testing purposes only
-        TimeFormat t = getStartTime();
-        DataPlotter dp = new DataPlotter();
-        dp.run();
-    }
 }
 
 class KeyboardListener {
-    private static Map<Integer, Boolean> pressedKeys =
-        new HashMap<Integer, Boolean>();
+    private static Map<Integer, Boolean> pressedKeys = new HashMap<Integer, Boolean>();
 
     // no-args constructor by default
 
-    static
-    {
+    static {
         KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(event -> {
             synchronized (KeyboardListener.class) {
-                if (event.getID() == KeyEvent.KEY_PRESSED) pressedKeys.put(event.getKeyCode(), true);
-                else if (event.getID() == KeyEvent.KEY_RELEASED) pressedKeys.put(event.getKeyCode(), false);
+                if (event.getID() == KeyEvent.KEY_PRESSED)
+                    pressedKeys.put(event.getKeyCode(), true);
+                else if (event.getID() == KeyEvent.KEY_RELEASED)
+                    pressedKeys.put(event.getKeyCode(), false);
                 return false;
+            }
+        });
     }
-});
-}
 
-public static boolean isKeyPressed(int keyCode)
-{
-    return pressedKeys.getOrDefault(keyCode, false);
-}
+    public static boolean isKeyPressed(int keyCode) {
+        return pressedKeys.getOrDefault(keyCode, false);
+    }
 
-public static boolean isKeyPressed()
-{
-    return !pressedKeys.isEmpty();
-}
-}
-
-class DataPlotter { // for testing purposes later
-    public DataPlotter(){};
-
-    public static void run()
-    {
-        // TODO figure out how to plot data
+    public static boolean isKeyPressed() {
+        return !pressedKeys.isEmpty();
     }
 }
