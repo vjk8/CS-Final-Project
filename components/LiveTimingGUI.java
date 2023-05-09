@@ -43,7 +43,7 @@ public class LiveTimingGUI extends JPanel {
             {
                 pTG = new PostTimingGUI(image);
             }
-        });*/ 
+        });*/
 
         // Had to comment out the above to make code compile for JUnit Tests
         // nothing wrong with thought process / implementation

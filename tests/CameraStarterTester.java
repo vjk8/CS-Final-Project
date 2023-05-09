@@ -2,8 +2,7 @@ package tests;
 
 import components.CameraStarter;
 
-public class CameraStarterTester
-{
+public class CameraStarterTester {
 
     public static void test1()
     {
@@ -14,7 +13,6 @@ public class CameraStarterTester
         // Works
     }
 
-
     public static void test2()
     {
         CameraStarter starter = new CameraStarter(false); // sound-based
@@ -23,7 +21,6 @@ public class CameraStarterTester
         System.out.println("Started at time " + result);
         // Does not work
     }
-
 
     public static void main(String[] args)
     {
