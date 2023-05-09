@@ -1,6 +1,5 @@
 package tests;
 
-// some git error
 import components.CameraStarter;
 
 public class CameraStarterTester
