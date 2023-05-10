@@ -14,7 +14,6 @@ public class CameraStarterTester
         // Works
     }
 
-
     public static void test2()
     {
         CameraStarter starter = new CameraStarter(false); // sound-based

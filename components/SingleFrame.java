@@ -9,10 +9,10 @@ public class SingleFrame
     private Mat        frame;
     private TimeFormat time;
 
-    public SingleFrame(Mat m, int t, int startTime)
+    public SingleFrame(Mat m, long t, long startTime)
     {
         frame = m;
-        time = new TimeFormat(t - startTime);
+        time = new TimeFormat((int) (t - startTime));
     }
 
 
