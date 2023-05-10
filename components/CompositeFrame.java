@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import org.opencv.core.*;
 import java.util.List;
+import org.opencv.imgcodecs.Imgcodecs;
 
 public class CompositeFrame {
     private Mat composite;
@@ -15,13 +16,14 @@ public class CompositeFrame {
     {
         composite = null;
         timestamps = new ArrayList<TimeFormat>();
+        Imgcodecs imagecodecs = new Imgcodecs();
     }
 
     public void processFrame(SingleFrame s)
     {
         timestamps.add(s.getTime());
-        Rect cropRect = new Rect(0, 0, 1, composite.rows());
-        Mat slice = composite.submat(cropRect);
+        Rect cropRect = new Rect(0, 0, 1, s.getMat().rows());
+        Mat slice = s.getMat().submat(cropRect);
         if (composite == null) {
             composite = slice;
         }
@@ -39,7 +41,7 @@ public class CompositeFrame {
 
     public void addPause()
     {
-        Mat pause = 
+        // TODO complete method
     }
 
     public Mat getMat()

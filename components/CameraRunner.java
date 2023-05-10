@@ -23,19 +23,17 @@ public class CameraRunner {
     {
         VideoCapture cap = new VideoCapture();
         cap.open(0);
-        CameraStarter cs = new CameraStarter();
+        Mat newFrame = new Mat();
+        CameraStarter cs = new CameraStarter(128);
         long startTime = cs.getStartTime();
         while (System.currentTimeMillis() - startTime < 10000) {
-            Mat newFrame = new Mat();
+            newFrame = new Mat();
             cap.read(newFrame);
             long capTime = System.currentTimeMillis();
             // toBeProcessed.add(new SingleFrame(newFrame, capTime, startTime));
             finishImage.processFrame(new SingleFrame(newFrame, capTime, startTime));
             imshow(finishImage.getMat());
         }
-        
-
-        // TODO complete method
     }
 
     public void receiveMessage()
@@ -69,9 +67,10 @@ public class CameraRunner {
             new JLabel(new ImageIcon(matToBufferedImage(m))));
         frame.pack();
         frame.setVisible(true);
-        if (System.currentTimeMillis() - startTime >= 50) {
+        if (System.currentTimeMillis() - startTime >= 100) {
             frame.dispose();
         }
+        
     }
 
     private static BufferedImage matToBufferedImage(Mat m)
