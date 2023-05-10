@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.opencv.imgcodecs.Imgcodecs;
+import org.opencv.core.Mat;
 
 public class CompositeFrame {
     private Mat composite;
