@@ -5,10 +5,10 @@ import java.awt.image.DataBufferByte;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.opencv.imgcodecs.Imgcodecs;
+import org.opencv.core.*;
 import org.opencv.core.Mat;
 import org.opencv.core.Rect;
-import org.opencv.core.*;
+import org.opencv.imgcodecs.Imgcodecs;
 
 public class CompositeFrame {
     private Mat composite;
