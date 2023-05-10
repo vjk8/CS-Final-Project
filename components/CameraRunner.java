@@ -57,12 +57,16 @@ public class CameraRunner {
     // for testing only
 
     private static void imshow(Mat m) {
+        long startTime = System.currentTimeMillis();
         JFrame frame = new JFrame();
         frame.getContentPane().setLayout(new FlowLayout());
         frame.getContentPane().add(new JLabel(new ImageIcon(matToBufferedImage(m))));
         frame.pack();
         frame.setVisible(true);
-        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        if (System.currentTimeMillis() - startTime >= 34) {
+            frame.dispose();
+        }
+        
     }
 
     private static BufferedImage matToBufferedImage(Mat m) {
