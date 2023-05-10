@@ -58,7 +58,8 @@ public class CameraRunner {
 
     // for testing only
 
-    private static void imshow(Mat m) {
+    private static void imshow(Mat m)
+    {
         long startTime = System.currentTimeMillis();
         JFrame frame = new JFrame();
         frame.getContentPane().setLayout(new FlowLayout());
@@ -69,7 +70,6 @@ public class CameraRunner {
         if (System.currentTimeMillis() - startTime >= 34) {
             frame.dispose();
         }
-        
     }
 
     private static BufferedImage matToBufferedImage(Mat m)
