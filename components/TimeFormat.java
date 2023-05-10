@@ -1,8 +1,6 @@
 package components;
 
-public class TimeFormat
-    implements Comparable
-{
+public class TimeFormat implements Comparable {
     private int hours;
     private int minutes;
     private int seconds;
@@ -16,7 +14,6 @@ public class TimeFormat
         millis = 0;
     }
 
-
     public TimeFormat(int timeMillis)
     {
         hours = timeMillis / 3600000;
@@ -28,7 +25,6 @@ public class TimeFormat
         millis = timeMillis / 10;
     }
 
-
     public TimeFormat(int h, int m, int s, int ms)
     {
         hours = h;
@@ -36,7 +32,6 @@ public class TimeFormat
         seconds = s;
         millis = ms;
     }
-
 
     public TimeFormat(int m, int s, int ms)
     {
@@ -46,7 +41,6 @@ public class TimeFormat
         millis = ms;
     }
 
-
     public TimeFormat(int s, int ms)
     {
         hours = 0;
@@ -55,40 +49,33 @@ public class TimeFormat
         millis = ms;
     }
 
-
     public int compareTo(Object other)
     {
         TimeFormat ot = (TimeFormat)other;
-        long thisTotal = getHours() * 3600000 + getMinutes() * 60000 + getSeconds() * 1000
-            + getMilliseconds() * 10;
-        long otherTotal = ot.getHours() * 3600000 + ot.getMinutes() * 60000 + ot.getSeconds() * 1000
-            + ot.getMilliseconds() * 10;
+        long thisTotal = getHours() * 3600000 + getMinutes() * 60000 +
+                         getSeconds() * 1000 + getMilliseconds() * 10;
+        long otherTotal = ot.getHours() * 3600000 + ot.getMinutes() * 60000 +
+                          ot.getSeconds() * 1000 + ot.getMilliseconds() * 10;
         return (int)(thisTotal - otherTotal);
     }
 
-
-    @Override
-    public String toString()
+    @Override public String toString()
     {
         String res = "";
-        if (hours != 0)
-            res += String.valueOf(hours) + ":";
-        if (res.length() != 0 || minutes != 0)
-        {
+        if (hours != 0) res += String.valueOf(hours) + ":";
+        if (res.length() != 0 || minutes != 0) {
             if (minutes < 10 && hours != 0)
                 res += "0" + String.valueOf(minutes) + ":";
             else
                 res += String.valueOf(minutes) + ":";
         }
-        if (res.length() != 0 || seconds != 0)
-        {
+        if (res.length() != 0 || seconds != 0) {
             if (seconds < 10 && minutes != 0)
                 res += "0" + String.valueOf(seconds) + ".";
             else
                 res += String.valueOf(seconds) + ".";
         }
-        if (res.length() != 0 || millis != 0)
-        {
+        if (res.length() != 0 || millis != 0) {
             if (millis < 10)
                 res += "0" + String.valueOf(millis);
             else
@@ -97,34 +84,29 @@ public class TimeFormat
         return res;
     }
 
-
     public int getHours()
     {
         return hours;
     }
-
 
     public int getMinutes()
     {
         return minutes;
     }
 
-
     public int getSeconds()
     {
         return seconds;
     }
-
 
     public int getMilliseconds()
     {
         return millis;
     }
 
-
     public int intValue()
     {
-        return getHours() * 3600000 + getMinutes() * 60000 + getSeconds() * 1000
-            + getMilliseconds() * 10;
+        return getHours() * 3600000 + getMinutes() * 60000 +
+            getSeconds() * 1000 + getMilliseconds() * 10;
     }
 }
