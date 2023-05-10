@@ -85,7 +85,6 @@ public class CameraRunner {
         final byte[] targetPixels =
             ((DataBufferByte)image.getRaster().getDataBuffer()).getData();
         System.arraycopy(b, 0, targetPixels, 0, b.length);
-        System.out.println(image.toString());
         return image;
     }
 
