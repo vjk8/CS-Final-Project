@@ -71,7 +71,6 @@ public class CameraRunner {
         if (System.currentTimeMillis() - startTime >= 100) {
             frame.dispose();
         }
-        
     }
 
     private static BufferedImage matToBufferedImage(Mat m)
