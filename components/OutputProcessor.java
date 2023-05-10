@@ -1,3 +1,4 @@
+package components;
 import java.util.*;
 import java.util.HashMap;
 import org.opencv.core.*;

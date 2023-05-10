@@ -1,4 +1,11 @@
 opencv_java470.dll
 opencv-470.jar
+hamcrest-core-1.3.jar
+junit-4.13.2.jar
+components/black.jpg
 
 archive/
+
+OCR_server/venv/
+
+__pycache__/
