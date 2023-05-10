@@ -26,7 +26,7 @@ public class CameraRunner {
         Mat newFrame = new Mat();
         CameraStarter cs = new CameraStarter(128);
         long startTime = cs.getStartTime();
-        while (System.currentTimeMillis() - startTime < 10000) {
+        while (System.currentTimeMillis() - startTime < 20000) {
             newFrame = new Mat();
             cap.read(newFrame);
             long capTime = System.currentTimeMillis();

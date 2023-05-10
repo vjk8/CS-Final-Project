@@ -6,5 +6,6 @@ public class CameraRunnerTester {
     {
         CameraRunner cr = new CameraRunner();
         cr.run();
+        System.out.println(cr.getCompositeFrame().getTimestampList());
     }
 }
