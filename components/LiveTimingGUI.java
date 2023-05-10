@@ -17,15 +17,14 @@ public class LiveTimingGUI extends JPanel {
     Mat image;
     // start button stop button and run analysis button (create post timing gui
     // and call its run)
-    public LiveTimingGUI()
-    {
+    public LiveTimingGUI() {
         JFrame frame = new JFrame();
         frame.setSize(200, 200);
         camera = new CameraRunner();
 
         startB.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e)
-            {
+            @Override
+            public void actionPerformed(ActionEvent e) {
                 runner = new Thread(camera);
                 runner.start();
             }

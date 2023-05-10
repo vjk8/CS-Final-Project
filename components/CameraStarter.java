@@ -11,8 +11,7 @@ public class CameraStarter
     private static boolean   isSound;
     private static final int DEFAULT_THRESHOLD = 200;
 
-    public CameraStarter()
-    {
+    public CameraStarter() {
         threshold = DEFAULT_THRESHOLD;
         isSound = true;
     }
@@ -172,8 +171,7 @@ class KeyboardListener
 
     // no-args constructor by default
 
-    static
-    {
+    static {
         KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(event -> {
             synchronized (KeyboardListener.class)
             {

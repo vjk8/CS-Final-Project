@@ -7,8 +7,8 @@ import org.junit.Test;
 
 public class TimeFormatTester {
 
-    @Test public void constructorTest1()
-    {
+    @Test
+    public void constructorTest1() {
         TimeFormat t = new TimeFormat();
         assertEquals(t.getHours(), 0);
         assertEquals(t.getMinutes(), 0);
@@ -16,8 +16,8 @@ public class TimeFormatTester {
         assertEquals(t.getMilliseconds(), 0);
     }
 
-    @Test public void constructorTest2()
-    {
+    @Test
+    public void constructorTest2() {
         TimeFormat t = new TimeFormat(4357800);
         assertEquals(t.getHours(), 1);
         assertEquals(t.getMinutes(), 12);
@@ -25,8 +25,8 @@ public class TimeFormatTester {
         assertEquals(t.getMilliseconds(), 80);
     }
 
-    @Test public void constructorTest3()
-    {
+    @Test
+    public void constructorTest3() {
         TimeFormat t = new TimeFormat(1, 5, 3, 7);
         assertEquals(t.getHours(), 1);
         assertEquals(t.getMinutes(), 5);
@@ -34,8 +34,8 @@ public class TimeFormatTester {
         assertEquals(t.getMilliseconds(), 7);
     }
 
-    @Test public void constructorTest4()
-    {
+    @Test
+    public void constructorTest4() {
         TimeFormat t = new TimeFormat(5, 3, 7);
         assertEquals(t.getHours(), 0);
         assertEquals(t.getMinutes(), 5);
@@ -43,8 +43,8 @@ public class TimeFormatTester {
         assertEquals(t.getMilliseconds(), 7);
     }
 
-    @Test public void constructorTest5()
-    {
+    @Test
+    public void constructorTest5() {
         TimeFormat t = new TimeFormat(10, 7);
         assertEquals(t.getHours(), 0);
         assertEquals(t.getMinutes(), 0);
@@ -52,8 +52,8 @@ public class TimeFormatTester {
         assertEquals(t.getMilliseconds(), 7);
     }
 
-    @Test public void compareToTest()
-    {
+    @Test
+    public void compareToTest() {
         TimeFormat t1 = new TimeFormat(1, 1, 1, 1);
         TimeFormat t2 = new TimeFormat(0, 2, 2, 2);
         TimeFormat t3 = new TimeFormat(2, 0, 0, 0);
@@ -63,8 +63,8 @@ public class TimeFormatTester {
         assertTrue(t2.compareTo(t3) < 0);
     }
 
-    @Test public void toStringTest()
-    {
+    @Test
+    public void toStringTest() {
         TimeFormat hundredMeter = new TimeFormat(9, 58);
         TimeFormat twoHundredMeter = new TimeFormat(19, 19);
         TimeFormat randomTwoDigit = new TimeFormat(12, 3);
