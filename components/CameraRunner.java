@@ -16,22 +16,24 @@ public class CameraRunner {
     {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
         toBeProcessed = new LinkedList<SingleFrame>();
-        finishImage = null;
+        finishImage = new CompositeFrame();
     }
 
     public static void run()
     {
         VideoCapture cap = new VideoCapture();
-        long startTime =
-            System.currentTimeMillis(); // change to CameraStarter block later
-        Mat newFrame = new Mat();
-        boolean isRead = cap.read(newFrame);
-        long capTime = System.currentTimeMillis();
-        while (!isRead) {
-            capTime = System.currentTimeMillis();
-            isRead = cap.read(newFrame);
+        cap.open(0);
+        CameraStarter cs = new CameraStarter();
+        long startTime = cs.getStartTime();
+        while (System.currentTimeMillis() - startTime < 10000) {
+            Mat newFrame = new Mat();
+            cap.read(newFrame);
+            long capTime = System.currentTimeMillis();
+            // toBeProcessed.add(new SingleFrame(newFrame, capTime, startTime));
+            finishImage.processFrame(new SingleFrame(newFrame, capTime, startTime));
+            imshow(finishImage.getMat());
         }
-        toBeProcessed.add(new SingleFrame(newFrame, capTime, startTime));
+        
 
         // TODO complete method
     }
@@ -67,7 +69,7 @@ public class CameraRunner {
             new JLabel(new ImageIcon(matToBufferedImage(m))));
         frame.pack();
         frame.setVisible(true);
-        if (System.currentTimeMillis() - startTime >= 34) {
+        if (System.currentTimeMillis() - startTime >= 50) {
             frame.dispose();
         }
     }
@@ -89,7 +91,7 @@ public class CameraRunner {
     }
 
     // for testing only
-    public static void main(String[] args)
+    /*public static void main(String[] args)
     {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 
@@ -109,5 +111,5 @@ public class CameraRunner {
             System.out.println("isRead: " + isRead);
             imshow(newFrame);
         }
-    }
+    }*/
 }

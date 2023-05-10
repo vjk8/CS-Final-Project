@@ -3,7 +3,9 @@ package components;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.util.ArrayList;
+import java.util.Arrays;
 import org.opencv.core.*;
+import java.util.List;
 
 public class CompositeFrame
 {
@@ -20,7 +22,15 @@ public class CompositeFrame
     public void processFrame(SingleFrame s)
     {
         timestamps.add(s.getTime());
-        // TODO complete slicing and appending code
+        Rect cropRect = new Rect(0, 0, 1, composite.rows());
+        Mat slice = composite.submat(cropRect);
+        if (composite == null) {
+            composite = slice;
+        }
+        else {
+            List<Mat> toBeCombined = Arrays.asList(composite, slice);
+            Core.hconcat(toBeCombined, composite);
+        }
     }
 
 
@@ -34,7 +44,7 @@ public class CompositeFrame
 
     public void addPause()
     {
-        // TODO complete method
+        Mat pause = 
     }
 
 
