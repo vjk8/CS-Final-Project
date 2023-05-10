@@ -1,12 +1,12 @@
 package components;
-import java.util.Queue;
-import org.opencv.core.*;
-import org.opencv.videoio.VideoCapture;
-import java.util.LinkedList;
+import java.awt.FlowLayout;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
+import java.util.LinkedList;
+import java.util.Queue;
 import javax.swing.*;
-import java.awt.FlowLayout;
+import org.opencv.core.*;
+import org.opencv.videoio.VideoCapture;
 
 public class CameraRunner {
     private static Queue<SingleFrame> toBeProcessed;
@@ -22,7 +22,8 @@ public class CameraRunner {
     public static void run()
     {
         VideoCapture cap = new VideoCapture();
-        long startTime = System.currentTimeMillis(); // change to CameraStarter block later
+        long startTime =
+            System.currentTimeMillis(); // change to CameraStarter block later
         Mat newFrame = new Mat();
         boolean isRead = cap.read(newFrame);
         long capTime = System.currentTimeMillis();
@@ -45,7 +46,8 @@ public class CameraRunner {
         return finishImage;
     }
 
-    public BufferedImage getBufferedImage() {
+    public BufferedImage getBufferedImage()
+    {
         return finishImage.getImage();
     }
 
@@ -56,33 +58,37 @@ public class CameraRunner {
 
     // for testing only
 
-    private static void imshow(Mat m) {
+    private static void imshow(Mat m)
+    {
         JFrame frame = new JFrame();
         frame.getContentPane().setLayout(new FlowLayout());
-        frame.getContentPane().add(new JLabel(new ImageIcon(matToBufferedImage(m))));
+        frame.getContentPane().add(
+            new JLabel(new ImageIcon(matToBufferedImage(m))));
         frame.pack();
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
     }
 
-    private static BufferedImage matToBufferedImage(Mat m) {
+    private static BufferedImage matToBufferedImage(Mat m)
+    {
         int type = BufferedImage.TYPE_BYTE_GRAY;
-        if (m.channels() > 1)
-        {
+        if (m.channels() > 1) {
             type = BufferedImage.TYPE_3BYTE_BGR;
         }
         int bufferSize = m.channels() * m.cols() * m.rows();
         byte[] b = new byte[bufferSize];
         m.get(0, 0, b); // get all the pixels
         BufferedImage image = new BufferedImage(m.cols(), m.rows(), type);
-        final byte[] targetPixels = ((DataBufferByte)image.getRaster().getDataBuffer()).getData();
+        final byte[] targetPixels =
+            ((DataBufferByte)image.getRaster().getDataBuffer()).getData();
         System.arraycopy(b, 0, targetPixels, 0, b.length);
         System.out.println(image.toString());
         return image;
     }
 
     // for testing only
-    public static void main(String[] args) {
+    public static void main(String[] args)
+    {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 
         System.out.println("loaded library, fetching webcam");
@@ -91,15 +97,15 @@ public class CameraRunner {
         System.out.println("Webcam available");
         Mat newFrame = new Mat();
 
-        if (cap.isOpened()) System.out.println("cap is opened");
-        else System.out.println("cap is not opened");
+        if (cap.isOpened())
+            System.out.println("cap is opened");
+        else
+            System.out.println("cap is not opened");
 
-        while(true) {
+        while (true) {
             boolean isRead = cap.read(newFrame);
             System.out.println("isRead: " + isRead);
             imshow(newFrame);
         }
-        
-        
     }
 }

@@ -11,7 +11,7 @@ public class SingleFrame {
     public SingleFrame(Mat m, long t, long startTime)
     {
         frame = m;
-        time = new TimeFormat((int) (t - startTime));
+        time = new TimeFormat((int)(t - startTime));
     }
 
     public Mat getMat()
