@@ -30,10 +30,10 @@ public class CameraRunner {
             cap.read(newFrame);
             long capTime = System.currentTimeMillis();
             // toBeProcessed.add(new SingleFrame(newFrame, capTime, startTime));
-            finishImage.processFrame(new SingleFrame(newFrame, capTime, startTime));
+            finishImage.processFrame(
+                new SingleFrame(newFrame, capTime, startTime));
             imshow(finishImage.getMat());
         }
-        
 
         // TODO complete method
     }

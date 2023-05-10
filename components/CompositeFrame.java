@@ -4,8 +4,8 @@ import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.util.ArrayList;
 import java.util.Arrays;
-import org.opencv.core.*;
 import java.util.List;
+import org.opencv.core.*;
 
 public class CompositeFrame {
     private Mat composite;
@@ -39,7 +39,7 @@ public class CompositeFrame {
 
     public void addPause()
     {
-        Mat pause = 
+        Mat pause =
     }
 
     public Mat getMat()
