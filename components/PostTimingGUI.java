@@ -11,7 +11,8 @@ public class PostTimingGUI extends JPanel {
     private Mat finishImage;
     private OutputProcessor processor;
 
-    public PostTimingGUI(Mat image) {
+    public PostTimingGUI(Mat image)
+    {
         // TODO complete constructor
         finishImage = image;
     }
@@ -27,8 +28,7 @@ public class PostTimingGUI extends JPanel {
         // TODO GUI code, treat like a main method
         JPanel panel = new JPanel();
         panel.setSize(200, 200);
-        for (DraggableLine d: finishes)
-        {
+        for (DraggableLine d : finishes) {
             panel.addMouseListener(d);
         }
         panel.setVisible(true);

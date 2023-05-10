@@ -43,22 +43,19 @@ public class DraggableLine implements Comparable, MouseListener {
     public int compareTo(Object other)
     {
         // TODO complete comparator
-        
+
         return timestamp.compareTo(other);
     }
 
-
-    public void paintComponent(Graphics g) 
+    public void paintComponent(Graphics g)
     {
         g.setColor(Color.red);
         g.drawLine(10, 10, 100, 100);
     }
 
-    @Override
-    public void mouseClicked(java.awt.event.MouseEvent e)
+    @Override public void mouseClicked(java.awt.event.MouseEvent e)
     {
         // TODO Auto-generated method stub
-        
     }
 
     @Override
@@ -67,7 +64,6 @@ public class DraggableLine implements Comparable, MouseListener {
     {
         // TODO Auto-generated method stub
         xPos = e.getX();
-        
     }
 
     @Override
@@ -76,20 +72,15 @@ public class DraggableLine implements Comparable, MouseListener {
     {
         // TODO Auto-generated method stub
         e.translatePoint(xPos, 0);
-        
     }
 
-    @Override
-    public void mouseEntered(java.awt.event.MouseEvent e)
+    @Override public void mouseEntered(java.awt.event.MouseEvent e)
     {
         // TODO Auto-generated method stub
-        
     }
 
-    @Override
-    public void mouseExited(java.awt.event.MouseEvent e)
+    @Override public void mouseExited(java.awt.event.MouseEvent e)
     {
         // TODO Auto-generated method stub
-        
     }
 }
