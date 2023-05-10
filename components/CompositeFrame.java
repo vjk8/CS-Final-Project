@@ -4,7 +4,6 @@ import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.util.ArrayList;
 import java.util.Arrays;
-import org.opencv.core.*;
 import java.util.List;
 import org.opencv.imgcodecs.Imgcodecs;
 
