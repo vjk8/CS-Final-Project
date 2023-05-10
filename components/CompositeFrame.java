@@ -7,9 +7,8 @@ import java.util.Arrays;
 import org.opencv.core.*;
 import java.util.List;
 
-public class CompositeFrame
-{
-    private Mat                   composite;
+public class CompositeFrame {
+    private Mat composite;
     private ArrayList<TimeFormat> timestamps;
 
     public CompositeFrame()
@@ -17,7 +16,6 @@ public class CompositeFrame
         composite = null;
         timestamps = new ArrayList<TimeFormat>();
     }
-
 
     public void processFrame(SingleFrame s)
     {
@@ -33,26 +31,21 @@ public class CompositeFrame
         }
     }
 
-
     public TimeFormat getTimeAtPixel(int pixelIndex)
     {
-        if (pixelIndex < timestamps.size())
-            return timestamps.get(pixelIndex);
+        if (pixelIndex < timestamps.size()) return timestamps.get(pixelIndex);
         return null;
     }
-
 
     public void addPause()
     {
         Mat pause = 
     }
 
-
     public Mat getMat()
     {
         return composite;
     }
-
 
     public BufferedImage getImage()
     {
