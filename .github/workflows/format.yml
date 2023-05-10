@@ -1,0 +1,27 @@
+# Auto formatter
+
+name: Format
+
+on:
+  push:
+    branches: [ "*" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Install clang format
+      run: sudo apt install clang-format
+    - name: Format code
+      run: find -name "*.java" -type f | xargs clang-format -i --style=file
+    - name: Commit changes
+      uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+        commit_message: Apply formatting changes
+        branch: ${{ github.head_ref }}
+

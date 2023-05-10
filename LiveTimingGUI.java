@@ -13,31 +13,32 @@ public class LiveTimingGUI extends JPanel {
     CameraRunner camera;
     Thread runner;
     Mat image;
-    // start button stop button and run analysis button (create post timing gui and call its run)
-    public LiveTimingGUI ()
+    // start button stop button and run analysis button (create post timing gui
+    // and call its run)
+    public LiveTimingGUI()
     {
         JFrame frame = new JFrame();
         frame.setSize(200, 200);
         camera = new CameraRunner();
 
         startB.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+            @Override public void actionPerformed(ActionEvent e)
+            {
                 runner = new Thread(camera);
                 runner.start();
             }
         });
 
         stop.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+            @Override public void actionPerformed(ActionEvent e)
+            {
                 image = runner.pause();
             }
         });
 
         analysis.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+            @Override public void actionPerformed(ActionEvent e)
+            {
                 pTG = new PostTimingGUI(image);
             }
         });
@@ -47,6 +48,5 @@ public class LiveTimingGUI extends JPanel {
         add(analysis);
         frame.add(this);
         frame.setVisible(true);
-        
     }
 }
