@@ -10,7 +10,7 @@ public class CameraRunnerTester {
     }
 
     public static void threadedTest() {
-        ThreadedCameraRunner tcr = new ThreadedCameraRunner();
+        ThreadedCameraRunner tcr = new ThreadedCameraRunner(128);
         long executeStartTime = System.currentTimeMillis();
         tcr.execute();
         while (System.currentTimeMillis() - executeStartTime <= 20000) {
