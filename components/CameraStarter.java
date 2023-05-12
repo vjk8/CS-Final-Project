@@ -8,46 +8,20 @@ import javax.sound.sampled.*;
 public class CameraStarter
 {
     private static int       threshold;
-    private static boolean   isSound;
     private static final int DEFAULT_THRESHOLD = 200;
 
     public CameraStarter() {
         threshold = DEFAULT_THRESHOLD;
-        isSound = true;
-    }
-
-
-    public CameraStarter(boolean soundBased)
-    {
-        threshold = DEFAULT_THRESHOLD;
-        isSound = soundBased;
-    }
-
-
-    public CameraStarter(int soundThreshold, boolean soundBased)
-    {
-        threshold = soundThreshold;
-        isSound = soundBased;
     }
 
 
     public CameraStarter(int soundThreshold)
     {
         threshold = soundThreshold;
-        isSound = true;
     }
 
 
     public static long getStartTime()
-    {
-        if (isSound)
-            return getSoundStartTime();
-        else
-            return getKeyboardStartTime();
-    }
-
-
-    private static long getSoundStartTime()
     {
         double fractOfSecond = 0.05;
         TargetDataLine line = getTargetDataLine();
@@ -72,24 +46,6 @@ public class CameraStarter
         return -1;
     }
 
-
-    private static long getKeyboardStartTime()
-    {
-        KeyboardListener kbl = new KeyboardListener();
-        long startTime = System.currentTimeMillis();
-        long sampleTime = System.currentTimeMillis();
-        while (sampleTime - startTime < 10000)
-        {
-            System.out.println("Not pressed yet");
-            sampleTime = System.currentTimeMillis();
-            if (kbl.isKeyPressed(KeyEvent.VK_ENTER) || kbl.isKeyPressed(KeyEvent.VK_SPACE))
-            {
-                System.out.println(sampleTime);
-                return sampleTime;
-            }
-        }
-        return -1;
-    }
 
 
     private static int[] rangeAndMaxIndex(byte[] a)
@@ -116,22 +72,6 @@ public class CameraStarter
             }
         }
         return new int[] { (int)(max - min), maxIndex };
-    }
-
-
-    private int indexOfMax(byte[] a)
-    { // superseded by rangeAndMaxIndex
-        int max = Byte.MIN_VALUE;
-        int maxIndex = 0;
-        for (int i = 0; i < a.length; i++)
-        {
-            if (Math.abs(a[i]) > max)
-            {
-                max = Math.abs(a[i]);
-                maxIndex = i;
-            }
-        }
-        return maxIndex;
     }
 
 
@@ -162,36 +102,3 @@ public class CameraStarter
     }
 }
 
-
-
-
-class KeyboardListener
-{
-    private static Map<Integer, Boolean> pressedKeys = new HashMap<Integer, Boolean>();
-
-    // no-args constructor by default
-
-    static {
-        KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(event -> {
-            synchronized (KeyboardListener.class)
-            {
-                if (event.getID() == KeyEvent.KEY_PRESSED)
-                    pressedKeys.put(event.getKeyCode(), true);
-                else if (event.getID() == KeyEvent.KEY_RELEASED)
-                    pressedKeys.put(event.getKeyCode(), false);
-                return false;
-            }
-        });
-    }
-
-    public static boolean isKeyPressed(int keyCode)
-    {
-        return pressedKeys.getOrDefault(keyCode, false);
-    }
-
-
-    public static boolean isKeyPressed()
-    {
-        return !pressedKeys.isEmpty();
-    }
-}
