@@ -10,10 +10,10 @@ extern "C" {
 /*
  * Class:     OCR_server_AthleteOCR
  * Method:    getAthleteNumber
- * Signature: (Lorg/opencv/core/Mat;)I
+ * Signature: ([D)I
  */
 JNIEXPORT jint JNICALL Java_OCR_1server_AthleteOCR_getAthleteNumber
-  (JNIEnv *, jclass, jobject);
+  (JNIEnv *, jclass, jdoubleArray);
 
 #ifdef __cplusplus
 }

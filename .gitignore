@@ -12,3 +12,10 @@ OCR_server/venv/
 __pycache__/
 
 *.class
+
+*.csv
+
+train
+
+*.o
+*.so
