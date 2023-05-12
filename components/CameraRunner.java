@@ -22,7 +22,7 @@ public class CameraRunner {
         VideoCapture cap = new VideoCapture();
         cap.open(0);
         Mat newFrame = new Mat();
-        CameraStarter cs = new CameraStarter(128);
+        CameraStarter cs = new CameraStarter(200);
         long startTime = cs.getStartTime();
         while (System.currentTimeMillis() - startTime < 20000) {
             newFrame = new Mat();
