@@ -5,9 +5,8 @@ import java.awt.event.KeyEvent;
 import java.util.*;
 import javax.sound.sampled.*;
 
-public class CameraStarter
-{
-    private static int       threshold;
+public class CameraStarter {
+    private static int threshold;
     private static final int DEFAULT_THRESHOLD = 200;
 
     public CameraStarter() {
@@ -18,9 +17,7 @@ public class CameraStarter
         threshold = soundThreshold;
     }
 
-
-    public static long getStartTime()
-    {
+    public static long getStartTime() {
         double fractOfSecond = 0.05;
         TargetDataLine line = getTargetDataLine();
         if (line == null) return -1;
@@ -41,10 +38,7 @@ public class CameraStarter
         return -1;
     }
 
-
-
-    private static int[] rangeAndMaxIndex(byte[] a)
-    {
+    private static int[] rangeAndMaxIndex(byte[] a) {
         byte max = Byte.MIN_VALUE;
         byte min = Byte.MAX_VALUE;
         int absMax = Byte.MIN_VALUE;
@@ -65,9 +59,7 @@ public class CameraStarter
         return new int[] {(int)(max - min), maxIndex};
     }
 
-
-    private static TargetDataLine getTargetDataLine()
-    {
+    private static TargetDataLine getTargetDataLine() {
         AudioFormat format = new AudioFormat(8000f, 8, 1, true, true);
         TargetDataLine line;
         DataLine.Info info = new DataLine.Info(TargetDataLine.class, format);
@@ -88,4 +80,3 @@ public class CameraStarter
         return line;
     }
 }
-
