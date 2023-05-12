@@ -10,7 +10,7 @@ public class ImageProcessing {
 
     /**
      * Convert an image to grayscale
-     * 
+     *
      * @param img the image
      * @return the grayscale image
      */
@@ -22,7 +22,7 @@ public class ImageProcessing {
 
     /**
      * Resize an image
-     * 
+     *
      * @param img the image
      * @param width the new width
      * @param height the new height
@@ -36,7 +36,7 @@ public class ImageProcessing {
 
     /**
      * Invert an image
-     * 
+     *
      * @param img the image
      * @return the inverted image
      */
