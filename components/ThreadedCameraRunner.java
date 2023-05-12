@@ -110,5 +110,9 @@ public class ThreadedCameraRunner
                 }
             }
         };
+
+        captureThread.start();
+        processThread.start();
+        controlThread.start();
     }
 }
