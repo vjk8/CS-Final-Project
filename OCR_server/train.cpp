@@ -56,8 +56,8 @@ void load_data(FJML::Tensor& x, FJML::Tensor& y, std::string filename, int limit
     }
 
     // Convert the vectors to tensors
-    x = FJML::Tensor::array(x_vec, FJML::DEVICE_CUDA); // Change the device to FJML::DEVICE_CUDA to use the GPU
-    y = FJML::Tensor::array(y_vec, FJML::DEVICE_CUDA);
+    x = FJML::Tensor::array(x_vec);
+    y = FJML::Tensor::array(y_vec);
 }
 
 int main() {
@@ -65,8 +65,8 @@ int main() {
     FJML::Tensor mnist_train_x, mnist_train_y;
     FJML::Tensor mnist_test_x, mnist_test_y;
     std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
-    load_data(mnist_train_x, mnist_train_y, "mnist_train.csv", 512);
-    load_data(mnist_test_x, mnist_test_y, "mnist_test.csv", 256);
+    load_data(mnist_train_x, mnist_train_y, "mnist_train.csv");
+    load_data(mnist_test_x, mnist_test_y, "mnist_test.csv");
     std::cout << "Loaded " << mnist_train_x.shape[0] << " training samples and " << mnist_test_x.shape[0]
               << " testing samples" << std::endl;
     std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
@@ -89,13 +89,13 @@ int main() {
     // 2. A loss function
     // 3. An optimizer
     // Change the device to FJML::DEVICE_CUDA to use the GPU
-    FJML::MLP model({new FJML::Layers::Dense(28 * 28, 128, FJML::Activations::relu, FJML::DEVICE_CUDA),
-                     new FJML::Layers::Dense(128, 10, FJML::Activations::linear, FJML::DEVICE_CUDA),
+    FJML::MLP model({new FJML::Layers::Dense(28 * 28, 128, FJML::Activations::relu, FJML::DEVICE_CPU),
+                     new FJML::Layers::Dense(128, 10, FJML::Activations::linear, FJML::DEVICE_CPU),
                      new FJML::Layers::Softmax()},
                     FJML::Loss::crossentropy, new FJML::Optimizers::Adam());
 
     // Train the model
-    model.train(x_train, y_train, x_test, y_test, 1, 128, "mnist.fjml");
+    model.train(x_train, y_train, x_test, y_test, 6, 128, "mnist.fjml");
 
     // Evaluate the model
     std::cout << "Training accuracy: " << model.calc_accuracy(x_train, y_train) << std::endl;
