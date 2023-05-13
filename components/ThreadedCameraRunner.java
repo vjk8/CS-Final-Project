@@ -6,28 +6,35 @@ import java.util.Queue;
 import org.opencv.core.*;
 import org.opencv.videoio.VideoCapture;
 
-public class ThreadedCameraRunner {
+public class ThreadedCameraRunner
+{
 
-    private Queue<SingleFrame> toBeProcessed;
-    public CompositeFrame finishImage;
-    private CameraStarter starter;
-    private long startTime;
-    private Queue<String> mailbox;
-    private boolean paused;
-    private boolean terminated;
-    private VideoCapture cap;
+    public Queue<SingleFrame> toBeProcessed;
+    private volatile CompositeFrame     finishImage;
+    private CameraStarter     starter;
+    private long              startTime;
+    private Queue<String>     mailbox;
+    private volatile boolean  paused;
+    private volatile boolean  terminated;
+    private VideoCapture      cap;
 
-    public ThreadedCameraRunner(int soundThreshold) {
+    public ThreadedCameraRunner(int soundThreshold)
+    {
         starter = new CameraStarter(soundThreshold);
         basicConfig();
     }
 
-    public ThreadedCameraRunner() {
+
+    public ThreadedCameraRunner()
+    {
         starter = new CameraStarter();
         basicConfig();
     }
 
-    public void basicConfig() {
+
+    public void basicConfig()
+    {
+        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
         toBeProcessed = new LinkedList<SingleFrame>();
         finishImage = new CompositeFrame();
         mailbox = new LinkedList<String>();
@@ -37,56 +44,89 @@ public class ThreadedCameraRunner {
         cap.open(0);
     }
 
-    public void receiveMessage(String message) {
+
+    public void receiveMessage(String message)
+    {
         mailbox.add(message);
     }
 
-    public void execute() {
+    public CompositeFrame getCompositeFrame() {
+        return finishImage;
+    }
+
+
+    public void execute()
+    {
         startTime = starter.getStartTime();
 
         Thread captureThread = new Thread() {
             @Override
-            public void run() {
+            public void run()
+            {
                 Mat newFrame = new Mat();
-                while (!terminated) {
-                    while (!paused) {
-                        long sampleTime = System.currentTimeMillis();
-                        boolean isRead = cap.read(newFrame);
-                        if (isRead) toBeProcessed.add(new SingleFrame(newFrame, sampleTime, startTime));
-                    }
+                while (!terminated && !paused)
+                {
+                    long sampleTime = System.currentTimeMillis();
+                    if (terminated)
+                        break;
+                    boolean isRead = !terminated && !paused && cap.read(newFrame);
+                    if (isRead)
+                        toBeProcessed.add(new SingleFrame(newFrame, sampleTime, startTime));
                 }
+                Thread.currentThread().interrupt();
+                return;
             }
         };
 
         Thread processThread = new Thread() {
             @Override
-            public void run() {
-                while (!terminated) {
-                    if (!toBeProcessed.isEmpty()) finishImage.processFrame(toBeProcessed.remove());
+            public void run()
+            {
+                while (!terminated || !toBeProcessed.isEmpty())
+                {
+                    // System.out.println("process");
+                    if (!toBeProcessed.isEmpty())
+                        finishImage.processFrame(toBeProcessed.remove());
                 }
+                Thread.currentThread().interrupt();
+                return;
             }
         };
 
         Thread controlThread = new Thread() {
             @Override
-            public void run() {
-                while (!terminated) {
-                    if (!mailbox.isEmpty()) {
+            public void run()
+            {
+                while (!terminated)
+                {
+                    // System.out.println("control");
+                    if (!mailbox.isEmpty())
+                    {
                         String msg = mailbox.remove();
-                        if (msg.equals("RESUME")) {
+                        if (msg.equals("RESUME"))
+                        {
                             paused = false;
-                        } else if (msg.equals("PAUSE")) {
+                        }
+                        else if (msg.equals("PAUSE"))
+                        {
                             paused = true;
-                        } else if (msg.equals("STOP")) {
+                        }
+                        else if (msg.equals("STOP"))
+                        {
                             terminated = true;
+                            paused = true;
+                            captureThread.interrupt();
+                            cap.release();
                         }
                     }
                 }
+                Thread.currentThread().interrupt();
+                return;
             }
         };
 
+        controlThread.start();
         captureThread.start();
         processThread.start();
-        controlThread.start();
     }
 }

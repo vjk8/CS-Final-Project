@@ -1,5 +1,10 @@
 package tests;
 import components.*;
+import javax.swing.JFrame;
+import java.awt.FlowLayout;
+import java.awt.image.BufferedImage;
+import javax.swing.JLabel;
+import javax.swing.ImageIcon;
 
 public class CameraRunnerTester {
 
@@ -13,12 +18,28 @@ public class CameraRunnerTester {
         ThreadedCameraRunner tcr = new ThreadedCameraRunner(128);
         long executeStartTime = System.currentTimeMillis();
         tcr.execute();
-        while (System.currentTimeMillis() - executeStartTime <= 20000) {
-            // stall
+        while (System.currentTimeMillis() - executeStartTime <= 10000) {
+            if (tcr.getCompositeFrame().getImage() != null)
+                imshow(tcr.getCompositeFrame().getImage());
+            else System.out.println("finish image is null");
         }
         tcr.receiveMessage("STOP");
     }
+
+    private static void imshow(BufferedImage b) {
+        if (b == null) return;
+        long startTime = System.currentTimeMillis();
+        JFrame frame = new JFrame();
+        frame.getContentPane().setLayout(new FlowLayout());
+        frame.getContentPane().add(new JLabel(new ImageIcon(b)));
+        frame.pack();
+        frame.setVisible(true);
+        if (System.currentTimeMillis() - startTime >= 10000) {
+            frame.dispose();
+        }
+    }
     public static void main(String[] args) {
-        unthreadedTest();
+        threadedTest();
+        System.out.println("TERMINATED");
     }
 }
