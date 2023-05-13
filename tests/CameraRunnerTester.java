@@ -19,10 +19,7 @@ public class CameraRunnerTester {
         long executeStartTime = System.currentTimeMillis();
         tcr.execute();
         while (System.currentTimeMillis() - executeStartTime <= 20000) {
-            //BufferedImage b = tcr.getCompositeFrame().getImage();
-            //if (b != null)
-                //imshow(b);
-            //else System.out.println("finish image is null");
+            //stall
         }
         tcr.receiveMessage("STOP");
         imshow(tcr.getCompositeFrame().getImage());
