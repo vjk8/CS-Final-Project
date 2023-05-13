@@ -18,13 +18,14 @@ public class CameraRunnerTester {
         ThreadedCameraRunner tcr = new ThreadedCameraRunner(128);
         long executeStartTime = System.currentTimeMillis();
         tcr.execute();
-        while (System.currentTimeMillis() - executeStartTime <= 10000) {
-            BufferedImage b = tcr.getCompositeFrame().getImage();
-            if (b != null)
-                imshow(b);
-            else System.out.println("finish image is null");
+        while (System.currentTimeMillis() - executeStartTime <= 20000) {
+            //BufferedImage b = tcr.getCompositeFrame().getImage();
+            //if (b != null)
+                //imshow(b);
+            //else System.out.println("finish image is null");
         }
         tcr.receiveMessage("STOP");
+        imshow(tcr.getCompositeFrame().getImage());
     }
 
     private static void imshow(BufferedImage b) {
