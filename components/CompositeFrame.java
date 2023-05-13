@@ -59,11 +59,10 @@ public class CompositeFrame {
         byte[] b = new byte[bufferSize];
         try {
             m.get(0, 0, b); // get all the pixels
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return null;
         }
-        
+
         BufferedImage image = new BufferedImage(m.cols(), m.rows(), type);
         final byte[] targetPixels = ((DataBufferByte)image.getRaster().getDataBuffer()).getData();
         System.arraycopy(b, 0, targetPixels, 0, b.length);

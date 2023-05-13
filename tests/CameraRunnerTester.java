@@ -1,10 +1,10 @@
 package tests;
 import components.*;
-import javax.swing.JFrame;
 import java.awt.FlowLayout;
 import java.awt.image.BufferedImage;
-import javax.swing.JLabel;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 
 public class CameraRunnerTester {
 
@@ -21,7 +21,8 @@ public class CameraRunnerTester {
         while (System.currentTimeMillis() - executeStartTime <= 10000) {
             if (tcr.getCompositeFrame().getImage() != null)
                 imshow(tcr.getCompositeFrame().getImage());
-            else System.out.println("finish image is null");
+            else
+                System.out.println("finish image is null");
         }
         tcr.receiveMessage("STOP");
     }
