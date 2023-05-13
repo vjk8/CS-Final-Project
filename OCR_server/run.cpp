@@ -13,8 +13,10 @@ JNIEXPORT jint JNICALL Java_OCR_1server_AthleteOCR_getAthleteNumber(JNIEnv* env,
         std::cout << i << " " << image.data[i] << std::endl;
     }
     FJML::MLP model;
-    model.load("OCR_server/mnist.fjml");
-    model.summary();
-    FJML::Tensor result = model.run(image);
-    return static_cast<jint>(FJML::LinAlg::argmax(result));
+    // model.load("OCR_server/mnist.fjml");
+    // model.summary();
+	// std::cout << "Hi" << std::endl;
+    // FJML::Tensor result = model.run(image);
+    // return static_cast<jint>(FJML::LinAlg::argmax(result));
+    return 1;
 }
