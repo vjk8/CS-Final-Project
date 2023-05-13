@@ -22,7 +22,8 @@ public class CameraRunnerTester {
             BufferedImage b = tcr.getCompositeFrame().getImage();
             if (b != null)
                 imshow(b);
-            else System.out.println("finish image is null");
+            else
+                System.out.println("finish image is null");
         }
         tcr.receiveMessage("STOP");
     }
