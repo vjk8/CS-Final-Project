@@ -7,40 +7,78 @@ public class Athlete {
     private TimeFormat seed;
 
     public Athlete() {
-        // TODO complete no-args constructor
+        name = "*UNKNOWN*";
+        school = "*UNKNOWN*";
+        grade = 0;
+        PR = new TimeFormat();
+        seed = new TimeFormat();
     }
 
-    // TODO add extra constructors with logical subsets of field arguments
-    // TODO e.g. a constructor with just name, school, and grade, no PR, no
-    // seed, etc.
+    public Athlete(String name) {
+        this.name = name;
+        school = "*UNKNOWN*";
+        grade = 0;
+        PR = new TimeFormat();
+        seed = new TimeFormat();
+    }
 
-    public int hashCode() {
-        // TODO be creative with this one
-        return 0;
+    public Athlete(String name, String school) {
+        this.name = name;
+        this.school = school;
+        grade = 0;
+        PR = new TimeFormat();
+        seed = new TimeFormat();
+    }
+
+    public Athlete(String name, String school, int grade) {
+        this.name = name;
+        this.school = school;
+        this.grade = grade;
+        PR = new TimeFormat();
+        seed = new TimeFormat();
+    }
+
+    public Athlete(String name, String school, int grade, TimeFormat seed) {
+        this.name = name;
+        this.school = school;
+        this.grade = grade;
+        PR = new TimeFormat();
+        this.seed = seed;
+    }
+
+    public Athlete(String name, String school, int grade, TimeFormat seed, TimeFormat PR) {
+        this.name = name;
+        this.school = school;
+        this.grade = grade;
+        this.PR = PR;
+        this.seed = seed;
     }
 
     public String getName() {
-        // TODO complete getter
-        return null;
+        return name;
     }
 
     public String getSchool() {
-        // TODO complete getter
-        return null;
+        return school;
     }
 
     public int getGrade() {
-        // TODO complete getter
-        return 0;
+        return grade;
     }
 
     public TimeFormat getPR() {
-        // TODO complete getter
-        return null;
+        return PR;
     }
 
     public TimeFormat getSeed() {
-        // TODO complete getter
-        return null;
+        return seed;
+    }
+
+    public boolean isPR(TimeFormat performance) {
+        return (performance.compareTo(PR) < 0);
+    }
+
+    public int hashCode() {
+        return name.hashCode() + school.hashCode();
     }
 }

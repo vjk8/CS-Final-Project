@@ -46,10 +46,7 @@ public class TimeFormat implements Comparable {
 
     public int compareTo(Object other) {
         TimeFormat ot = (TimeFormat)other;
-        long thisTotal = getHours() * 3600000 + getMinutes() * 60000 + getSeconds() * 1000 + getMilliseconds() * 10;
-        long otherTotal =
-            ot.getHours() * 3600000 + ot.getMinutes() * 60000 + ot.getSeconds() * 1000 + ot.getMilliseconds() * 10;
-        return (int)(thisTotal - otherTotal);
+        return (intValue() - ot.intValue());
     }
 
     @Override
