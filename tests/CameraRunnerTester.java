@@ -19,7 +19,7 @@ public class CameraRunnerTester {
         long executeStartTime = System.currentTimeMillis();
         tcr.execute();
         while (System.currentTimeMillis() - executeStartTime <= 20000) {
-            System.out.println(new TimeFormat((int) (System.currentTimeMillis() - executeStartTime)));
+            System.out.println(new TimeFormat((int)(System.currentTimeMillis() - executeStartTime)));
             imshow(tcr.getCompositeFrame().getImage()); // error-prone line
         }
         tcr.receiveMessage("STOP");
