@@ -76,6 +76,6 @@ public class CompositeFrame {
     // for testing only
 
     public ArrayList<TimeFormat> getTimestampList() {
-        return (ArrayList<TimeFormat>) timestamps.clone();
+        return (ArrayList<TimeFormat>)timestamps.clone();
     }
 }
