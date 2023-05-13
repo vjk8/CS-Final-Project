@@ -11,8 +11,8 @@ import org.opencv.core.Rect;
 import org.opencv.imgcodecs.Imgcodecs;
 
 public class CompositeFrame {
-    private Mat composite;
-    private ArrayList<TimeFormat> timestamps;
+    private volatile Mat composite;
+    private volatile ArrayList<TimeFormat> timestamps;
 
     public CompositeFrame() {
         composite = null;
@@ -76,6 +76,6 @@ public class CompositeFrame {
     // for testing only
 
     public ArrayList<TimeFormat> getTimestampList() {
-        return timestamps;
+        return (ArrayList<TimeFormat>) timestamps.clone();
     }
 }

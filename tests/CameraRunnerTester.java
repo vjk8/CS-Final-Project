@@ -24,6 +24,7 @@ public class CameraRunnerTester {
         }
         tcr.receiveMessage("STOP");
         imshow(tcr.getCompositeFrame().getImage());
+        System.out.println(tcr.getCompositeFrame().getTimestampList());
     }
 
     private static void imshow(BufferedImage b) {
