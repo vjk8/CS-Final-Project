@@ -9,35 +9,31 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import org.opencv.core.Mat;
 
-public class LiveTimingGUI
-    extends JPanel
-{
+public class LiveTimingGUI extends JPanel {
 
-    private JButton              startB;
-    private JButton              stop;  
-    private JButton              pause;  
-    private JButton              resume;
-    private JFrame               frame;
+    private JButton startB;
+    private JButton stop;
+    private JButton pause;
+    private JButton resume;
+    private JFrame frame;
     private ThreadedCameraRunner camera;
-    private Thread               runner;
-    private boolean              terminated;
+    private Thread runner;
+    private boolean terminated;
 
     // start button stop button and run analysis button (create post timing gui
     // and call its run)
-    public LiveTimingGUI()
-    {
-        startB  = new JButton("Start");
-        stop  = new JButton("Stop");
-        pause  = new JButton("Pause");
-        resume  = new JButton("Resume");
-        frame    = new JFrame();
+    public LiveTimingGUI() {
+        startB = new JButton("Start");
+        stop = new JButton("Stop");
+        pause = new JButton("Pause");
+        resume = new JButton("Resume");
+        frame = new JFrame();
         frame.setSize(200, 200);
         camera = new ThreadedCameraRunner();
         terminated = false;
     }
 
-    public void refresh(BufferedImage b)
-    {
+    public void refresh(BufferedImage b) {
         frame.(new ImageIcon(b));
     }
 
@@ -50,23 +46,23 @@ public class LiveTimingGUI
         });
 
         stop.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e)
-            {
+            @Override
+            public void actionPerformed(ActionEvent e) {
                 camera.receiveMessage("STOP");
                 terminated = true;
             }
         });
 
         pause.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e)
-            {
+            @Override
+            public void actionPerformed(ActionEvent e) {
                 camera.receiveMessage("PAUSE");
             }
         });
 
         resume.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e)
-            {
+            @Override
+            public void actionPerformed(ActionEvent e) {
                 camera.receiveMessage("RESUME");
             }
         });
@@ -78,15 +74,11 @@ public class LiveTimingGUI
         frame.add(this);
         frame.setVisible(true);
 
-        while(!terminated)
-        {
-
+        while (!terminated) {
         }
     }
 
-
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
         LiveTimingGUI run = new LiveTimingGUI();
     }
 }

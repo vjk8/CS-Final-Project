@@ -3,9 +3,9 @@ package components;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.*;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import org.opencv.core.*;
-import javax.swing.JFrame;
 
 public class PostTimingGUI extends JPanel {
     private ArrayList<DraggableLine> finishes;

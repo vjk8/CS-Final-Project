@@ -1,13 +1,13 @@
 package tests;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import org.opencv.core.*;
-import java.io.File;
-import java.io.IOException;
 
 public class random_tests {
     // testing out millisecond timing
@@ -15,8 +15,7 @@ public class random_tests {
         BufferedImage b;
         try {
             b = ImageIO.read(new File("./photo.jpg"));
-        }
-        catch(IOException e) {
+        } catch (IOException e) {
             System.out.println(e.getStackTrace());
             return null;
         }
