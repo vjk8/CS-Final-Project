@@ -12,60 +12,51 @@ public class CameraRunner {
     private static Queue<SingleFrame> toBeProcessed;
     private static CompositeFrame finishImage;
 
-    public CameraRunner()
-    {
+    public CameraRunner() {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
         toBeProcessed = new LinkedList<SingleFrame>();
         finishImage = new CompositeFrame();
     }
 
-    public static void run()
-    {
+    public static void run() {
         VideoCapture cap = new VideoCapture();
         cap.open(0);
         Mat newFrame = new Mat();
-        CameraStarter cs = new CameraStarter(128);
+        CameraStarter cs = new CameraStarter(200);
         long startTime = cs.getStartTime();
-        while (System.currentTimeMillis() - startTime < 10000) {
+        while (System.currentTimeMillis() - startTime < 20000) {
             newFrame = new Mat();
             cap.read(newFrame);
             long capTime = System.currentTimeMillis();
             // toBeProcessed.add(new SingleFrame(newFrame, capTime, startTime));
-            finishImage.processFrame(
-                new SingleFrame(newFrame, capTime, startTime));
+            finishImage.processFrame(new SingleFrame(newFrame, capTime, startTime));
             imshow(finishImage.getMat());
         }
     }
 
-    public void receiveMessage()
-    {
+    public void receiveMessage() {
         // TODO complete method
     }
 
-    public CompositeFrame getCompositeFrame()
-    {
+    public CompositeFrame getCompositeFrame() {
         return finishImage;
     }
 
-    public BufferedImage getBufferedImage()
-    {
+    public BufferedImage getBufferedImage() {
         return finishImage.getImage();
     }
 
-    public Mat pause()
-    {
+    public Mat pause() {
         return null;
     }
 
     // for testing only
 
-    private static void imshow(Mat m)
-    {
+    private static void imshow(Mat m) {
         long startTime = System.currentTimeMillis();
         JFrame frame = new JFrame();
         frame.getContentPane().setLayout(new FlowLayout());
-        frame.getContentPane().add(
-            new JLabel(new ImageIcon(matToBufferedImage(m))));
+        frame.getContentPane().add(new JLabel(new ImageIcon(matToBufferedImage(m))));
         frame.pack();
         frame.setVisible(true);
         if (System.currentTimeMillis() - startTime >= 100) {
@@ -73,8 +64,7 @@ public class CameraRunner {
         }
     }
 
-    private static BufferedImage matToBufferedImage(Mat m)
-    {
+    private static BufferedImage matToBufferedImage(Mat m) {
         int type = BufferedImage.TYPE_BYTE_GRAY;
         if (m.channels() > 1) {
             type = BufferedImage.TYPE_3BYTE_BGR;
@@ -83,8 +73,7 @@ public class CameraRunner {
         byte[] b = new byte[bufferSize];
         m.get(0, 0, b); // get all the pixels
         BufferedImage image = new BufferedImage(m.cols(), m.rows(), type);
-        final byte[] targetPixels =
-            ((DataBufferByte)image.getRaster().getDataBuffer()).getData();
+        final byte[] targetPixels = ((DataBufferByte)image.getRaster().getDataBuffer()).getData();
         System.arraycopy(b, 0, targetPixels, 0, b.length);
         return image;
     }

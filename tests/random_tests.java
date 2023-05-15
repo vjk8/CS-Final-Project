@@ -1,8 +1,7 @@
 package tests;
 public class random_tests {
     // testing out millisecond timing
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
         long start = System.currentTimeMillis();
         System.out.println("START: " + start);
         int junk = 0;

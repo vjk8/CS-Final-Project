@@ -18,8 +18,7 @@ public class PostTimingGUI extends JPanel {
         processor = new OutputProcessor(finishes);
     }
 
-    private ArrayList<DraggableLine> getOCR()
-    {
+    private ArrayList<DraggableLine> getOCR() {
         // TODO don't worry about this one right now
         // each draggable line gets the ocr, every time the draggable line is moved
         for (DraggableLine d: finishes)
@@ -29,8 +28,7 @@ public class PostTimingGUI extends JPanel {
         return null;
     }
 
-    public void run()
-    {
+    public void run() {
         // TODO GUI code, treat like a main method
         JFrame frame = new JFrame();
         frame.setSize(200, 200);

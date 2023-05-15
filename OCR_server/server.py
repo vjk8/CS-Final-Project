@@ -26,5 +26,5 @@ async def run_ocr(image: fastapi.UploadFile):
     bright = PIL.ImageEnhance.Brightness(recolor).enhance(2.0)
     contrast = PIL.ImageEnhance.Contrast(bright).enhance(2.0)
     contrast.save(f'test_{image.filename}')
-    text = pytesseract.image_to_string(contrast)
+    text = pytesseract.image_to_string(contrast, config='-c tessedit_char_whitelist=0123456789 --psm 10 ')
     return {'text': str(text)}

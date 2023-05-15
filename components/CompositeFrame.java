@@ -11,64 +11,71 @@ import org.opencv.core.Rect;
 import org.opencv.imgcodecs.Imgcodecs;
 
 public class CompositeFrame {
-    private Mat composite;
-    private ArrayList<TimeFormat> timestamps;
+    private volatile Mat composite;
+    private volatile ArrayList<TimeFormat> timestamps;
 
-    public CompositeFrame()
-    {
+    public CompositeFrame() {
         composite = null;
         timestamps = new ArrayList<TimeFormat>();
         Imgcodecs imagecodecs = new Imgcodecs();
     }
 
-    public void processFrame(SingleFrame s)
-    {
-        timestamps.add(s.getTime());
+    public void processFrame(SingleFrame s) {
         Rect cropRect = new Rect(0, 0, 1, s.getMat().rows());
         Mat slice = s.getMat().submat(cropRect);
-        if (composite == null) {
-            composite = slice;
-        }
-        else {
-            List<Mat> toBeCombined = Arrays.asList(composite, slice);
-            Core.hconcat(toBeCombined, composite);
+        for (int hReps = 0; hReps < 5; hReps++) {
+            timestamps.add(s.getTime());
+
+            if (composite == null) {
+                composite = slice;
+            } else {
+                List<Mat> toBeCombined = Arrays.asList(slice, composite);
+                Core.hconcat(toBeCombined, composite);
+            }
         }
     }
 
-    public TimeFormat getTimeAtPixel(int pixelIndex)
-    {
+    public TimeFormat getTimeAtPixel(int pixelIndex) {
         if (pixelIndex < timestamps.size()) return timestamps.get(pixelIndex);
         return null;
     }
 
-    public void addPause()
-    {
+    public void addPause() {
         // TODO complete method
     }
 
-    public Mat getMat()
-    {
+    public Mat getMat() {
         return composite;
     }
 
-    public BufferedImage getImage()
-    {
+    public BufferedImage getImage() {
         return matToBufferedImage(composite);
     }
 
-    private static BufferedImage matToBufferedImage(Mat m)
-    {
-        int type = BufferedImage.TYPE_BYTE_GRAY;
-        if (m.channels() > 1) {
-            type = BufferedImage.TYPE_3BYTE_BGR;
+    private static BufferedImage matToBufferedImage(Mat mat) {
+        if (mat == null) return null;
+        Mat m;
+        try {
+            m = mat.clone();
+        } catch (CvException cvEx) {
+            return null;
         }
+
+        int type = BufferedImage.TYPE_3BYTE_BGR;
         int bufferSize = m.channels() * m.cols() * m.rows();
         byte[] b = new byte[bufferSize];
         m.get(0, 0, b); // get all the pixels
+
+        if (m.cols() == 0 || m.rows() == 0) return null;
         BufferedImage image = new BufferedImage(m.cols(), m.rows(), type);
-        final byte[] targetPixels =
-            ((DataBufferByte)image.getRaster().getDataBuffer()).getData();
+        final byte[] targetPixels = ((DataBufferByte)image.getRaster().getDataBuffer()).getData();
         System.arraycopy(b, 0, targetPixels, 0, b.length);
         return image;
+    }
+
+    // for testing only
+
+    public ArrayList<TimeFormat> getTimestampList() {
+        return (ArrayList<TimeFormat>)timestamps.clone();
     }
 }

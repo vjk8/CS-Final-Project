@@ -1,4 +1,5 @@
 opencv_java470.dll
+libopencv_java470.so
 opencv-470.jar
 hamcrest-core-1.3.jar
 junit-4.13.2.jar
@@ -9,3 +10,12 @@ archive/
 OCR_server/venv/
 
 __pycache__/
+
+*.class
+
+*.csv
+
+train
+
+*.o
+*.so

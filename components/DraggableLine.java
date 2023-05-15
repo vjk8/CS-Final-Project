@@ -11,30 +11,26 @@ public class DraggableLine implements Comparable, MouseListener {
     private int xPos;
     private boolean dragged = false;
 
-    public DraggableLine()
-    {
+    public DraggableLine() {
         // TODO complete no-args constructor
         hipNumberLabel = "...";
         xPos = -1;
         timestamp = new TimeFormat();
     }
 
-    public DraggableLine(TimeFormat t, String h, int x)
-    {
+    public DraggableLine(TimeFormat t, String h, int x) {
         // TODO complete constructor
         timestamp = t;
         hipNumberLabel = h;
         xPos = x;
     }
 
-    public void setColor()
-    {
+    public void setColor() {
         // TODO complete method
         color = Color.red;
     }
 
-    public void updateTimestamp()
-    {
+    public void updateTimestamp() {
         // TODO complete method
         CompositeFrame c = new CompositeFrame();
         timestamp = c.getTimeAtPixel(xPos);
@@ -48,7 +44,7 @@ public class DraggableLine implements Comparable, MouseListener {
     public int compareTo(Object other)
     {
         // TODO complete comparator
-        
+
         return timestamp.compareTo(other);
     }
 
@@ -60,43 +56,34 @@ public class DraggableLine implements Comparable, MouseListener {
     }
 
     @Override
-    public void mouseClicked(java.awt.event.MouseEvent e)
-    {
+    public void mouseClicked(java.awt.event.MouseEvent e) {
         // TODO Auto-generated method stub
-        
     }
 
     @Override
     // get new x position
-    public void mousePressed(java.awt.event.MouseEvent e)
-    {
+    public void mousePressed(java.awt.event.MouseEvent e) {
         // TODO Auto-generated method stub
         xPos = e.getX();
-        
     }
 
     @Override
     // translate the point by adding the x position, y value does not change
-    public void mouseReleased(java.awt.event.MouseEvent e)
-    {
+    public void mouseReleased(java.awt.event.MouseEvent e) {
         // TODO Auto-generated method stub
         e.translatePoint(xPos, 0);
-        
     }
 
     @Override
-    public void mouseEntered(java.awt.event.MouseEvent e)
-    {
+    public void mouseEntered(java.awt.event.MouseEvent e) {
         // TODO Auto-generated method stub
         dragged = true;
         
     }
 
     @Override
-    public void mouseExited(java.awt.event.MouseEvent e)
-    {
+    public void mouseExited(java.awt.event.MouseEvent e) {
         // TODO Auto-generated method stub
-        
     }
 
         /*
