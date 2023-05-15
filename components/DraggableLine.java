@@ -36,21 +36,17 @@ public class DraggableLine implements Comparable, MouseListener {
         timestamp = c.getTimeAtPixel(xPos);
     }
 
-    public boolean isDragged()
-    {
+    public boolean isDragged() {
         return dragged;
     }
 
-    public int compareTo(Object other)
-    {
+    public int compareTo(Object other) {
         // TODO complete comparator
 
         return timestamp.compareTo(other);
     }
 
-
-    public void paintComponent(Graphics g) 
-    {
+    public void paintComponent(Graphics g) {
         g.setColor(color);
         g.drawLine(xPos, 0, xPos, 200);
     }
@@ -78,7 +74,6 @@ public class DraggableLine implements Comparable, MouseListener {
     public void mouseEntered(java.awt.event.MouseEvent e) {
         // TODO Auto-generated method stub
         dragged = true;
-        
     }
 
     @Override
@@ -86,40 +81,40 @@ public class DraggableLine implements Comparable, MouseListener {
         // TODO Auto-generated method stub
     }
 
-        /*
+    /*
 
-    Point curr;
-    Point prev;
-     * public TApp()
+Point curr;
+Point prev;
+ * public TApp()
+{
+    curr = new Point(0,0);
+    ClickListener clickListener = new ClickListener();
+    this.addMouseListener(clickListener);
+    DragListener dragListener = new DragListener();
+    this.addMouseMotionListener(dragListener);
+}
+
+public void paintComponent(Graphics g)
+{
+    super.paintComponent(g);
+    g.drawLine((int)curr.getX(), 0, (int)curr.getX(), 200);
+}
+private class ClickListener extends MouseAdapter{
+    public void mousePressed(MouseEvent e){
+        prev = new Point(e.getScreenX(), e.getScreenY());
+    }
+}
+
+private class DragListener extends MouseMotionAdapter{
+    public void mouseDragged(MouseEvent e)
     {
-        curr = new Point(0,0);
-        ClickListener clickListener = new ClickListener();
-        this.addMouseListener(clickListener);
-        DragListener dragListener = new DragListener();
-        this.addMouseMotionListener(dragListener);
-    }
+        Point current = new Point(e.getScreenX(), e.getScreenY());
 
-    public void paintComponent(Graphics g)
-    {
-        super.paintComponent(g);
-        g.drawLine((int)curr.getX(), 0, (int)curr.getX(), 200);
-    }
-    private class ClickListener extends MouseAdapter{
-        public void mousePressed(MouseEvent e){
-            prev = new Point(e.getScreenX(), e.getScreenY());
-        }
-    }
+        curr.translate((int)(current.getX() - prev.getX()), (int)(current.getY() - prev.getY()));
 
-    private class DragListener extends MouseMotionAdapter{
-        public void mouseDragged(MouseEvent e)
-        {
-            Point current = new Point(e.getScreenX(), e.getScreenY());
-
-            curr.translate((int)(current.getX() - prev.getX()), (int)(current.getY() - prev.getY()));
-
-            prev = current;
-            repaint();
-        }
+        prev = current;
+        repaint();
     }
-     */
+}
+ */
 }
