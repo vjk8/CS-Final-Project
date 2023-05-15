@@ -54,4 +54,9 @@ public class LiveTimingGUI extends JPanel {
         frame.add(this);
         frame.setVisible(true);
     }
+
+    public static void main(String[] args)
+    {
+        LiveTimingGUI run = new LiveTimingGUI();
+    }
 }
