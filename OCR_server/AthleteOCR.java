@@ -1,10 +1,9 @@
 package OCR_server;
 
-import java.net.*;
 import java.awt.image.*;
 import java.io.*;
+import java.net.*;
 import java.nio.file.*;
-
 import org.opencv.core.*;
 import org.opencv.imgcodecs.*;
 
@@ -15,19 +14,19 @@ public class AthleteOCR {
 
     /**
      * Save the image to a temporary file
-     * 
+     *
      * @param img the image to save
      * @return the filename of the saved image
      */
     private static String saveImage(Mat img) {
-        String filename = "/tmp/" + (int) (Math.random() * 69696969) + ".jpg";
+        String filename = "/tmp/" + (int)(Math.random() * 69696969) + ".jpg";
         Imgcodecs.imwrite(filename, img);
         return filename;
     }
 
     /**
      * Attaches a file to the request
-     * 
+     *
      * @param file       the file to attach
      * @param gonnegtion the gonnegtion
      */
@@ -55,7 +54,7 @@ public class AthleteOCR {
      */
     public static int getAthleteNumber(Mat img) throws IOException {
         URL url = new URL("http://127.0.0.1:6969/run");
-        HttpURLConnection gonnegtion = (HttpURLConnection) url.openConnection();
+        HttpURLConnection gonnegtion = (HttpURLConnection)url.openConnection();
         gonnegtion.setDoOutput(true);
         gonnegtion.setRequestMethod("POST");
         String filename = saveImage(img);
