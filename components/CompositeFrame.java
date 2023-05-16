@@ -11,8 +11,8 @@ import org.opencv.core.Rect;
 import org.opencv.imgcodecs.Imgcodecs;
 
 public class CompositeFrame {
-    private Mat composite;
-    private ArrayList<TimeFormat> timestamps;
+    private volatile Mat composite;
+    private volatile ArrayList<TimeFormat> timestamps;
 
     public CompositeFrame() {
         composite = null;
@@ -52,17 +52,21 @@ public class CompositeFrame {
         return matToBufferedImage(composite);
     }
 
-    private static BufferedImage matToBufferedImage(Mat m) {
-        if (m == null) return null;
-        int type = BufferedImage.TYPE_3BYTE_BGR;
-        int bufferSize = m.channels() * m.cols() * m.rows();
-        byte[] b = new byte[bufferSize];
+    private static BufferedImage matToBufferedImage(Mat mat) {
+        if (mat == null) return null;
+        Mat m;
         try {
-            m.get(0, 0, b); // get all the pixels
-        } catch (Exception e) {
+            m = mat.clone();
+        } catch (CvException cvEx) {
             return null;
         }
 
+        int type = BufferedImage.TYPE_3BYTE_BGR;
+        int bufferSize = m.channels() * m.cols() * m.rows();
+        byte[] b = new byte[bufferSize];
+        m.get(0, 0, b); // get all the pixels
+
+        if (m.cols() == 0 || m.rows() == 0) return null;
         BufferedImage image = new BufferedImage(m.cols(), m.rows(), type);
         final byte[] targetPixels = ((DataBufferByte)image.getRaster().getDataBuffer()).getData();
         System.arraycopy(b, 0, targetPixels, 0, b.length);
@@ -72,6 +76,6 @@ public class CompositeFrame {
     // for testing only
 
     public ArrayList<TimeFormat> getTimestampList() {
-        return timestamps;
+        return (ArrayList<TimeFormat>)timestamps.clone();
     }
 }

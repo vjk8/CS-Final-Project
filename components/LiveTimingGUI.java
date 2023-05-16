@@ -1,6 +1,9 @@
 package components;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -8,49 +11,74 @@ import org.opencv.core.Mat;
 
 public class LiveTimingGUI extends JPanel {
 
-    JButton startB = new JButton("Start");
-    JButton stop = new JButton("Stop");
-    JButton analysis = new JButton("Run Analysis");
-    PostTimingGUI pTG;
-    CameraRunner camera;
-    Thread runner;
-    Mat image;
+    private JButton startB;
+    private JButton stop;
+    private JButton pause;
+    private JButton resume;
+    private JFrame frame;
+    private ThreadedCameraRunner camera;
+    private Thread runner;
+    private boolean terminated;
+
     // start button stop button and run analysis button (create post timing gui
     // and call its run)
     public LiveTimingGUI() {
-        JFrame frame = new JFrame();
+        startB = new JButton("Start");
+        stop = new JButton("Stop");
+        pause = new JButton("Pause");
+        resume = new JButton("Resume");
+        frame = new JFrame();
         frame.setSize(200, 200);
-        camera = new CameraRunner();
+        camera = new ThreadedCameraRunner();
+        terminated = false;
+    }
 
+    public void refresh(BufferedImage b) {
+        frame.(new ImageIcon(b));
+    }
+
+    public void run() {
         startB.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                runner = new Thread(camera);
-                runner.start();
+                camera.execute();
             }
         });
 
-        /*stop.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e)
-            {
-                image = runner.pause();
+        stop.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                camera.receiveMessage("STOP");
+                terminated = true;
             }
         });
 
-        analysis.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e)
-            {
-                pTG = new PostTimingGUI(image);
+        pause.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                camera.receiveMessage("PAUSE");
             }
-        });*/
+        });
 
-        // Had to comment out the above to make code compile for JUnit Tests
-        // nothing wrong with thought process / implementation
+        resume.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                camera.receiveMessage("RESUME");
+            }
+        });
 
         add(startB);
         add(stop);
-        add(analysis);
+        add(pause);
+        add(resume);
         frame.add(this);
         frame.setVisible(true);
+
+        while (!terminated) {
+        }
+    }
+
+    public static void main(String[] args) {
+        LiveTimingGUI run = new LiveTimingGUI();
     }
 }

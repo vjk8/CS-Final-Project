@@ -1,18 +1,31 @@
 package tests;
+
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import org.opencv.core.*;
+
 public class random_tests {
     // testing out millisecond timing
-    public static void main(String[] args) {
-        long start = System.currentTimeMillis();
-        System.out.println("START: " + start);
-        int junk = 0;
-        for (int i = 0; i < Integer.MAX_VALUE; i++) {
-            if (i % 2 == 0)
-                junk++;
-            else
-                junk--;
+    public static BufferedImage getImage() {
+        BufferedImage b;
+        try {
+            b = ImageIO.read(new File("./photo.jpg"));
+        } catch (IOException e) {
+            System.out.println(e.getStackTrace());
+            return null;
         }
-        long finish = System.currentTimeMillis();
-        System.out.println("FINISH: " + finish);
-        System.out.println(finish - start);
+        return b;
+    }
+    public static void main(String[] args) {
+        JFrame frame = new JFrame();
+        frame.setSize(200, 200);
+        JLabel label = new JLabel();
+        label.setIcon(new ImageIcon(getImage()));
+        frame.setVisible(true);
     }
 }
