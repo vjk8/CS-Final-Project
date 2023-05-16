@@ -5,10 +5,11 @@ import java.util.LinkedList;
 import java.util.Queue;
 import org.opencv.core.*;
 import org.opencv.videoio.VideoCapture;
+import java.util.ArrayList;
 
 public class ThreadedCameraRunner {
 
-    public Queue<SingleFrame> toBeProcessed;
+    public volatile Queue<SingleFrame> toBeProcessed;
     private volatile CompositeFrame finishImage;
     private CameraStarter starter;
     private long startTime;
@@ -16,6 +17,8 @@ public class ThreadedCameraRunner {
     private volatile boolean paused;
     private volatile boolean terminated;
     private VideoCapture cap;
+    private VideoCapture OCRcap;
+    private volatile ArrayList<SingleFrame> OCRstream;
 
     public ThreadedCameraRunner(int soundThreshold) {
         starter = new CameraStarter(soundThreshold);
@@ -36,6 +39,8 @@ public class ThreadedCameraRunner {
         terminated = false;
         cap = new VideoCapture();
         cap.open(0);
+        //OCRcap = new VideoCapture();
+        //OCRcap.open(0);
     }
 
     public void receiveMessage(String message) {
@@ -58,6 +63,8 @@ public class ThreadedCameraRunner {
                     if (terminated) break;
                     boolean isRead = !terminated && !paused && cap.read(newFrame);
                     if (isRead) toBeProcessed.add(new SingleFrame(newFrame, sampleTime, startTime));
+                    //isRead = !terminated && !paused && OCRcap.read(newFrame);
+                    //if (isRead) OCRstream.add(new SingleFrame(newFrame, sampleTime, startTime));
                 }
                 Thread.currentThread().interrupt();
                 return;
