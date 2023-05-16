@@ -1,11 +1,11 @@
 package components;
 
 import java.lang.Thread;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 import org.opencv.core.*;
 import org.opencv.videoio.VideoCapture;
-import java.util.ArrayList;
 
 public class ThreadedCameraRunner {
 
@@ -39,8 +39,8 @@ public class ThreadedCameraRunner {
         terminated = false;
         cap = new VideoCapture();
         cap.open(0);
-        //OCRcap = new VideoCapture();
-        //OCRcap.open(0);
+        // OCRcap = new VideoCapture();
+        // OCRcap.open(0);
     }
 
     public void receiveMessage(String message) {
@@ -63,8 +63,8 @@ public class ThreadedCameraRunner {
                     if (terminated) break;
                     boolean isRead = !terminated && !paused && cap.read(newFrame);
                     if (isRead) toBeProcessed.add(new SingleFrame(newFrame, sampleTime, startTime));
-                    //isRead = !terminated && !paused && OCRcap.read(newFrame);
-                    //if (isRead) OCRstream.add(new SingleFrame(newFrame, sampleTime, startTime));
+                    // isRead = !terminated && !paused && OCRcap.read(newFrame);
+                    // if (isRead) OCRstream.add(new SingleFrame(newFrame, sampleTime, startTime));
                 }
                 Thread.currentThread().interrupt();
                 return;
