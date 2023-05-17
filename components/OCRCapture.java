@@ -5,6 +5,8 @@ import java.util.LinkedList;
 import org.opencv.videoio.VideoCapture;
 import org.opencv.core.Mat;
 import java.util.Queue;
+import org.opencv.core.Mat;
+import org.opencv.videoio.VideoCapture;
 
 public class OCRCapture {
     private volatile ArrayList<SingleFrame> OCRstream;
@@ -90,6 +92,4 @@ public class OCRCapture {
         mailbox.add(message);
         System.out.println("RECEIVED MESSAGE " + message);
     }
-
-
 }
