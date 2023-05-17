@@ -17,8 +17,7 @@ public class ThreadedCameraRunner {
     private volatile boolean paused;
     private volatile boolean terminated;
     private VideoCapture cap;
-    private VideoCapture OCRcap;
-    private volatile ArrayList<SingleFrame> OCRstream;
+    private OCRCapture ocrc;
 
     public ThreadedCameraRunner(int soundThreshold) {
         starter = new CameraStarter(soundThreshold);
@@ -38,13 +37,13 @@ public class ThreadedCameraRunner {
         paused = false;
         terminated = false;
         cap = new VideoCapture();
-        cap.open(0);
-        // OCRcap = new VideoCapture();
-        // OCRcap.open(0);
+        cap.open(1);
+        ocrc = new OCRCapture();
     }
 
     public void receiveMessage(String message) {
         mailbox.add(message);
+        ocrc.receiveMessage(message);
     }
 
     public CompositeFrame getCompositeFrame() {
@@ -53,6 +52,8 @@ public class ThreadedCameraRunner {
 
     public void execute() {
         startTime = starter.getStartTime();
+
+        ocrc.setStartTime(startTime);
 
         Thread captureThread = new Thread() {
             @Override
@@ -63,8 +64,6 @@ public class ThreadedCameraRunner {
                     if (terminated) break;
                     boolean isRead = !terminated && !paused && cap.read(newFrame);
                     if (isRead) toBeProcessed.add(new SingleFrame(newFrame, sampleTime, startTime));
-                    // isRead = !terminated && !paused && OCRcap.read(newFrame);
-                    // if (isRead) OCRstream.add(new SingleFrame(newFrame, sampleTime, startTime));
                 }
                 Thread.currentThread().interrupt();
                 return;
@@ -110,5 +109,6 @@ public class ThreadedCameraRunner {
         controlThread.start();
         captureThread.start();
         processThread.start();
+        ocrc.execute();
     }
 }
