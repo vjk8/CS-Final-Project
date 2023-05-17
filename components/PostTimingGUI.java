@@ -11,11 +11,13 @@ import org.opencv.core.*;
 public class PostTimingGUI extends JFrame {
     private ArrayList<DraggableLine> finishes;
     private static CompositeFrame finishImage;
+    private ArrayList<SingleFrame> OCRstream;
     private OutputProcessor processor;
     private int xPos = 10;
 
-    public PostTimingGUI(CompositeFrame image) {
+    public PostTimingGUI(CompositeFrame image, ArrayList<SingleFrame> ocr) {
         // TODO complete constructor
+        OCRstream = ocr;
         finishes = new ArrayList<DraggableLine>();
         finishes.add(new DraggableLine(new TimeFormat(), "a", 100));
         addMouseListener(new MouseListener() {
@@ -68,7 +70,7 @@ public class PostTimingGUI extends JFrame {
     public void removeLine(int x, int y) {
     }
 
-    private ArrayList<DraggableLine> getOCR() {
+    private int getOCR(int xPos) {
         // TODO don't worry about this one right now
         // each draggable line gets the ocr, every time the draggable line is moved
         return null;
