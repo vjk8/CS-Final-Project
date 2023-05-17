@@ -1,6 +1,7 @@
 package components;
 
 import java.lang.Thread;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 import org.opencv.core.*;
@@ -8,7 +9,7 @@ import org.opencv.videoio.VideoCapture;
 
 public class ThreadedCameraRunner {
 
-    public Queue<SingleFrame> toBeProcessed;
+    public volatile Queue<SingleFrame> toBeProcessed;
     private volatile CompositeFrame finishImage;
     private CameraStarter starter;
     private long startTime;
@@ -16,9 +17,11 @@ public class ThreadedCameraRunner {
     private volatile boolean paused;
     private volatile boolean terminated;
     private VideoCapture cap;
+    private OCRCapture ocrc;
 
     public ThreadedCameraRunner(int soundThreshold) {
         starter = new CameraStarter(soundThreshold);
+        System.out.println("Sound Threshold: " + soundThreshold);
         basicConfig();
     }
 
@@ -35,11 +38,13 @@ public class ThreadedCameraRunner {
         paused = false;
         terminated = false;
         cap = new VideoCapture();
-        cap.open(0);
+        cap.open(1);
+        ocrc = new OCRCapture();
     }
 
     public void receiveMessage(String message) {
         mailbox.add(message);
+        ocrc.receiveMessage(message);
     }
 
     public CompositeFrame getCompositeFrame() {
@@ -48,6 +53,8 @@ public class ThreadedCameraRunner {
 
     public void execute() {
         startTime = starter.getStartTime();
+
+        ocrc.setStartTime(startTime);
 
         Thread captureThread = new Thread() {
             @Override
@@ -103,5 +110,10 @@ public class ThreadedCameraRunner {
         controlThread.start();
         captureThread.start();
         processThread.start();
+        ocrc.execute();
+    }
+
+    public ArrayList<SingleFrame> getOCRStream() {
+        return ocrc.getOCRStream();
     }
 }

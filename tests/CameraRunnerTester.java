@@ -1,4 +1,6 @@
 package tests;
+
+import archive.CameraRunner;
 import components.*;
 import java.awt.FlowLayout;
 import java.awt.image.BufferedImage;
@@ -15,7 +17,7 @@ public class CameraRunnerTester {
     }
 
     public static void threadedTest() {
-        ThreadedCameraRunner tcr = new ThreadedCameraRunner(128);
+        ThreadedCameraRunner tcr = new ThreadedCameraRunner(50);
         long executeStartTime = System.currentTimeMillis();
         tcr.execute();
         while (System.currentTimeMillis() - executeStartTime <= 20000) {
@@ -25,6 +27,7 @@ public class CameraRunnerTester {
         tcr.receiveMessage("STOP");
         imshow(tcr.getCompositeFrame().getImage());
         System.out.println(tcr.getCompositeFrame().getTimestampList());
+        imshow(tcr.getOCRStream().get(0).getBufferedImage());
     }
 
     private static void imshow(BufferedImage b) {
@@ -39,6 +42,7 @@ public class CameraRunnerTester {
             frame.dispose();
         }
     }
+
     public static void main(String[] args) {
         threadedTest();
         System.out.println("TERMINATED");

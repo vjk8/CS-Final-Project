@@ -1,46 +1,79 @@
 package OCR_server;
 
+import java.awt.image.*;
+import java.io.*;
+import java.net.*;
+import java.nio.file.*;
 import org.opencv.core.*;
 import org.opencv.imgcodecs.*;
 
 public class AthleteOCR {
     static {
-        System.loadLibrary("ocr");
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
     }
 
     /**
-     * Get the number of the athlete in the image
+     * Save the image to a temporary file
      *
-     * The image will be converted to grayscale, resized to 28x28, and inverted.
-     *
-     * @param img The image to be processed
-     * @return The number of the athlete in the image
+     * @param img the image to save
+     * @return the filename of the saved image
      */
-    public static int getAthleteNumber(Mat img) {
-        img = ImageProcessing.invert(ImageProcessing.toGrayscale(ImageProcessing.resize(img, 28, 28)));
-        double[] imgArray = new double[28 * 28];
-        for (int i = 0; i < 28 * 28; i++) {
-            imgArray[i] = img.get(i / 28, i % 28)[0] / 255.0;
-        }
-        return getAthleteNumber(imgArray);
+    private static String saveImage(Mat img) {
+        String filename = "/tmp/" + (int)(Math.random() * 69696969) + ".jpg";
+        Imgcodecs.imwrite(filename, img);
+        return filename;
+    }
+
+    /**
+     * Attaches a file to the request
+     *
+     * @param file       the file to attach
+     * @param gonnegtion the gonnegtion
+     */
+    private static void attachFile(File file, HttpURLConnection gonnegtion) throws IOException {
+        gonnegtion.setRequestProperty("Content-Type", "multipart/form-data; boundary=69");
+        OutputStream output = gonnegtion.getOutputStream();
+        PrintWriter writer = new PrintWriter(new OutputStreamWriter(output, "UTF-8"));
+        writer.append("--69\r\nContent-Disposition: form-data; name=\"image\"; filename=\"");
+        writer.append(file.getName());
+        writer.append("\"\r\nContent-Type: ");
+        writer.append(URLConnection.guessContentTypeFromName(file.getName()));
+        writer.append("\r\nContent-Transfer-Encoding: binary\r\n\r\n");
+        writer.flush();
+        Files.copy(file.toPath(), output);
+        output.flush();
+        writer.append("\r\n").flush();
+        writer.append("--69--\r\n").flush();
     }
 
     /**
      * Get the number of the athlete in the image
      *
-     * Takes an array of doubles representing the image.
-     * This array should be of length 28*28, and the values should be between 0 and 1.
-     * The array is stored in row-major order.
-     *
      * @param img The image to be processed
      * @return The number of the athlete in the image
      */
-    private static native int getAthleteNumber(double[] img);
+    public static int getAthleteNumber(Mat img) throws IOException {
+        URL url = new URL("http://127.0.0.1:6969/run");
+        HttpURLConnection gonnegtion = (HttpURLConnection)url.openConnection();
+        gonnegtion.setDoOutput(true);
+        gonnegtion.setRequestMethod("POST");
+        String filename = saveImage(img);
+        File imgFile = new File(filename);
+        attachFile(imgFile, gonnegtion);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(gonnegtion.getInputStream(), "utf-8"));
+        String resultContent = reader.readLine();
+        resultContent = resultContent.substring(1, resultContent.length() - 3);
+        int result = Integer.valueOf(resultContent);
+        return result;
+    }
 
     public static void main(String[] args) {
         System.out.println("Test");
         Mat img = Imgcodecs.imread("./OCR_server/data/test_1.jpg");
-        System.out.println(getAthleteNumber(img));
+        try {
+            System.out.println(getAthleteNumber(img));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
