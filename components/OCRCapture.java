@@ -1,15 +1,16 @@
 package components;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import org.opencv.videoio.VideoCapture;
 import org.opencv.core.Mat;
 import java.util.Queue;
 
 public class OCRCapture {
-    private ArrayList<SingleFrame> OCRstream;
+    private volatile ArrayList<SingleFrame> OCRstream;
     private long start;
-    private boolean terminated;
-    private boolean paused;
+    private volatile boolean terminated;
+    private volatile boolean paused;
     private VideoCapture cap;
     private Queue<String> mailbox;
 
@@ -17,12 +18,14 @@ public class OCRCapture {
         OCRstream = new ArrayList<SingleFrame>();
         this.start = startTime;
         cap = new VideoCapture();
+        mailbox = new LinkedList<String>();
     }
 
     public OCRCapture() {
         OCRstream = new ArrayList<SingleFrame>();
         this.start = 0;
         cap = new VideoCapture();
+        mailbox = new LinkedList<String>();
     }
 
     public void execute() {
@@ -37,6 +40,7 @@ public class OCRCapture {
                     if (terminated) break;
                     boolean isRead = !terminated && !paused && cap.read(newFrame);
                     if (isRead) OCRstream.add(new SingleFrame(newFrame, sampleTime, start));
+                    System.out.println("OCR frame read with terminated = " + terminated);
                 }
                 Thread.currentThread().interrupt();
                 return;
@@ -52,11 +56,14 @@ public class OCRCapture {
                         String msg = mailbox.remove();
                         if (msg.equals("RESUME")) {
                             paused = false;
+                            System.out.println("set paused to false");
                         } else if (msg.equals("PAUSE")) {
                             paused = true;
+                            System.out.println("set paused to true");
                         } else if (msg.equals("STOP")) {
                             terminated = true;
                             paused = true;
+                            System.out.println("set terminated to true");
                             captureThread.interrupt();
                             cap.release();
                         }
@@ -81,6 +88,7 @@ public class OCRCapture {
 
     public void receiveMessage(String message) {
         mailbox.add(message);
+        System.out.println("RECEIVED MESSAGE " + message);
     }
 
 

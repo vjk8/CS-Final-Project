@@ -1,7 +1,6 @@
 package components;
 
 import java.lang.Thread;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 import org.opencv.core.*;
@@ -21,6 +20,7 @@ public class ThreadedCameraRunner {
 
     public ThreadedCameraRunner(int soundThreshold) {
         starter = new CameraStarter(soundThreshold);
+        System.out.println("Sound Threshold: " + soundThreshold);
         basicConfig();
     }
 
