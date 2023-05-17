@@ -6,50 +6,40 @@ import java.util.Queue;
 import org.opencv.core.Mat;
 import org.opencv.videoio.VideoCapture;
 
-public class OCRCapture
-{
+public class OCRCapture {
     private volatile ArrayList<SingleFrame> OCRstream;
-    private long                            start;
-    private volatile boolean                terminated;
-    private volatile boolean                paused;
-    private VideoCapture                    cap;
-    private Queue<String>                   mailbox;
+    private long start;
+    private volatile boolean terminated;
+    private volatile boolean paused;
+    private VideoCapture cap;
+    private Queue<String> mailbox;
 
-    public OCRCapture(long startTime)
-    {
+    public OCRCapture(long startTime) {
         OCRstream = new ArrayList<SingleFrame>();
         this.start = startTime;
         cap = new VideoCapture();
         mailbox = new LinkedList<String>();
     }
 
-
-    public OCRCapture()
-    {
+    public OCRCapture() {
         OCRstream = new ArrayList<SingleFrame>();
         this.start = 0;
         cap = new VideoCapture();
         mailbox = new LinkedList<String>();
     }
 
-
-    public void execute()
-    {
+    public void execute() {
 
         cap.open(0);
         Thread captureThread = new Thread() {
             @Override
-            public void run()
-            {
+            public void run() {
                 Mat newFrame = new Mat();
-                while (!terminated && !paused)
-                {
+                while (!terminated && !paused) {
                     long sampleTime = System.currentTimeMillis();
-                    if (terminated)
-                        break;
+                    if (terminated) break;
                     boolean isRead = !terminated && !paused && cap.read(newFrame);
-                    if (isRead)
-                        OCRstream.add(new SingleFrame(newFrame, sampleTime, start));
+                    if (isRead) OCRstream.add(new SingleFrame(newFrame, sampleTime, start));
                 }
                 Thread.currentThread().interrupt();
                 return;
@@ -58,24 +48,16 @@ public class OCRCapture
 
         Thread controlThread = new Thread() {
             @Override
-            public void run()
-            {
-                while (!terminated)
-                {
+            public void run() {
+                while (!terminated) {
                     // System.out.println("control");
-                    if (!mailbox.isEmpty())
-                    {
+                    if (!mailbox.isEmpty()) {
                         String msg = mailbox.remove();
-                        if (msg.equals("RESUME"))
-                        {
+                        if (msg.equals("RESUME")) {
                             paused = false;
-                        }
-                        else if (msg.equals("PAUSE"))
-                        {
+                        } else if (msg.equals("PAUSE")) {
                             paused = true;
-                        }
-                        else if (msg.equals("STOP"))
-                        {
+                        } else if (msg.equals("STOP")) {
                             terminated = true;
                             paused = true;
                             captureThread.interrupt();
@@ -92,21 +74,15 @@ public class OCRCapture
         controlThread.start();
     }
 
-
-    public void setStartTime(long startTime)
-    {
+    public void setStartTime(long startTime) {
         this.start = startTime;
     }
 
-
-    public ArrayList<SingleFrame> getOCRStream()
-    {
+    public ArrayList<SingleFrame> getOCRStream() {
         return OCRstream;
     }
 
-
-    public void receiveMessage(String message)
-    {
+    public void receiveMessage(String message) {
         mailbox.add(message);
     }
 }
