@@ -29,7 +29,6 @@ public class CameraStarter {
             long sampleTime = System.currentTimeMillis();
             line.read(data, 0, data.length);
             int[] RI = rangeAndMaxIndex(data);
-            System.out.println("RANGE " + RI[0]);
             if (RI[0] > threshold) {
                 long ret = sampleTime + RI[1] / 8;
                 System.out.println("STARTED at system time " + ret);

@@ -42,7 +42,6 @@ public class OCRCapture {
                     if (terminated) break;
                     boolean isRead = !terminated && !paused && cap.read(newFrame);
                     if (isRead) OCRstream.add(new SingleFrame(newFrame, sampleTime, start));
-                    System.out.println("OCR frame read with terminated = " + terminated);
                 }
                 Thread.currentThread().interrupt();
                 return;
@@ -58,14 +57,11 @@ public class OCRCapture {
                         String msg = mailbox.remove();
                         if (msg.equals("RESUME")) {
                             paused = false;
-                            System.out.println("set paused to false");
                         } else if (msg.equals("PAUSE")) {
                             paused = true;
-                            System.out.println("set paused to true");
                         } else if (msg.equals("STOP")) {
                             terminated = true;
                             paused = true;
-                            System.out.println("set terminated to true");
                             captureThread.interrupt();
                             cap.release();
                         }
@@ -90,6 +86,5 @@ public class OCRCapture {
 
     public void receiveMessage(String message) {
         mailbox.add(message);
-        System.out.println("RECEIVED MESSAGE " + message);
     }
 }
