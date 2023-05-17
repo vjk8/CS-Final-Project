@@ -3,9 +3,9 @@ package components;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.*;
 import javax.swing.JFrame;
-import java.awt.event.MouseListener;
 import org.opencv.core.*;
 
 public class PostTimingGUI extends JFrame {
@@ -18,51 +18,35 @@ public class PostTimingGUI extends JFrame {
         // TODO complete constructor
         finishes = new ArrayList<DraggableLine>();
         finishes.add(new DraggableLine(new TimeFormat(), "a", 100));
-        addMouseListener (new MouseListener() {
-
-
+        addMouseListener(new MouseListener() {
             @Override
-            public void mouseClicked(java.awt.event.MouseEvent e)
-            {
+            public void mouseClicked(java.awt.event.MouseEvent e) {
                 xPos = e.getX();
             }
- 
- 
+
             @Override
-            public void mousePressed(java.awt.event.MouseEvent e)
-            {
+            public void mousePressed(java.awt.event.MouseEvent e) {
             }
- 
- 
+
             @Override
-            public void mouseReleased(java.awt.event.MouseEvent e)
-            {
-                
-                for (DraggableLine d: finishes)
-                {
-                    if (d.getXPos() == xPos)
-                    {
+            public void mouseReleased(java.awt.event.MouseEvent e) {
+
+                for (DraggableLine d : finishes) {
+                    if (d.getXPos() == xPos) {
                         finishes.get(finishes.indexOf(d)).changeXPos(e.getX());
                     }
                 }
                 xPos = e.getX();
                 e.translatePoint(xPos, 0);
                 repaint();
-                
             }
- 
- 
+
             @Override
-            public void mouseEntered(java.awt.event.MouseEvent e)
-            {
-              
+            public void mouseEntered(java.awt.event.MouseEvent e) {
             }
- 
- 
+
             @Override
-            public void mouseExited(java.awt.event.MouseEvent e)
-            {
-               
+            public void mouseExited(java.awt.event.MouseEvent e) {
             }
         });
         setTitle("hi");
@@ -74,22 +58,15 @@ public class PostTimingGUI extends JFrame {
         processor = new OutputProcessor(finishes);
     }
 
-    public void paint(Graphics g)
-    {
+    public void paint(Graphics g) {
         g.setColor(Color.RED);
-        for (DraggableLine d: finishes)
-        {
+        for (DraggableLine d : finishes) {
             g.drawLine(d.getXPos(), 0, d.getXPos(), this.getHeight());
         }
-
     }
 
-    public void removeLine(int x, int y)
-    {
-
+    public void removeLine(int x, int y) {
     }
-
-
 
     private ArrayList<DraggableLine> getOCR() {
         // TODO don't worry about this one right now
@@ -102,9 +79,7 @@ public class PostTimingGUI extends JFrame {
         PostTimingGUI run = new PostTimingGUI(finishImage);
     }
 
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
         run();
     }
-    
 }

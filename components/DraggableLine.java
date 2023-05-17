@@ -22,13 +22,11 @@ public class DraggableLine implements Comparable {
         xPos = x;
     }
 
-    public int getXPos()
-    {
+    public int getXPos() {
         return xPos;
     }
 
-    public int changeXPos(int newX)
-    {
+    public int changeXPos(int newX) {
         xPos = newX;
         return xPos;
     }
@@ -44,11 +42,9 @@ public class DraggableLine implements Comparable {
         timestamp = c.getTimeAtPixel(xPos);
     }
 
-    public int compareTo(Object other)
-    {
+    public int compareTo(Object other) {
         // TODO complete comparator
 
         return timestamp.compareTo(other);
     }
-    
 }
