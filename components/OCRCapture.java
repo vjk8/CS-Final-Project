@@ -2,8 +2,6 @@ package components;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
-import org.opencv.videoio.VideoCapture;
-import org.opencv.core.Mat;
 import java.util.Queue;
 import org.opencv.core.Mat;
 import org.opencv.videoio.VideoCapture;
