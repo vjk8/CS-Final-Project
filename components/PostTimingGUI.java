@@ -7,40 +7,57 @@ import java.awt.event.MouseListener;
 import java.util.*;
 import javax.swing.JFrame;
 import org.opencv.core.*;
+import javax.swing.JPanel;
 
-public class PostTimingGUI extends JFrame {
+public class PostTimingGUI extends JPanel {
     private ArrayList<DraggableLine> finishes;
     private static CompositeFrame finishImage;
-    private ArrayList<SingleFrame> OCRstream;
+    private static ArrayList<SingleFrame> OCRstream;
     private OutputProcessor processor;
-    private int xPos = 10;
-
+    private int check = 0;
     public PostTimingGUI(CompositeFrame image, ArrayList<SingleFrame> ocr) {
         // TODO complete constructor
+
         OCRstream = ocr;
-        finishes = new ArrayList<DraggableLine>();
-        finishes.add(new DraggableLine(new TimeFormat(), "a", 100));
+        finishes = new ArrayList<DraggableLine>(4);
+        finishes.add(new DraggableLine(new TimeFormat(), "a", 75));
+        finishes.add(new DraggableLine(new TimeFormat(), "a", 50));
+        finishes.add(new DraggableLine(new TimeFormat(), "a", 25));
+
+        finishImage = image;
+        processor = new OutputProcessor(finishes);
+    }
+
+    public void addListener()
+    {
         addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent e) {
-                xPos = e.getX();
+                finishes.add(new DraggableLine(new TimeFormat(), "a", e.getX()));
+                repaint();
+                
             }
 
             @Override
             public void mousePressed(java.awt.event.MouseEvent e) {
+                check = e.getX();
             }
 
             @Override
             public void mouseReleased(java.awt.event.MouseEvent e) {
-
-                for (DraggableLine d : finishes) {
-                    if (d.getXPos() == xPos) {
-                        finishes.get(finishes.indexOf(d)).changeXPos(e.getX());
+                for (int i = 0; i < finishes.size(); i++)
+                {
+                    if (finishes.get(i).getXPos() == check 
+                    || finishes.get(i).getXPos() == check - 1
+                    || finishes.get(i).getXPos() == check + 1)
+                    {
+                        finishes.get(i).changeXPos(e.getX());
+                        e.translatePoint(e.getX(), 0);
+                        repaint();
                     }
                 }
-                xPos = e.getX();
-                e.translatePoint(xPos, 0);
-                repaint();
+                
+                
             }
 
             @Override
@@ -51,34 +68,32 @@ public class PostTimingGUI extends JFrame {
             public void mouseExited(java.awt.event.MouseEvent e) {
             }
         });
-        setTitle("hi");
-        setSize(200, 200);
-        setVisible(true);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        finishImage = image;
-        finishes = new ArrayList<DraggableLine>();
-        processor = new OutputProcessor(finishes);
     }
 
     public void paint(Graphics g) {
         g.setColor(Color.RED);
-        for (DraggableLine d : finishes) {
-            g.drawLine(d.getXPos(), 0, d.getXPos(), this.getHeight());
+        for (int i = 0; i < finishes.size(); i++)
+        {
+            g.drawLine(finishes.get(i).getXPos(), 0, 
+            finishes.get(i).getXPos(), this.getHeight());
         }
     }
 
-    public void removeLine(int x, int y) {
-    }
 
-    private int getOCR(int xPos) {
+     private int getOCR(int xPos) {
         // TODO don't worry about this one right now
         // each draggable line gets the ocr, every time the draggable line is moved
-        return null;
-    }
+         return null;
+     }
 
     public static void run() {
         // TODO GUI code, treat like a main method
-        PostTimingGUI run = new PostTimingGUI(finishImage);
+        PostTimingGUI run = new PostTimingGUI(finishImage, OCRstream);
+        run.addListener();
+        JFrame frame = new JFrame();
+        frame.setSize(200, 200);
+        frame.add(run);
+        frame.setVisible(true);
     }
 
     public static void main(String[] args) {
