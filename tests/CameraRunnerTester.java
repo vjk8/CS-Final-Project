@@ -1,6 +1,5 @@
 package tests;
 
-import archive.CameraRunner;
 import components.*;
 import java.awt.FlowLayout;
 import java.awt.image.BufferedImage;
