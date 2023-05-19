@@ -19,11 +19,7 @@ public class PostTimingGUI extends JPanel {
         // TODO complete constructor
 
         OCRstream = ocr;
-        finishes = new ArrayList<DraggableLine>(4);
-        finishes.add(new DraggableLine(new TimeFormat(), "a", 75));
-        finishes.add(new DraggableLine(new TimeFormat(), "a", 50));
-        finishes.add(new DraggableLine(new TimeFormat(), "a", 25));
-
+        finishes = new ArrayList<DraggableLine>();
         finishImage = image;
         processor = new OutputProcessor(finishes);
     }
@@ -94,9 +90,5 @@ public class PostTimingGUI extends JPanel {
         frame.setSize(200, 200);
         frame.add(run);
         frame.setVisible(true);
-    }
-
-    public static void main(String[] args) {
-        run();
     }
 }
