@@ -1,5 +1,6 @@
 package tests;
 
+
 import components.*;
 import java.awt.FlowLayout;
 import java.awt.image.BufferedImage;
@@ -8,12 +9,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 public class CameraRunnerTester {
-
-    public static void unthreadedTest() {
-        CameraRunner cr = new CameraRunner();
-        cr.run();
-        System.out.println(cr.getCompositeFrame().getTimestampList());
-    }
 
     public static void threadedTest() {
         ThreadedCameraRunner tcr = new ThreadedCameraRunner(50);
