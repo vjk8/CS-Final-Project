@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import org.opencv.core.Mat;
 
@@ -16,6 +17,7 @@ public class LiveTimingGUI extends JPanel {
     private JButton pause;
     private JButton resume;
     private JFrame frame;
+    private JLabel label;
     private ThreadedCameraRunner camera;
     private Thread runner;
     private boolean terminated;
@@ -28,13 +30,14 @@ public class LiveTimingGUI extends JPanel {
         pause = new JButton("Pause");
         resume = new JButton("Resume");
         frame = new JFrame();
+        label = new JLabel();
         frame.setSize(200, 200);
         camera = new ThreadedCameraRunner();
         terminated = false;
     }
 
     public void refresh(BufferedImage b) {
-        frame.(new ImageIcon(b));
+        label.setIcon(new ImageIcon(b));
     }
 
     public void run() {
@@ -71,10 +74,12 @@ public class LiveTimingGUI extends JPanel {
         add(stop);
         add(pause);
         add(resume);
+        frame.add(label);
         frame.add(this);
         frame.setVisible(true);
 
         while (!terminated) {
+            refresh(camera.getCompositeFrame().getImage());
         }
     }
 
