@@ -4,7 +4,9 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
 import java.util.*;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import org.opencv.core.*;
@@ -15,13 +17,16 @@ public class PostTimingGUI extends JPanel {
     private static ArrayList<SingleFrame> OCRstream;
     private OutputProcessor processor;
     private int check = 0;
+    
     public PostTimingGUI(CompositeFrame image, ArrayList<SingleFrame> ocr) {
         // TODO complete constructor
 
         OCRstream = ocr;
         finishes = new ArrayList<DraggableLine>();
+        finishes.add(new DraggableLine(new TimeFormat(), "a", 25));
         finishImage = image;
         processor = new OutputProcessor(finishes);
+        setSize(0, 200);
     }
 
     public void addListener() {
@@ -43,6 +48,7 @@ public class PostTimingGUI extends JPanel {
                     if (finishes.get(i).getXPos() == check || finishes.get(i).getXPos() == check - 1 ||
                         finishes.get(i).getXPos() == check + 1) {
                         finishes.get(i).changeXPos(e.getX());
+                        getOCR(finishes.get(i).getXPos());
                         e.translatePoint(e.getX(), 0);
                         repaint();
                     }
@@ -69,6 +75,7 @@ public class PostTimingGUI extends JPanel {
     private int getOCR(int xPos) {
         // TODO don't worry about this one right now
         // each draggable line gets the ocr, every time the draggable line is moved
+
         return null;
     }
 
@@ -78,7 +85,13 @@ public class PostTimingGUI extends JPanel {
         run.addListener();
         JFrame frame = new JFrame();
         frame.setSize(200, 200);
+        frame.setIconImage(finishImage.getImage());
         frame.add(run);
         frame.setVisible(true);
+    }
+
+    public static void main(String[] args)
+    {
+        run();
     }
 }
