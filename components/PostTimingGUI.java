@@ -6,8 +6,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.*;
 import javax.swing.JFrame;
-import org.opencv.core.*;
 import javax.swing.JPanel;
+import org.opencv.core.*;
 
 public class PostTimingGUI extends JPanel {
     private ArrayList<DraggableLine> finishes;
@@ -28,14 +28,12 @@ public class PostTimingGUI extends JPanel {
         processor = new OutputProcessor(finishes);
     }
 
-    public void addListener()
-    {
+    public void addListener() {
         addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent e) {
                 finishes.add(new DraggableLine(new TimeFormat(), "a", e.getX()));
                 repaint();
-                
             }
 
             @Override
@@ -45,19 +43,14 @@ public class PostTimingGUI extends JPanel {
 
             @Override
             public void mouseReleased(java.awt.event.MouseEvent e) {
-                for (int i = 0; i < finishes.size(); i++)
-                {
-                    if (finishes.get(i).getXPos() == check 
-                    || finishes.get(i).getXPos() == check - 1
-                    || finishes.get(i).getXPos() == check + 1)
-                    {
+                for (int i = 0; i < finishes.size(); i++) {
+                    if (finishes.get(i).getXPos() == check || finishes.get(i).getXPos() == check - 1 ||
+                        finishes.get(i).getXPos() == check + 1) {
                         finishes.get(i).changeXPos(e.getX());
                         e.translatePoint(e.getX(), 0);
                         repaint();
                     }
                 }
-                
-                
             }
 
             @Override
@@ -72,19 +65,16 @@ public class PostTimingGUI extends JPanel {
 
     public void paint(Graphics g) {
         g.setColor(Color.RED);
-        for (int i = 0; i < finishes.size(); i++)
-        {
-            g.drawLine(finishes.get(i).getXPos(), 0, 
-            finishes.get(i).getXPos(), this.getHeight());
+        for (int i = 0; i < finishes.size(); i++) {
+            g.drawLine(finishes.get(i).getXPos(), 0, finishes.get(i).getXPos(), this.getHeight());
         }
     }
 
-
-     private int getOCR(int xPos) {
+    private int getOCR(int xPos) {
         // TODO don't worry about this one right now
         // each draggable line gets the ocr, every time the draggable line is moved
-         return null;
-     }
+        return null;
+    }
 
     public static void run() {
         // TODO GUI code, treat like a main method
