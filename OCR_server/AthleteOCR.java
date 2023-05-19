@@ -50,7 +50,7 @@ public class AthleteOCR {
      * Get the number of the athlete in the image
      *
      * Runs one window of the sliding window, works best if img contains only a number and minimal background
-     * 
+     *
      * @param img The image to be processed
      * @return The number of the athlete in the image
      */
@@ -83,7 +83,7 @@ public class AthleteOCR {
 
     /**
      * Runs the OCR on an image
-     * 
+     *
      * @param img the image
      * @return the number detected in the image
      */
@@ -91,7 +91,7 @@ public class AthleteOCR {
         img = ImageProcessing.toGrayscale(ImageProcessing.resize(img, 621, 483));
         for (int slidingRow = 0; slidingRow <= 6; slidingRow++) {
             for (int slidingCol = 0; slidingCol <= 21; slidingCol++) {
-                Mat subimage = img.submat(new Rect(slidingCol * 23,slidingRow * 46, 138, 207));
+                Mat subimage = img.submat(new Rect(slidingCol * 23, slidingRow * 46, 138, 207));
                 int result = runSubimageOCR(subimage);
                 if (result != -1) {
                     return result;
