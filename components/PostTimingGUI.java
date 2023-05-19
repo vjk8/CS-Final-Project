@@ -17,7 +17,7 @@ public class PostTimingGUI extends JPanel {
     private static ArrayList<SingleFrame> OCRstream;
     private OutputProcessor processor;
     private int check = 0;
-    
+
     public PostTimingGUI(CompositeFrame image, ArrayList<SingleFrame> ocr) {
         // TODO complete constructor
 
@@ -90,8 +90,7 @@ public class PostTimingGUI extends JPanel {
         frame.setVisible(true);
     }
 
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
         run();
     }
 }
