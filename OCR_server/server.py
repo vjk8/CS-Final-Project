@@ -27,8 +27,10 @@ async def run_ocr(image: fastapi.UploadFile):
     bright = PIL.ImageEnhance.Brightness(recolor).enhance(2.0)
     contrast = PIL.ImageEnhance.Contrast(bright).enhance(2.0)
     contrast.save(f'test_{image.filename}')
+    # osd = pytesseract.image_to_osd(
+    #     contrast, config='-c tessedit_char_whitelist=0123456789 --psm 10 ', output_type=Output.DICT)
     data = pytesseract.image_to_data(
-        contrast, config='-c tessedit_char_whitelist=0123456789 --psm 10 ', output_type=Output.DICT)
+        contrast, config='-c tessedit_char_whitelist=0123456789 --psm 12 ', output_type=Output.DICT)
     print(image.filename, data)
     best = 0
     for level in range(len(data['level'])):

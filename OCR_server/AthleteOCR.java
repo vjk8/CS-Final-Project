@@ -213,6 +213,7 @@ public class AthleteOCR {
                                    boundingBoxes[c][1] + " " + boundingBoxes[c][2] + " " + boundingBoxes[c][3]);
                 Mat submat =
                     img.submat(boundingBoxes[c][0], boundingBoxes[c][2], boundingBoxes[c][1], boundingBoxes[c][3]);
+                // submat = ImageProcessing.deskew(submat);
                 OCRResult result = runSubimageOCR(submat);
                 if (result.confidence > bestConf) {
                     bestConf = result.confidence;
@@ -229,8 +230,12 @@ public class AthleteOCR {
             String[] files = {"./OCR_server/data/adarsh_1.jpg", "./OCR_server/data/david_5_1.jpg",
                               "./OCR_server/data/david_5_2.jpg", "./OCR_server/data/david_5_3.jpg"};
             for (String filename : files) {
+                System.out.println("===========================================================\nOCR for file " +
+                                   filename);
                 Mat img = Imgcodecs.imread(filename);
-                System.out.println(getAthleteNumber(img));
+                System.out.println();
+                System.out.println("Result: " + getAthleteNumber(img));
+                System.out.println("===========================================================");
             }
         } catch (IOException e) {
             e.printStackTrace();
