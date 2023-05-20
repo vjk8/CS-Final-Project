@@ -9,6 +9,8 @@ archive/
 
 OCR_server/venv/
 
+test_*.jpg
+
 __pycache__/
 
 *.class

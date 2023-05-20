@@ -38,7 +38,7 @@ public class ThreadedCameraRunner {
         paused = false;
         terminated = false;
         cap = new VideoCapture();
-        cap.open(1);
+        cap.open(0);
         ocrc = new OCRCapture();
     }
 
