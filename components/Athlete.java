@@ -8,7 +8,7 @@ public class Athlete {
 
     public Athlete() {
         name = "*UNKNOWN*";
-        school = "*UNKNOWN*";
+        school = "*UNAFFILIATED*";
         grade = 0;
         PR = new TimeFormat();
         seed = new TimeFormat();
@@ -16,7 +16,7 @@ public class Athlete {
 
     public Athlete(String name) {
         this.name = name;
-        school = "*UNKNOWN*";
+        school = "*UNAFFILIATED*";
         grade = 0;
         PR = new TimeFormat();
         seed = new TimeFormat();
