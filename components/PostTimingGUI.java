@@ -78,20 +78,16 @@ public class PostTimingGUI extends JPanel {
         // find which frame has the x position, find where it is in the finished image
         // call the athlete ocr on it
         int i = 0;
-        for (DraggableLine d: finishes)
-        {
-            if (d.getXPos() == xPos)
-            {
+        for (DraggableLine d : finishes) {
+            if (d.getXPos() == xPos) {
                 d.updateTimestamp();
                 break;
             }
             i++;
         }
         Mat ret = null;
-        for (SingleFrame f: OCRstream)
-        {
-            if (f.getTime() == finishes.get(i).getTimestamp())
-            {
+        for (SingleFrame f : OCRstream) {
+            if (f.getTime() == finishes.get(i).getTimestamp()) {
                 ret = f.getMat();
             }
         }
