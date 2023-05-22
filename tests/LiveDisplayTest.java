@@ -1,20 +1,19 @@
 package tests;
 
+import components.*;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.swing.JPanel;
-import javax.swing.JLabel;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfByte;
 import org.opencv.imgcodecs.Imgcodecs;
-import java.io.InputStream;
-import java.io.ByteArrayInputStream;
-
-import components.*;
 
 public class LiveDisplayTest extends JPanel {
 
@@ -36,8 +35,7 @@ public class LiveDisplayTest extends JPanel {
     public void singleImageTest() {
         try {
             b = ImageIO.read(new File("C:\\Users\\adars\\Downloads\\download.png"));
-        }
-        catch(IOException ioex) {
+        } catch (IOException ioex) {
             System.out.println("IO Exception occurred");
             return;
         }
@@ -55,7 +53,7 @@ public class LiveDisplayTest extends JPanel {
         print("tcr set up");
     }
 
-    public void runLive() throws IOException{
+    public void runLive() throws IOException {
         tcr.execute();
         print("executing");
         while (true) {
@@ -65,19 +63,17 @@ public class LiveDisplayTest extends JPanel {
         }
     }
 
-    public BufferedImage Mat2BufferedImage(Mat mat) throws IOException{
-        //Encoding the image
+    public BufferedImage Mat2BufferedImage(Mat mat) throws IOException {
+        // Encoding the image
         MatOfByte matOfByte = new MatOfByte();
         Imgcodecs.imencode(".jpg", mat, matOfByte);
-        //Storing the encoded Mat in a byte array
+        // Storing the encoded Mat in a byte array
         byte[] byteArray = matOfByte.toArray();
-        //Preparing the Buffered Image
+        // Preparing the Buffered Image
         InputStream in = new ByteArrayInputStream(byteArray);
         BufferedImage bufImage = ImageIO.read(in);
         return bufImage;
-     }
-
-    
+    }
 }
 
 class Runner {
