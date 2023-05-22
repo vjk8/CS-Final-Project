@@ -3,6 +3,7 @@ package components;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -11,7 +12,6 @@ import javax.swing.JPanel;
 import org.opencv.core.Core;
 import org.opencv.core.CvException;
 import org.opencv.core.Mat;
-import java.awt.image.DataBufferByte;
 
 public class LiveTimingGUI
         extends JPanel {
@@ -124,8 +124,7 @@ public class LiveTimingGUI
                 return null;
             }
 
-            if (m.cols() == 0 || m.rows() == 0)
-                return null;
+            if (m.cols() == 0 || m.rows() == 0) return null;
             BufferedImage image = new BufferedImage(m.cols(), m.rows(), type);
             final byte[] targetPixels = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
             System.arraycopy(b, 0, targetPixels, 0, b.length);
@@ -134,7 +133,6 @@ public class LiveTimingGUI
             System.out.println("CvException in buffered image conversion");
             return null;
         }
-
     }
 
     public static void main(String[] args) {

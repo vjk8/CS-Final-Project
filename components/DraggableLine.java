@@ -42,6 +42,10 @@ public class DraggableLine implements Comparable {
         timestamp = c.getTimeAtPixel(xPos);
     }
 
+    public TimeFormat getTimestamp() {
+        return timestamp;
+    }
+
     public int compareTo(Object other) {
         // TODO complete comparator
 

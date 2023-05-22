@@ -46,8 +46,6 @@ public class OutputProcessor {
     public void addAthlete(Integer hipNumber, String name, String school, int grade, TimeFormat seed, TimeFormat PR) {
         addAthlete(hipNumber, new Athlete(name, school, grade, seed, PR));
     }
-    
-    
 
     public void exportCSV(String filepath) {
         // TODO complete method

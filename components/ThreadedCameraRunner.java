@@ -38,7 +38,7 @@ public class ThreadedCameraRunner {
         paused = false;
         terminated = false;
         cap = new VideoCapture();
-        cap.open(1);
+        cap.open(0);
         ocrc = new OCRCapture();
     }
 
@@ -61,7 +61,7 @@ public class ThreadedCameraRunner {
             public void run() {
                 Mat newFrame = new Mat();
                 while (!terminated && !paused) {
-                    //System.out.println("capturing");
+                    // System.out.println("capturing");
                     long sampleTime = System.currentTimeMillis();
                     if (terminated) break;
                     boolean isRead = !terminated && !paused && cap.read(newFrame);
@@ -76,7 +76,7 @@ public class ThreadedCameraRunner {
             @Override
             public void run() {
                 while (!terminated || !toBeProcessed.isEmpty()) {
-                    //System.out.println("processing");
+                    // System.out.println("processing");
                     if (!toBeProcessed.isEmpty()) finishImage.processFrame(toBeProcessed.remove());
                 }
                 Thread.currentThread().interrupt();
@@ -88,7 +88,7 @@ public class ThreadedCameraRunner {
             @Override
             public void run() {
                 while (!terminated) {
-                    //System.out.println("controlling");
+                    // System.out.println("controlling");
                     if (!mailbox.isEmpty()) {
                         String msg = mailbox.remove();
                         if (msg.equals("RESUME")) {

@@ -24,7 +24,7 @@ public class CameraStarter {
         System.out.println("AWAITING START");
         while (System.currentTimeMillis() - startTime < 10000) {
             long sampleTime = System.currentTimeMillis();
-            //System.out.println("awaiting at time " + sampleTime);
+            // System.out.println("awaiting at time " + sampleTime);
             line.read(data, 0, data.length);
             int[] RI = rangeAndMaxIndex(data);
             if (RI[0] > threshold) {
