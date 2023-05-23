@@ -9,45 +9,35 @@ import java.io.InputStream;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import org.opencv.core.CvException;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfByte;
 import org.opencv.imgcodecs.Imgcodecs;
-import javax.swing.JPanel;
-import javax.swing.JLabel;
 
-public class LiveDisplayTest
-    extends JPanel
-{
+public class LiveDisplayTest extends JPanel {
 
     private ThreadedCameraRunner tcr;
-    private JFrame               frame;
-    private JLabel               picLabel;
+    private JFrame frame;
+    private JLabel picLabel;
 
-    private BufferedImage        b;
+    private BufferedImage b;
 
-    public LiveDisplayTest()
-    {
+    public LiveDisplayTest() {
         frame = new JFrame();
         frame.setSize(1000, 500);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
-
-    public void print(String s)
-    {
+    public void print(String s) {
         System.out.println(s);
     }
 
-
-    public void singleImageTest()
-    {
-        try
-        {
+    public void singleImageTest() {
+        try {
             b = ImageIO.read(new File("C:\\Users\\adars\\Downloads\\download.png"));
-        }
-        catch (IOException ioex)
-        {
+        } catch (IOException ioex) {
             System.out.println("IO Exception occurred");
             return;
         }
@@ -60,22 +50,16 @@ public class LiveDisplayTest
         System.out.println("complete");
     }
 
-
-    public void setUpTCR()
-    {
+    public void setUpTCR() {
         tcr = new ThreadedCameraRunner(20);
         print("tcr set up");
     }
 
-
-    public void runLive()
-        throws IOException
-    {
+    public void runLive() throws IOException {
         picLabel = new JLabel();
         tcr.execute();
         print("executing");
-        while (true)
-        {
+        while (true) {
             Mat compositeMat = tcr.getCompositeFrame().getMat();
             if (compositeMat == null) continue;
             print(compositeMat.size().toString());
@@ -90,46 +74,32 @@ public class LiveDisplayTest
         }
     }
 
-
-    public BufferedImage Mat2BufferedImage(Mat mat)
-        throws IOException
-    {
+    public BufferedImage Mat2BufferedImage(Mat mat) throws IOException {
         try {
-        // Encoding the image
-        MatOfByte matOfByte = new MatOfByte();
-        Imgcodecs.imencode(".jpg", mat, matOfByte);
-        // Storing the encoded Mat in a byte array
-        byte[] byteArray = matOfByte.toArray();
-        // Preparing the Buffered Image
-        InputStream in = new ByteArrayInputStream(byteArray);
-        BufferedImage bufImage = ImageIO.read(in);
-        return bufImage;
-        }
-        catch(CvException cvex) {
+            // Encoding the image
+            MatOfByte matOfByte = new MatOfByte();
+            Imgcodecs.imencode(".jpg", mat, matOfByte);
+            // Storing the encoded Mat in a byte array
+            byte[] byteArray = matOfByte.toArray();
+            // Preparing the Buffered Image
+            InputStream in = new ByteArrayInputStream(byteArray);
+            BufferedImage bufImage = ImageIO.read(in);
+            return bufImage;
+        } catch (CvException cvex) {
             print(cvex.getStackTrace().toString());
             return null;
         }
     }
-
 }
 
-
-
-
-class Runner
-{
-    public static void main(String[] args)
-    {
+class Runner {
+    public static void main(String[] args) {
         LiveDisplayTest ldt = new LiveDisplayTest();
         ldt.setUpTCR();
-        try
-        {
+        try {
             ldt.runLive();
-        }
-        catch (IOException ioex)
-        {
+        } catch (IOException ioex) {
             System.out.println(ioex.getStackTrace());
         }
-
     }
 }
