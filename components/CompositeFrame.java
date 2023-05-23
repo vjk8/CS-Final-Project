@@ -41,7 +41,10 @@ public class CompositeFrame {
     }
 
     public void addPause() {
-        // TODO complete method
+        Mat pauseMat = new Mat(480, 2, composite.type(), new Scalar(0, 0, 0));
+        for (int i = 0; i < 5; i++) {
+            processFrame(new SingleFrame(pauseMat, 0, 0));
+        }
     }
 
     public Mat getMat() {

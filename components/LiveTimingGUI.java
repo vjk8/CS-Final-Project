@@ -35,7 +35,7 @@ public class LiveTimingGUI
         frame = new JFrame();
         label = new JLabel();
         frame.setSize(200, 200);
-        camera = new ThreadedCameraRunner();
+        camera = new ThreadedCameraRunner(20);
         terminated = false;
     }
 
@@ -84,7 +84,7 @@ public class LiveTimingGUI
                 while (!terminated) {
                     Mat compositeMat = camera.getCompositeFrame().getMat();
                     if (compositeMat == null)
-                        System.out.print("\t");
+                        System.out.print(" ");
                     else {
                         System.out.println(compositeMat.size());
                         //refresh(matToBufferedImage(compositeMat));
