@@ -3,6 +3,9 @@ package components;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -15,9 +18,6 @@ import org.opencv.core.Mat;
 import org.opencv.core.MatOfByte;
 import org.opencv.core.Rect;
 import org.opencv.imgcodecs.Imgcodecs;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 
 public class LiveTimingGUI extends JPanel {
 
@@ -88,22 +88,19 @@ public class LiveTimingGUI extends JPanel {
             public void run() {
                 while (!terminated) {
                     Mat compositeMat = camera.getCompositeFrame().getMat();
-                    if (compositeMat == null)
-                        continue;
-                    compositeMat = compositeMat
-                        .submat(new Rect(0, 0, Math.min(1000, compositeMat.cols()), compositeMat.rows()));
+                    if (compositeMat == null) continue;
+                    compositeMat =
+                        compositeMat.submat(new Rect(0, 0, Math.min(1000, compositeMat.cols()), compositeMat.rows()));
                     BufferedImage liveImage = null;
-                    try{
+                    try {
                         liveImage = Mat2BufferedImage(compositeMat);
-                    }
-                    catch (IOException ioex) {
+                    } catch (IOException ioex) {
                         System.out.println(ioex.getStackTrace());
                         continue;
                     }
-                    
-                    if (liveImage == null)
-                        continue;
-        
+
+                    if (liveImage == null) continue;
+
                     label.setIcon(new ImageIcon(liveImage));
                     label.setLocation(0, 0);
                     add(label);
@@ -123,24 +120,19 @@ public class LiveTimingGUI extends JPanel {
         refreshThread.start();
     }
 
-    public BufferedImage Mat2BufferedImage(Mat mat)
-    throws IOException
-{
-    try
-    {
-        MatOfByte matOfByte = new MatOfByte();
-        Imgcodecs.imencode(".jpg", mat, matOfByte);
-        byte[] byteArray = matOfByte.toArray();
-        InputStream in = new ByteArrayInputStream(byteArray);
-        BufferedImage bufImage = ImageIO.read(in);
-        return bufImage;
+    public BufferedImage Mat2BufferedImage(Mat mat) throws IOException {
+        try {
+            MatOfByte matOfByte = new MatOfByte();
+            Imgcodecs.imencode(".jpg", mat, matOfByte);
+            byte[] byteArray = matOfByte.toArray();
+            InputStream in = new ByteArrayInputStream(byteArray);
+            BufferedImage bufImage = ImageIO.read(in);
+            return bufImage;
+        } catch (CvException cvex) {
+            System.out.println(cvex.getStackTrace().toString());
+            return null;
+        }
     }
-    catch (CvException cvex)
-    {
-        System.out.println(cvex.getStackTrace().toString());
-        return null;
-    }
-}
 
     public static void main(String[] args) {
         LiveTimingGUI LTG = new LiveTimingGUI();
