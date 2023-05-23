@@ -19,51 +19,63 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class LiveTimingGUI extends JPanel {
+public class LiveTimingGUI
+    extends JPanel
+{
 
-    private volatile JButton startB;
-    private volatile JButton stop;
-    private volatile JButton pause;
-    private volatile JButton resume;
-    private volatile JFrame frame;
-    private volatile JLabel label;
+    private volatile JButton     startB;
+    private volatile JButton     stop;
+    private volatile JButton     pause;
+    private volatile JButton     resume;
+    private volatile JFrame      frame;
+    private volatile JLabel      label;
     private ThreadedCameraRunner camera;
-    private volatile boolean terminated;
+    private volatile boolean     terminated;
 
     // start button stop button and run analysis button (create post timing gui
     // and call its run)
-    public LiveTimingGUI() {
+    public LiveTimingGUI()
+    {
         startB = new JButton("Start");
         stop = new JButton("Stop");
         pause = new JButton("Pause");
         resume = new JButton("Resume");
-        frame = new JFrame();
+        frame = new JFrame("Live Timing");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         label = new JLabel();
         frame.setSize(200, 200);
         camera = new ThreadedCameraRunner(20);
         terminated = false;
     }
 
-    public void refresh(BufferedImage b) {
-        if (b != null) {
+
+    public void refresh(BufferedImage b)
+    {
+        if (b != null)
+        {
             label.setIcon(new ImageIcon(b));
             System.out.println("b is not null");
-        } else
+        }
+        else
             System.out.println("b is null");
     }
 
-    public void runTiming() {
+
+    public void runTiming()
+    {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
         startB.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e)
+            {
                 camera.execute();
             }
         });
 
         stop.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e)
+            {
                 camera.receiveMessage("STOP");
                 terminated = true;
             }
@@ -71,39 +83,45 @@ public class LiveTimingGUI extends JPanel {
 
         pause.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e)
+            {
                 camera.receiveMessage("PAUSE");
             }
         });
 
         resume.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e)
+            {
                 camera.receiveMessage("RESUME");
             }
         });
 
         Thread refreshThread = new Thread() {
             @Override
-            public void run() {
-                while (!terminated) {
+            public void run()
+            {
+                while (!terminated)
+                {
                     Mat compositeMat = camera.getCompositeFrame().getMat();
                     if (compositeMat == null)
                         continue;
-                    compositeMat = compositeMat
-                        .submat(new Rect(0, 0, Math.min(1000, compositeMat.cols()), compositeMat.rows()));
+                    compositeMat = compositeMat.submat(
+                        new Rect(0, 0, Math.min(1000, compositeMat.cols()), compositeMat.rows()));
                     BufferedImage liveImage = null;
-                    try{
+                    try
+                    {
                         liveImage = Mat2BufferedImage(compositeMat);
                     }
-                    catch (IOException ioex) {
+                    catch (IOException ioex)
+                    {
                         System.out.println(ioex.getStackTrace());
                         continue;
                     }
-                    
+
                     if (liveImage == null)
                         continue;
-        
+
                     label.setIcon(new ImageIcon(liveImage));
                     label.setLocation(0, 0);
                     add(label);
@@ -123,26 +141,29 @@ public class LiveTimingGUI extends JPanel {
         refreshThread.start();
     }
 
-    public BufferedImage Mat2BufferedImage(Mat mat)
-    throws IOException
-{
-    try
-    {
-        MatOfByte matOfByte = new MatOfByte();
-        Imgcodecs.imencode(".jpg", mat, matOfByte);
-        byte[] byteArray = matOfByte.toArray();
-        InputStream in = new ByteArrayInputStream(byteArray);
-        BufferedImage bufImage = ImageIO.read(in);
-        return bufImage;
-    }
-    catch (CvException cvex)
-    {
-        System.out.println(cvex.getStackTrace().toString());
-        return null;
-    }
-}
 
-    public static void main(String[] args) {
+    public BufferedImage Mat2BufferedImage(Mat mat)
+        throws IOException
+    {
+        try
+        {
+            MatOfByte matOfByte = new MatOfByte();
+            Imgcodecs.imencode(".jpg", mat, matOfByte);
+            byte[] byteArray = matOfByte.toArray();
+            InputStream in = new ByteArrayInputStream(byteArray);
+            BufferedImage bufImage = ImageIO.read(in);
+            return bufImage;
+        }
+        catch (CvException cvex)
+        {
+            System.out.println(cvex.getStackTrace().toString());
+            return null;
+        }
+    }
+
+
+    public static void main(String[] args)
+    {
         LiveTimingGUI LTG = new LiveTimingGUI();
         LTG.runTiming();
     }

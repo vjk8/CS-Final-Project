@@ -19,6 +19,7 @@ public class ThreadedCameraRunner {
     private VideoCapture cap;
     private OCRCapture ocrc;
     private boolean useOCR = false;
+    private SingleFrame pauseFrame;
 
     public ThreadedCameraRunner(int soundThreshold) {
         starter = new CameraStarter(soundThreshold);
@@ -41,6 +42,7 @@ public class ThreadedCameraRunner {
         cap = new VideoCapture();
         cap.open(0);
         if (useOCR) ocrc = new OCRCapture();
+        pauseFrame = new SingleFrame(new Mat(480, 2, CvType.CV_8UC3, new Scalar(0, 0, 255)), 0, 0);
     }
 
     public void receiveMessage(String message) {
@@ -80,7 +82,7 @@ public class ThreadedCameraRunner {
             public void run() {
                 while (!terminated || !toBeProcessed.isEmpty()) {
                     // System.out.println("processing");
-                    if (!toBeProcessed.isEmpty()) finishImage.processFrame(toBeProcessed.remove());
+                    if (!toBeProcessed.isEmpty()) finishImage.processFrame(toBeProcessed.poll());
                 }
                 Thread.currentThread().interrupt();
                 return;
@@ -98,7 +100,9 @@ public class ThreadedCameraRunner {
                             paused = false;
                         } else if (msg.equals("PAUSE")) {
                             paused = true;
-                            finishImage.addPause();
+                            for (int i = 0; i < 2; i++) {
+                                toBeProcessed.add(pauseFrame);
+                            }
                         } else if (msg.equals("STOP")) {
                             terminated = true;
                             paused = true;

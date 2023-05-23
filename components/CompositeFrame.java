@@ -19,6 +19,7 @@ public class CompositeFrame {
     }
 
     public void processFrame(SingleFrame s) {
+        if (s == null) return;
         Rect cropRect = new Rect(0, 0, 1, s.getMat().rows());
         Mat slice = s.getMat().submat(cropRect);
         for (int hReps = 0; hReps < 5; hReps++) {
@@ -36,13 +37,6 @@ public class CompositeFrame {
     public TimeFormat getTimeAtPixel(int pixelIndex) {
         if (pixelIndex < timestamps.size()) return timestamps.get(pixelIndex);
         return null;
-    }
-
-    public void addPause() {
-        Mat pauseMat = new Mat(480, 2, composite.type(), new Scalar(0, 0, 0));
-        for (int i = 0; i < 5; i++) {
-            processFrame(new SingleFrame(pauseMat, 0, 0));
-        }
     }
 
     public Mat getMat() {
