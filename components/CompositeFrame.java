@@ -8,7 +8,6 @@ import java.util.List;
 import org.opencv.core.*;
 import org.opencv.core.Mat;
 import org.opencv.core.Rect;
-import org.opencv.imgcodecs.Imgcodecs;
 
 public class CompositeFrame {
     private volatile Mat composite;
@@ -17,7 +16,6 @@ public class CompositeFrame {
     public CompositeFrame() {
         composite = null;
         timestamps = new ArrayList<TimeFormat>();
-        Imgcodecs imagecodecs = new Imgcodecs();
     }
 
     public void processFrame(SingleFrame s) {

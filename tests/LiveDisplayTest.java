@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 import org.opencv.core.CvException;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfByte;
+import org.opencv.core.Rect;
 import org.opencv.imgcodecs.Imgcodecs;
 
 public class LiveDisplayTest extends JPanel {
@@ -26,7 +27,7 @@ public class LiveDisplayTest extends JPanel {
 
     public LiveDisplayTest() {
         frame = new JFrame();
-        frame.setSize(1000, 500);
+        frame.setSize(1000, 480);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
@@ -63,6 +64,7 @@ public class LiveDisplayTest extends JPanel {
             Mat compositeMat = tcr.getCompositeFrame().getMat();
             if (compositeMat == null)
                 continue;
+            compositeMat = compositeMat.submat(new Rect(0, 0, Math.min(1000, compositeMat.cols()), compositeMat.rows()));
             print(compositeMat.size().toString());
             BufferedImage liveImage = Mat2BufferedImage(compositeMat);
             if (liveImage == null)
