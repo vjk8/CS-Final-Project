@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -12,6 +13,12 @@ import javax.swing.JPanel;
 import org.opencv.core.Core;
 import org.opencv.core.CvException;
 import org.opencv.core.Mat;
+import org.opencv.core.MatOfByte;
+import org.opencv.core.Rect;
+import org.opencv.imgcodecs.Imgcodecs;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class LiveTimingGUI extends JPanel {
 
@@ -46,7 +53,7 @@ public class LiveTimingGUI extends JPanel {
             System.out.println("b is null");
     }
 
-    public void run() {
+    public void runTiming() {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
         startB.addActionListener(new ActionListener() {
             @Override
@@ -83,11 +90,27 @@ public class LiveTimingGUI extends JPanel {
                 while (!terminated) {
                     Mat compositeMat = camera.getCompositeFrame().getMat();
                     if (compositeMat == null)
-                        System.out.print(" ");
-                    else {
-                        System.out.println(compositeMat.size());
-                        // refresh(matToBufferedImage(compositeMat));
+                        continue;
+                    compositeMat = compositeMat
+                        .submat(new Rect(0, 0, Math.min(1000, compositeMat.cols()), compositeMat.rows()));
+                    BufferedImage liveImage = null;
+                    try{
+                        liveImage = Mat2BufferedImage(compositeMat);
                     }
+                    catch (IOException ioex) {
+                        System.out.println(ioex.getStackTrace());
+                        continue;
+                    }
+                    
+                    if (liveImage == null)
+                        continue;
+        
+                    label.setIcon(new ImageIcon(liveImage));
+                    label.setLocation(0, 0);
+                    add(label);
+                    frame.add(LiveTimingGUI.this);
+                    frame.pack();
+                    frame.setVisible(true);
                 }
             }
         };
@@ -101,39 +124,27 @@ public class LiveTimingGUI extends JPanel {
         refreshThread.start();
     }
 
-    private static BufferedImage matToBufferedImage(Mat m) {
-        System.out.println("in m to b");
-        try {
-            System.out.println("in try");
-            if (m == null) return null;
-            System.out.println("past m null condition");
-            int type = BufferedImage.TYPE_3BYTE_BGR;
-            int bufferSize = m.channels() * m.cols() * m.rows();
-            System.out.println("buffersize is " + bufferSize);
-            byte[] b = new byte[bufferSize];
-            System.out.println("made new byte[]");
-            try {
-                System.out.println("trying to get pixels");
-                m.get(0, 0, b); // get all the pixels
-                System.out.println("got pixels");
-            } catch (java.lang.Exception e) {
-                System.out.println("unknown exception");
-                return null;
-            }
-
-            if (m.cols() == 0 || m.rows() == 0) return null;
-            BufferedImage image = new BufferedImage(m.cols(), m.rows(), type);
-            final byte[] targetPixels = ((DataBufferByte)image.getRaster().getDataBuffer()).getData();
-            System.arraycopy(b, 0, targetPixels, 0, b.length);
-            return image;
-        } catch (CvException cve) {
-            System.out.println("CvException in buffered image conversion");
-            return null;
-        }
+    public BufferedImage Mat2BufferedImage(Mat mat)
+    throws IOException
+{
+    try
+    {
+        MatOfByte matOfByte = new MatOfByte();
+        Imgcodecs.imencode(".jpg", mat, matOfByte);
+        byte[] byteArray = matOfByte.toArray();
+        InputStream in = new ByteArrayInputStream(byteArray);
+        BufferedImage bufImage = ImageIO.read(in);
+        return bufImage;
     }
+    catch (CvException cvex)
+    {
+        System.out.println(cvex.getStackTrace().toString());
+        return null;
+    }
+}
 
     public static void main(String[] args) {
         LiveTimingGUI LTG = new LiveTimingGUI();
-        LTG.run();
+        LTG.runTiming();
     }
 }
