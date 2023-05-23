@@ -62,9 +62,9 @@ public class LiveDisplayTest extends JPanel {
         print("executing");
         while (true) {
             Mat compositeMat = tcr.getCompositeFrame().getMat();
-            if (compositeMat == null)
-                continue;
-            compositeMat = compositeMat.submat(new Rect(0, 0, Math.min(1000, compositeMat.cols()), compositeMat.rows()));
+            if (compositeMat == null) continue;
+            compositeMat =
+                compositeMat.submat(new Rect(0, 0, Math.min(1000, compositeMat.cols()), compositeMat.rows()));
             print(compositeMat.size().toString());
             BufferedImage liveImage = Mat2BufferedImage(compositeMat);
             if (liveImage == null) continue;
