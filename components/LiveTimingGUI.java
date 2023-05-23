@@ -13,8 +13,7 @@ import org.opencv.core.Core;
 import org.opencv.core.CvException;
 import org.opencv.core.Mat;
 
-public class LiveTimingGUI
-        extends JPanel {
+public class LiveTimingGUI extends JPanel {
 
     private volatile JButton startB;
     private volatile JButton stop;
@@ -87,9 +86,8 @@ public class LiveTimingGUI
                         System.out.print(" ");
                     else {
                         System.out.println(compositeMat.size());
-                        //refresh(matToBufferedImage(compositeMat));
+                        // refresh(matToBufferedImage(compositeMat));
                     }
-
                 }
             }
         };
@@ -107,8 +105,7 @@ public class LiveTimingGUI
         System.out.println("in m to b");
         try {
             System.out.println("in try");
-            if (m == null)
-                return null;
+            if (m == null) return null;
             System.out.println("past m null condition");
             int type = BufferedImage.TYPE_3BYTE_BGR;
             int bufferSize = m.channels() * m.cols() * m.rows();
@@ -126,7 +123,7 @@ public class LiveTimingGUI
 
             if (m.cols() == 0 || m.rows() == 0) return null;
             BufferedImage image = new BufferedImage(m.cols(), m.rows(), type);
-            final byte[] targetPixels = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
+            final byte[] targetPixels = ((DataBufferByte)image.getRaster().getDataBuffer()).getData();
             System.arraycopy(b, 0, targetPixels, 0, b.length);
             return image;
         } catch (CvException cve) {

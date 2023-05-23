@@ -1,21 +1,20 @@
 package tests;
 
+import components.*;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.swing.JPanel;
-import javax.swing.JLabel;
 import javax.swing.JFrame;
 import org.opencv.core.CvException;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfByte;
 import org.opencv.imgcodecs.Imgcodecs;
-import java.io.InputStream;
-import java.io.ByteArrayInputStream;
-
-import components.*;
+import javax.swing.JPanel;
+import javax.swing.JLabel;
 
 public class LiveDisplayTest
     extends JPanel
