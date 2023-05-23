@@ -67,8 +67,7 @@ public class LiveDisplayTest extends JPanel {
             compositeMat = compositeMat.submat(new Rect(0, 0, Math.min(1000, compositeMat.cols()), compositeMat.rows()));
             print(compositeMat.size().toString());
             BufferedImage liveImage = Mat2BufferedImage(compositeMat);
-            if (liveImage == null)
-                continue;
+            if (liveImage == null) continue;
 
             picLabel.setIcon(new ImageIcon(liveImage));
             picLabel.setLocation(0, 0);
@@ -79,12 +78,8 @@ public class LiveDisplayTest extends JPanel {
         }
     }
 
-
-    public BufferedImage Mat2BufferedImage(Mat mat)
-        throws IOException
-    {
-        try
-        {
+    public BufferedImage Mat2BufferedImage(Mat mat) throws IOException {
+        try {
             // Encoding the image
             MatOfByte matOfByte = new MatOfByte();
             Imgcodecs.imencode(".jpg", mat, matOfByte);
@@ -94,9 +89,7 @@ public class LiveDisplayTest extends JPanel {
             InputStream in = new ByteArrayInputStream(byteArray);
             BufferedImage bufImage = ImageIO.read(in);
             return bufImage;
-        }
-        catch (CvException cvex)
-        {
+        } catch (CvException cvex) {
             print(cvex.getStackTrace().toString());
             return null;
         }
