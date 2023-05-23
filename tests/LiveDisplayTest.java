@@ -77,15 +77,18 @@ public class LiveDisplayTest
         while (true)
         {
             Mat compositeMat = tcr.getCompositeFrame().getMat();
-            if (compositeMat == null) continue;
+            if (compositeMat == null)
+                continue;
             print(compositeMat.size().toString());
             BufferedImage liveImage = Mat2BufferedImage(compositeMat);
-            if (liveImage == null) continue;
+            if (liveImage == null)
+                continue;
 
             picLabel.setIcon(new ImageIcon(liveImage));
             picLabel.setLocation(0, 0);
             add(picLabel);
             frame.add(this);
+            frame.pack();
             frame.setVisible(true);
         }
     }
@@ -94,18 +97,20 @@ public class LiveDisplayTest
     public BufferedImage Mat2BufferedImage(Mat mat)
         throws IOException
     {
-        try {
-        // Encoding the image
-        MatOfByte matOfByte = new MatOfByte();
-        Imgcodecs.imencode(".jpg", mat, matOfByte);
-        // Storing the encoded Mat in a byte array
-        byte[] byteArray = matOfByte.toArray();
-        // Preparing the Buffered Image
-        InputStream in = new ByteArrayInputStream(byteArray);
-        BufferedImage bufImage = ImageIO.read(in);
-        return bufImage;
+        try
+        {
+            // Encoding the image
+            MatOfByte matOfByte = new MatOfByte();
+            Imgcodecs.imencode(".jpg", mat, matOfByte);
+            // Storing the encoded Mat in a byte array
+            byte[] byteArray = matOfByte.toArray();
+            // Preparing the Buffered Image
+            InputStream in = new ByteArrayInputStream(byteArray);
+            BufferedImage bufImage = ImageIO.read(in);
+            return bufImage;
         }
-        catch(CvException cvex) {
+        catch (CvException cvex)
+        {
             print(cvex.getStackTrace().toString());
             return null;
         }
