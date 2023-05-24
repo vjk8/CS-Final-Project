@@ -43,7 +43,7 @@ public class ThreadedCameraRunner {
         cap.open(0);
         if (useOCR) ocrc = new OCRCapture();
         pauseFrame = new SingleFrame(new Mat(480, 2, CvType.CV_8UC3, new Scalar(0, 255, 0)), 0, 0);
-        startTime =  0;
+        startTime = 0;
     }
 
     public void receiveMessage(String message) {

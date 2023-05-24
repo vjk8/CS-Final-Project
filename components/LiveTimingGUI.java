@@ -28,8 +28,8 @@ public class LiveTimingGUI extends JPanel {
     private volatile JFrame frame;
     private volatile JLabel label;
     private ThreadedCameraRunner camera;
-    private volatile boolean     terminated;
-    private volatile JLabel      timeLabel;
+    private volatile boolean terminated;
+    private volatile JLabel timeLabel;
 
     // start button stop button and run analysis button (create post timing gui
     // and call its run)
@@ -114,8 +114,9 @@ public class LiveTimingGUI extends JPanel {
                         timeLabel.setText((new TimeFormat()).toString());
                         continue;
                     }
-                    timeLabel.setText((new TimeFormat((int) (System.currentTimeMillis() - camera.getSystemStartTime()))).toString());
-                    //add(timeLabel);
+                    timeLabel.setText(
+                        (new TimeFormat((int)(System.currentTimeMillis() - camera.getSystemStartTime()))).toString());
+                    // add(timeLabel);
                 }
             }
         };
@@ -129,7 +130,6 @@ public class LiveTimingGUI extends JPanel {
         frame.setVisible(true);
         timerThread.start();
         refreshThread.start();
-        
     }
 
     public BufferedImage Mat2BufferedImage(Mat mat) throws IOException {
