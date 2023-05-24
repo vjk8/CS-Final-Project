@@ -1,4 +1,5 @@
 package components;
+
 import java.util.*;
 import java.util.HashMap;
 import org.opencv.core.*;
@@ -47,19 +48,59 @@ public class OutputProcessor {
         addAthlete(hipNumber, new Athlete(name, school, grade, seed, PR));
     }
 
-    public void exportCSV(String filepath) {
-        // TODO complete method
+    public void exportCSV(String filepath) throws IOException {
+        BufferedWriter writer = new BufferedWriter(new FileWriter(filepath));
+        writer.write("Name,School,Grade,Time,Seed Time,PR Time\n");
+        for (DraggableLine d : finishTimes) {
+            int number = d.getHipNumber();
+            Athlete athlete = athletes.get(number);
+            writer.write(String.format("%s,%s,%d,%s,%s,%s\n", athlete.getName(), athlete.getSchool(),
+                                       athlete.getGrade(), d.getTime(), athlete.getSeedTime(), athlete.getPRTime()));
+        }
+        writer.close();
+    }
+
+    private String leftPad(String s, int n) {
+        return String.format("%1$" + n + "s", s).substr(0, n);
     }
 
     public void exportText(String filepath) {
-        // TODO complete method
+        BufferedWriter writer = new BufferedWriter(new FileWriter(filepath));
+        writer.write(leftPad("Name", 20) + leftPad("School", 20) + leftPad("Grade", 5) + leftPad("Time", 10) +
+                     leftPad("Seed Time", 10) + leftPad("PR Time", 10) + "\n");
+        for (DraggableLine d : finishTimes) {
+            int number = d.getHipNumber();
+            Athlete athlete = athletes.get(number);
+            writer.write(leftPad(athlete.getName(), 20) + leftPad(athlete.getSchool(), 20) +
+                         leftPad(Integer.toString(athlete.getGrade()), 5) + leftPad(d.getTime(), 10) +
+                         leftPad(athlete.getSeedTime(), 10) + leftPad(athlete.getPRTime(), 10) + "\n");
+        }
+        writer.close();
     }
 
     public void exportHTML(String filepath) {
-        // TODO complete method
+        BufferedWriter writer = new BufferedWriter(new FileWriter(filepath));
+        writer.write(
+            "<html>\n<head>\n<title>Results</title>\n</head>\n<body>\n<table>\n<tr>\n<th>Name</th>\n<th>School</th>\n<th>Grade</th>\n<th>Time</th>\n<th>Seed Time</th>\n<th>PR Time</th>\n</tr>\n");
+        for (DraggableLine d : finishTimes) {
+            int number = d.getHipNumber();
+            Athlete athlete = athletes.get(number);
+            writer.write(String.format(
+                "<tr>\n<td>%s</td>\n<td>%s</td>\n<td>%d</td>\n<td>%s</td>\n<td>%s</td>\n<td>%s</td>\n</tr>\n"));
+        }
+        writer.write("</table>\n</body>\n</html>");
+        writer.close();
     }
 
     public void printResults() {
-        // TODO complete method
+        System.out.print(leftPad("Name", 20) + leftPad("School", 20) + leftPad("Grade", 5) + leftPad("Time", 10) +
+                         leftPad("Seed Time", 10) + leftPad("PR Time", 10) + "\n");
+        for (DraggableLine d : finishTimes) {
+            int number = d.getHipNumber();
+            Athlete athlete = athletes.get(number);
+            System.out.print(leftPad(athlete.getName(), 20) + leftPad(athlete.getSchool(), 20) +
+                             leftPad(Integer.toString(athlete.getGrade()), 5) + leftPad(d.getTime(), 10) +
+                             leftPad(athlete.getSeedTime(), 10) + leftPad(athlete.getPRTime(), 10) + "\n");
+        }
     }
 }
