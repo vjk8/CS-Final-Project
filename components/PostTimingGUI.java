@@ -24,7 +24,7 @@ public class PostTimingGUI extends JPanel {
 
         OCRstream = ocr;
         finishes = new ArrayList<DraggableLine>();
-        finishes.add(new DraggableLine(new TimeFormat(), "a", 25));
+        finishes.add(new DraggableLine(new TimeFormat(), 5, 25));
         finishImage = image;
         processor = new OutputProcessor(finishes);
     }
@@ -35,7 +35,7 @@ public class PostTimingGUI extends JPanel {
             public void mouseClicked(java.awt.event.MouseEvent e) {
                 if (SwingUtilities.isLeftMouseButton(e))
                 {
-                    finishes.add(new DraggableLine(new TimeFormat(), "a", e.getX()));
+                    finishes.add(new DraggableLine(new TimeFormat(), 5, e.getX()));
                     System.out.println("Clicked at " + e.getX());
                     repaint();
                 }
@@ -67,6 +67,7 @@ public class PostTimingGUI extends JPanel {
                         // getOCR(finishes.get(i).getXPos()); This line is OK, just need to disable while testing
                         e.translatePoint(e.getX(), 0);
                         repaint();
+                        add(new JButton("" + finishes.get(i).getHipNumber() + " " ));
                     }
                 }
             }
