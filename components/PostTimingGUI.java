@@ -50,7 +50,7 @@ public class PostTimingGUI extends JPanel {
                     if (Math.abs(finishes.get(i).getXPos() - check) <= 5 /* Threshold for click error */) {
                         System.out.println("drag release detected");
                         finishes.get(i).changeXPos(e.getX());
-                        //getOCR(finishes.get(i).getXPos()); This line is OK, just need to disable while testing
+                        // getOCR(finishes.get(i).getXPos()); This line is OK, just need to disable while testing
                         e.translatePoint(e.getX(), 0);
                         repaint();
                     }
