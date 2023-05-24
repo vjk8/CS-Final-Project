@@ -9,6 +9,7 @@ import java.util.*;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import org.opencv.core.*;
 
 public class PostTimingGUI extends JPanel {
@@ -26,16 +27,29 @@ public class PostTimingGUI extends JPanel {
         finishes.add(new DraggableLine(new TimeFormat(), "a", 25));
         finishImage = image;
         processor = new OutputProcessor(finishes);
-        setSize(0, 200);
     }
 
     public void addListener() {
         addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent e) {
-                finishes.add(new DraggableLine(new TimeFormat(), "a", e.getX()));
-                System.out.println("Clicked at " + e.getX());
-                repaint();
+                if (SwingUtilities.isLeftMouseButton(e))
+                {
+                    finishes.add(new DraggableLine(new TimeFormat(), "a", e.getX()));
+                    System.out.println("Clicked at " + e.getX());
+                    repaint();
+                }
+                else if (SwingUtilities.isRightMouseButton(e))
+                {
+                    for (int i = 0; i < finishes.size(); i++) {
+                        if (finishes.get(i).getXPos() == e.getX()) {
+                            finishes.remove(finishes.get(i));
+                            repaint();
+                        }
+                }
+            }
+                
+
             }
 
             @Override
