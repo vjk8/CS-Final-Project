@@ -37,19 +37,15 @@ public class PostTimingGUI extends JPanel {
                 {
                     finishes.add(new DraggableLine(new TimeFormat(), 5, e.getX()));
                     System.out.println("Clicked at " + e.getX());
-                    repaint();
-                }
-                else if (SwingUtilities.isRightMouseButton(e))
-                {
+                    paint(getGraphics());
+                } else if (SwingUtilities.isRightMouseButton(e)) {
                     for (int i = 0; i < finishes.size(); i++) {
                         if (finishes.get(i).getXPos() == e.getX()) {
                             finishes.remove(finishes.get(i));
-                            repaint();
+                            paint(getGraphics());
                         }
+                    }
                 }
-            }
-                
-
             }
 
             @Override
@@ -65,9 +61,8 @@ public class PostTimingGUI extends JPanel {
                         System.out.println("drag release detected");
                         finishes.get(i).changeXPos(e.getX());
                         // getOCR(finishes.get(i).getXPos()); This line is OK, just need to disable while testing
-                        e.translatePoint(e.getX(), 0);
-                        repaint();
-                        add(new JButton("" + finishes.get(i).getHipNumber() + " " ));
+                        // e.translatePoint(e.getX(), 0);
+                        paint(getGraphics());
                     }
                 }
             }
@@ -83,7 +78,9 @@ public class PostTimingGUI extends JPanel {
     }
 
     public void paint(Graphics g) {
+        this.removeAll();
         g.setColor(Color.RED);
+        System.out.println("Finishes is size " + finishes.size());
         for (int i = 0; i < finishes.size(); i++) {
             g.drawLine(finishes.get(i).getXPos(), 0, finishes.get(i).getXPos(), this.getHeight());
         }
@@ -112,16 +109,16 @@ public class PostTimingGUI extends JPanel {
         return getAthleteNumber(ret);
     }
 
-    public static void run() {
+    public void run() {
         // TODO GUI code, treat like a main method
-        PostTimingGUI run = new PostTimingGUI(finishImage, OCRstream);
-        run.addListener();
+
+        addListener();
         JFrame frame = new JFrame();
         frame.setSize(200, 200);
         if (finishImage != null) {
             frame.setIconImage(finishImage.getImage());
         }
-        frame.add(run);
+        frame.add(this);
         frame.setVisible(true);
     }
 }
