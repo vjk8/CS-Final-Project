@@ -48,7 +48,7 @@ public class PostTimingGUI extends JPanel {
                     if (finishes.get(i).getXPos() == check || finishes.get(i).getXPos() == check - 1 ||
                         finishes.get(i).getXPos() == check + 1) {
                         finishes.get(i).changeXPos(e.getX());
-                        getOCR(finishes.get(i).getXPos());
+                        // getOCR(finishes.get(i).getXPos());
                         e.translatePoint(e.getX(), 0);
                         repaint();
                     }
@@ -71,6 +71,7 @@ public class PostTimingGUI extends JPanel {
             g.drawLine(finishes.get(i).getXPos(), 0, finishes.get(i).getXPos(), this.getHeight());
         }
     }
+
 
     private int getOCR(int xPos) {
         // TODO don't worry about this one right now
@@ -105,7 +106,7 @@ public class PostTimingGUI extends JPanel {
         run.addListener();
         JFrame frame = new JFrame();
         frame.setSize(200, 200);
-        frame.setIconImage(finishImage.getImage());
+        // frame.setIconImage(finishImage.getImage());
         frame.add(run);
         frame.setVisible(true);
     }
