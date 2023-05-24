@@ -24,7 +24,7 @@ public class PostTimingGUI extends JPanel {
 
         OCRstream = ocr;
         finishes = new ArrayList<DraggableLine>();
-        finishes.add(new DraggableLine(new TimeFormat(), "a", 25));
+        finishes.add(new DraggableLine(new TimeFormat(), 5, 25));
         finishImage = image;
         processor = new OutputProcessor(finishes);
     }
@@ -34,7 +34,7 @@ public class PostTimingGUI extends JPanel {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent e) {
                 if (SwingUtilities.isLeftMouseButton(e)) {
-                    finishes.add(new DraggableLine(new TimeFormat(), "a", e.getX()));
+                    finishes.add(new DraggableLine(new TimeFormat(), 5, e.getX()));
                     System.out.println("Clicked at " + e.getX());
                     //PostTimingGUI.this.removeAll();
                     repaint();
