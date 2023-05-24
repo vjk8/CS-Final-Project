@@ -128,7 +128,7 @@ public class PostTimingGUI extends JPanel {
 
     public void run() {
         // TODO GUI code, treat like a main method
-        
+
         addListener();
         JFrame frame = new JFrame();
         frame.setSize(200, 200);
