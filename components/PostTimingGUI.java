@@ -36,12 +36,12 @@ public class PostTimingGUI extends JPanel {
                 if (SwingUtilities.isLeftMouseButton(e)) {
                     finishes.add(new DraggableLine(new TimeFormat(), "a", e.getX()));
                     System.out.println("Clicked at " + e.getX());
-                    repaint();
+                    paint(getGraphics());
                 } else if (SwingUtilities.isRightMouseButton(e)) {
                     for (int i = 0; i < finishes.size(); i++) {
                         if (finishes.get(i).getXPos() == e.getX()) {
                             finishes.remove(finishes.get(i));
-                            repaint();
+                            paint(getGraphics());
                         }
                     }
                 }
@@ -60,7 +60,7 @@ public class PostTimingGUI extends JPanel {
                         System.out.println("drag release detected");
                         finishes.get(i).changeXPos(e.getX());
                         // getOCR(finishes.get(i).getXPos()); This line is OK, just need to disable while testing
-                        e.translatePoint(e.getX(), 0);
+                        //e.translatePoint(e.getX(), 0);
                         paint(getGraphics());
                     }
                 }
@@ -79,24 +79,6 @@ public class PostTimingGUI extends JPanel {
     public void paint(Graphics g) {
         this.removeAll();
         g.setColor(Color.RED);
-        System.out.println("Finishes is size " + finishes.size());
-        for (int i = 0; i < finishes.size(); i++) {
-            g.drawLine(finishes.get(i).getXPos(), 0, finishes.get(i).getXPos(), this.getHeight());
-        }
-    }
-
-    public void paintBlue(Graphics g) {
-        this.removeAll();
-        g.setColor(Color.BLUE);
-        System.out.println("Finishes is size " + finishes.size());
-        for (int i = 0; i < finishes.size(); i++) {
-            g.drawLine(finishes.get(i).getXPos(), 0, finishes.get(i).getXPos(), this.getHeight());
-        }
-    }
-
-    public void paintGreen(Graphics g) {
-        this.removeAll();
-        g.setColor(Color.BLUE);
         System.out.println("Finishes is size " + finishes.size());
         for (int i = 0; i < finishes.size(); i++) {
             g.drawLine(finishes.get(i).getXPos(), 0, finishes.get(i).getXPos(), this.getHeight());
