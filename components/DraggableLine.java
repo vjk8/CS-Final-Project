@@ -46,9 +46,8 @@ public class DraggableLine implements Comparable {
         return timestamp;
     }
 
-    public int getHipNumber()
-    {
-        
+    public int getHipNumber() {
+
         return hipNumberLabel;
     }
 
