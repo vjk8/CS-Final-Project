@@ -36,13 +36,13 @@ public class PostTimingGUI extends JPanel {
                 if (SwingUtilities.isLeftMouseButton(e)) {
                     finishes.add(new DraggableLine(new TimeFormat(), 5, e.getX()));
                     System.out.println("Clicked at " + e.getX());
-                    //PostTimingGUI.this.removeAll();
+                    // PostTimingGUI.this.removeAll();
                     repaint();
                 } else if (SwingUtilities.isRightMouseButton(e)) {
                     for (int i = 0; i < finishes.size(); i++) {
                         if (finishes.get(i).getXPos() == e.getX()) {
                             finishes.remove(finishes.get(i));
-                            //PostTimingGUI.this.removeAll();
+                            // PostTimingGUI.this.removeAll();
                             repaint();
                         }
                     }
@@ -62,8 +62,8 @@ public class PostTimingGUI extends JPanel {
                         System.out.println("drag release detected");
                         finishes.get(i).changeXPos(e.getX());
                         // getOCR(finishes.get(i).getXPos()); This line is OK, just need to disable while testing
-                        //e.translatePoint(e.getX(), 0);
-                        //PostTimingGUI.this.removeAll();
+                        // e.translatePoint(e.getX(), 0);
+                        // PostTimingGUI.this.removeAll();
                         repaint();
                     }
                 }
