@@ -60,7 +60,7 @@ public class PostTimingGUI extends JPanel {
                         System.out.println("drag release detected");
                         finishes.get(i).changeXPos(e.getX());
                         // getOCR(finishes.get(i).getXPos()); This line is OK, just need to disable while testing
-                        //e.translatePoint(e.getX(), 0);
+                        // e.translatePoint(e.getX(), 0);
                         paint(getGraphics());
                     }
                 }
