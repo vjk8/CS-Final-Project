@@ -31,6 +31,7 @@ public class LiveTimingGUI
     private volatile JLabel      label;
     private ThreadedCameraRunner camera;
     private volatile boolean     terminated;
+    private volatile JLabel      timeLabel;
 
     // start button stop button and run analysis button (create post timing gui
     // and call its run)
@@ -46,18 +47,7 @@ public class LiveTimingGUI
         frame.setSize(200, 200);
         camera = new ThreadedCameraRunner(20);
         terminated = false;
-    }
-
-
-    public void refresh(BufferedImage b)
-    {
-        if (b != null)
-        {
-            label.setIcon(new ImageIcon(b));
-            System.out.println("b is not null");
-        }
-        else
-            System.out.println("b is null");
+        timeLabel = new JLabel((new TimeFormat()).toString());
     }
 
 
@@ -132,13 +122,30 @@ public class LiveTimingGUI
             }
         };
 
+        Thread timerThread = new Thread() {
+            @Override
+            public void run() {
+                while (!terminated) {
+                    if (camera.getSystemStartTime() == 0) {
+                        timeLabel.setText((new TimeFormat()).toString());
+                        continue;
+                    }
+                    timeLabel.setText((new TimeFormat((int) (System.currentTimeMillis() - camera.getSystemStartTime()))).toString());
+                    //add(timeLabel);
+                }
+            }
+        };
+
         add(startB);
         add(stop);
         add(pause);
         add(resume);
+        add(timeLabel);
         frame.add(this);
         frame.setVisible(true);
+        timerThread.start();
         refreshThread.start();
+        
     }
 
 

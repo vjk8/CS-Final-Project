@@ -9,7 +9,7 @@ import org.opencv.videoio.VideoCapture;
 
 public class ThreadedCameraRunner {
 
-    public volatile Queue<SingleFrame> toBeProcessed;
+    private volatile Queue<SingleFrame> toBeProcessed;
     private volatile CompositeFrame finishImage;
     private CameraStarter starter;
     private long startTime;
@@ -42,7 +42,8 @@ public class ThreadedCameraRunner {
         cap = new VideoCapture();
         cap.open(0);
         if (useOCR) ocrc = new OCRCapture();
-        pauseFrame = new SingleFrame(new Mat(480, 2, CvType.CV_8UC3, new Scalar(0, 0, 255)), 0, 0);
+        pauseFrame = new SingleFrame(new Mat(480, 2, CvType.CV_8UC3, new Scalar(0, 255, 0)), 0, 0);
+        startTime =  0;
     }
 
     public void receiveMessage(String message) {
@@ -127,5 +128,9 @@ public class ThreadedCameraRunner {
             return ocrc.getOCRStream();
         else
             return null;
+    }
+
+    public long getSystemStartTime() {
+        return startTime;
     }
 }
