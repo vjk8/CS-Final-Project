@@ -9,7 +9,7 @@ import org.opencv.videoio.VideoCapture;
 
 public class ThreadedCameraRunner {
 
-    public volatile Queue<SingleFrame> toBeProcessed;
+    private volatile Queue<SingleFrame> toBeProcessed;
     private volatile CompositeFrame finishImage;
     private CameraStarter starter;
     private long startTime;
@@ -18,6 +18,8 @@ public class ThreadedCameraRunner {
     private volatile boolean terminated;
     private VideoCapture cap;
     private OCRCapture ocrc;
+    private boolean useOCR = false;
+    private SingleFrame pauseFrame;
 
     public ThreadedCameraRunner(int soundThreshold) {
         starter = new CameraStarter(soundThreshold);
@@ -39,12 +41,14 @@ public class ThreadedCameraRunner {
         terminated = false;
         cap = new VideoCapture();
         cap.open(0);
-        ocrc = new OCRCapture();
+        if (useOCR) ocrc = new OCRCapture();
+        pauseFrame = new SingleFrame(new Mat(480, 2, CvType.CV_8UC3, new Scalar(0, 255, 0)), 0, 0);
+        startTime = 0;
     }
 
     public void receiveMessage(String message) {
         mailbox.add(message);
-        ocrc.receiveMessage(message);
+        if (useOCR) ocrc.receiveMessage(message);
     }
 
     public CompositeFrame getCompositeFrame() {
@@ -54,18 +58,20 @@ public class ThreadedCameraRunner {
     public void execute() {
         startTime = starter.getStartTime();
 
-        ocrc.setStartTime(startTime);
+        if (useOCR) ocrc.setStartTime(startTime);
 
         Thread captureThread = new Thread() {
             @Override
             public void run() {
                 Mat newFrame = new Mat();
-                while (!terminated && !paused) {
-                    // System.out.println("capturing");
-                    long sampleTime = System.currentTimeMillis();
-                    if (terminated) break;
-                    boolean isRead = !terminated && !paused && cap.read(newFrame);
-                    if (isRead) toBeProcessed.add(new SingleFrame(newFrame, sampleTime, startTime));
+                while (!terminated) {
+                    while (!paused) {
+                        // System.out.println("capturing");
+                        long sampleTime = System.currentTimeMillis();
+                        if (terminated) break;
+                        boolean isRead = !terminated && !paused && cap.read(newFrame);
+                        if (isRead) toBeProcessed.add(new SingleFrame(newFrame, sampleTime, startTime));
+                    }
                 }
                 Thread.currentThread().interrupt();
                 return;
@@ -77,7 +83,7 @@ public class ThreadedCameraRunner {
             public void run() {
                 while (!terminated || !toBeProcessed.isEmpty()) {
                     // System.out.println("processing");
-                    if (!toBeProcessed.isEmpty()) finishImage.processFrame(toBeProcessed.remove());
+                    if (!toBeProcessed.isEmpty()) finishImage.processFrame(toBeProcessed.poll());
                 }
                 Thread.currentThread().interrupt();
                 return;
@@ -95,6 +101,9 @@ public class ThreadedCameraRunner {
                             paused = false;
                         } else if (msg.equals("PAUSE")) {
                             paused = true;
+                            for (int i = 0; i < 2; i++) {
+                                toBeProcessed.add(pauseFrame);
+                            }
                         } else if (msg.equals("STOP")) {
                             terminated = true;
                             paused = true;
@@ -111,10 +120,17 @@ public class ThreadedCameraRunner {
         controlThread.start();
         captureThread.start();
         processThread.start();
-        ocrc.execute();
+        if (useOCR) ocrc.execute();
     }
 
     public ArrayList<SingleFrame> getOCRStream() {
-        return ocrc.getOCRStream();
+        if (useOCR)
+            return ocrc.getOCRStream();
+        else
+            return null;
+    }
+
+    public long getSystemStartTime() {
+        return startTime;
     }
 }

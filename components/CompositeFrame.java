@@ -8,7 +8,6 @@ import java.util.List;
 import org.opencv.core.*;
 import org.opencv.core.Mat;
 import org.opencv.core.Rect;
-import org.opencv.imgcodecs.Imgcodecs;
 
 public class CompositeFrame {
     private volatile Mat composite;
@@ -17,10 +16,10 @@ public class CompositeFrame {
     public CompositeFrame() {
         composite = null;
         timestamps = new ArrayList<TimeFormat>();
-        Imgcodecs imagecodecs = new Imgcodecs();
     }
 
     public void processFrame(SingleFrame s) {
+        if (s == null) return;
         Rect cropRect = new Rect(0, 0, 1, s.getMat().rows());
         Mat slice = s.getMat().submat(cropRect);
         for (int hReps = 0; hReps < 5; hReps++) {
@@ -38,10 +37,6 @@ public class CompositeFrame {
     public TimeFormat getTimeAtPixel(int pixelIndex) {
         if (pixelIndex < timestamps.size()) return timestamps.get(pixelIndex);
         return null;
-    }
-
-    public void addPause() {
-        // TODO complete method
     }
 
     public Mat getMat() {

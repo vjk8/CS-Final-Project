@@ -19,6 +19,7 @@ public class OCRCapture {
         this.start = startTime;
         cap = new VideoCapture();
         mailbox = new LinkedList<String>();
+        cap.open(0);
     }
 
     public OCRCapture() {
@@ -26,11 +27,10 @@ public class OCRCapture {
         this.start = 0;
         cap = new VideoCapture();
         mailbox = new LinkedList<String>();
+        cap.open(0);
     }
 
     public void execute() {
-
-        cap.open(0);
         Thread captureThread = new Thread() {
             @Override
             public void run() {

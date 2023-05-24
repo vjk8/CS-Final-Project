@@ -34,21 +34,23 @@ public class PostTimingGUI extends JPanel {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent e) {
                 finishes.add(new DraggableLine(new TimeFormat(), "a", e.getX()));
+                System.out.println("Clicked at " + e.getX());
                 repaint();
             }
 
             @Override
             public void mousePressed(java.awt.event.MouseEvent e) {
                 check = e.getX();
+                System.out.println("Pressed at " + check);
             }
 
             @Override
             public void mouseReleased(java.awt.event.MouseEvent e) {
                 for (int i = 0; i < finishes.size(); i++) {
-                    if (finishes.get(i).getXPos() == check || finishes.get(i).getXPos() == check - 1 ||
-                        finishes.get(i).getXPos() == check + 1) {
+                    if (Math.abs(finishes.get(i).getXPos() - check) <= 5 /* Threshold for click error */) {
+                        System.out.println("drag release detected");
                         finishes.get(i).changeXPos(e.getX());
-                        // getOCR(finishes.get(i).getXPos());
+                        // getOCR(finishes.get(i).getXPos()); This line is OK, just need to disable while testing
                         e.translatePoint(e.getX(), 0);
                         repaint();
                     }
@@ -79,20 +81,16 @@ public class PostTimingGUI extends JPanel {
         // find which frame has the x position, find where it is in the finished image
         // call the athlete ocr on it
         int i = 0;
-        for (DraggableLine d: finishes)
-        {
-            if (d.getXPos() == xPos)
-            {
+        for (DraggableLine d : finishes) {
+            if (d.getXPos() == xPos) {
                 d.updateTimestamp();
                 break;
             }
             i++;
         }
         Mat ret = null;
-        for (SingleFrame f: OCRstream)
-        {
-            if (f.getTime() == finishes.get(i).getTimestamp())
-            {
+        for (SingleFrame f : OCRstream) {
+            if (f.getTime() == finishes.get(i).getTimestamp()) {
                 ret = f.getMat();
             }
         }
@@ -106,12 +104,17 @@ public class PostTimingGUI extends JPanel {
         run.addListener();
         JFrame frame = new JFrame();
         frame.setSize(200, 200);
-        // frame.setIconImage(finishImage.getImage());
+        if (finishImage != null) {
+            frame.setIconImage(finishImage.getImage());
+        }
         frame.add(run);
         frame.setVisible(true);
     }
+}
 
+class PTGTester {
     public static void main(String[] args) {
-        run();
+        PostTimingGUI PTG = new PostTimingGUI(null, null);
+        PTG.run();
     }
 }
