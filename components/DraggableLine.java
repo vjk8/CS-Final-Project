@@ -5,7 +5,7 @@ import java.awt.Color;
 public class DraggableLine implements Comparable {
     private Color color;
     private TimeFormat timestamp;
-    private String hipNumberLabel;
+    private int hipNumberLabel;
     private int xPos;
 
     public DraggableLine() {
@@ -15,7 +15,7 @@ public class DraggableLine implements Comparable {
         timestamp = new TimeFormat();
     }
 
-    public DraggableLine(TimeFormat t, String h, int x) {
+    public DraggableLine(TimeFormat t, int h, int x) {
         // TODO complete constructor
         timestamp = t;
         hipNumberLabel = h;
@@ -44,6 +44,11 @@ public class DraggableLine implements Comparable {
 
     public TimeFormat getTimestamp() {
         return timestamp;
+    }
+
+    public int getHipNumber() {
+
+        return hipNumberLabel;
     }
 
     public int compareTo(Object other) {

@@ -9,6 +9,7 @@ import java.util.*;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import org.opencv.core.*;
 
 public class PostTimingGUI extends JPanel {
@@ -23,19 +24,29 @@ public class PostTimingGUI extends JPanel {
 
         OCRstream = ocr;
         finishes = new ArrayList<DraggableLine>();
-        finishes.add(new DraggableLine(new TimeFormat(), "a", 25));
+        finishes.add(new DraggableLine(new TimeFormat(), 5, 25));
         finishImage = image;
         processor = new OutputProcessor(finishes);
-        setSize(0, 200);
     }
 
     public void addListener() {
         addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent e) {
-                finishes.add(new DraggableLine(new TimeFormat(), "a", e.getX()));
-                System.out.println("Clicked at " + e.getX());
-                repaint();
+                if (SwingUtilities.isLeftMouseButton(e)) {
+                    finishes.add(new DraggableLine(new TimeFormat(), 5, e.getX()));
+                    System.out.println("Clicked at " + e.getX());
+                    // PostTimingGUI.this.removeAll();
+                    repaint();
+                } else if (SwingUtilities.isRightMouseButton(e)) {
+                    for (int i = 0; i < finishes.size(); i++) {
+                        if (finishes.get(i).getXPos() == e.getX()) {
+                            finishes.remove(finishes.get(i));
+                            // PostTimingGUI.this.removeAll();
+                            repaint();
+                        }
+                    }
+                }
             }
 
             @Override
@@ -51,7 +62,8 @@ public class PostTimingGUI extends JPanel {
                         System.out.println("drag release detected");
                         finishes.get(i).changeXPos(e.getX());
                         // getOCR(finishes.get(i).getXPos()); This line is OK, just need to disable while testing
-                        e.translatePoint(e.getX(), 0);
+                        // e.translatePoint(e.getX(), 0);
+                        // PostTimingGUI.this.removeAll();
                         repaint();
                     }
                 }
@@ -68,7 +80,9 @@ public class PostTimingGUI extends JPanel {
     }
 
     public void paint(Graphics g) {
+        super.paint(g);
         g.setColor(Color.RED);
+        System.out.println("Finishes is size " + finishes.size());
         for (int i = 0; i < finishes.size(); i++) {
             g.drawLine(finishes.get(i).getXPos(), 0, finishes.get(i).getXPos(), this.getHeight());
         }
@@ -97,16 +111,16 @@ public class PostTimingGUI extends JPanel {
         return getAthleteNumber(ret);
     }
 
-    public static void run() {
+    public void run() {
         // TODO GUI code, treat like a main method
-        PostTimingGUI run = new PostTimingGUI(finishImage, OCRstream);
-        run.addListener();
+
+        addListener();
         JFrame frame = new JFrame();
         frame.setSize(200, 200);
         if (finishImage != null) {
             frame.setIconImage(finishImage.getImage());
         }
-        frame.add(run);
+        frame.add(this);
         frame.setVisible(true);
     }
 }
