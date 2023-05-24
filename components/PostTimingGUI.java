@@ -36,12 +36,14 @@ public class PostTimingGUI extends JPanel {
                 if (SwingUtilities.isLeftMouseButton(e)) {
                     finishes.add(new DraggableLine(new TimeFormat(), "a", e.getX()));
                     System.out.println("Clicked at " + e.getX());
-                    paint(getGraphics());
+                    //PostTimingGUI.this.removeAll();
+                    repaint();
                 } else if (SwingUtilities.isRightMouseButton(e)) {
                     for (int i = 0; i < finishes.size(); i++) {
                         if (finishes.get(i).getXPos() == e.getX()) {
                             finishes.remove(finishes.get(i));
-                            paint(getGraphics());
+                            //PostTimingGUI.this.removeAll();
+                            repaint();
                         }
                     }
                 }
@@ -61,7 +63,8 @@ public class PostTimingGUI extends JPanel {
                         finishes.get(i).changeXPos(e.getX());
                         // getOCR(finishes.get(i).getXPos()); This line is OK, just need to disable while testing
                         //e.translatePoint(e.getX(), 0);
-                        paint(getGraphics());
+                        //PostTimingGUI.this.removeAll();
+                        repaint();
                     }
                 }
             }
@@ -77,7 +80,7 @@ public class PostTimingGUI extends JPanel {
     }
 
     public void paint(Graphics g) {
-        this.removeAll();
+        super.paint(g);
         g.setColor(Color.RED);
         System.out.println("Finishes is size " + finishes.size());
         for (int i = 0; i < finishes.size(); i++) {
