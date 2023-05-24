@@ -39,7 +39,6 @@ public class LiveTimingGUI extends JPanel {
         pause = new JButton("Pause");
         resume = new JButton("Resume");
         frame = new JFrame("Live Timing");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         label = new JLabel();
         frame.setSize(200, 200);
         camera = new ThreadedCameraRunner(20);
@@ -61,6 +60,7 @@ public class LiveTimingGUI extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 camera.receiveMessage("STOP");
                 terminated = true;
+                startPTG();
             }
         });
 
@@ -130,6 +130,11 @@ public class LiveTimingGUI extends JPanel {
         frame.setVisible(true);
         timerThread.start();
         refreshThread.start();
+    }
+
+    public void startPTG() {
+        PostTimingGUI PTG = new PostTimingGUI(camera.getCompositeFrame(), camera.getOCRStream());
+        PTG.run();
     }
 
     public BufferedImage Mat2BufferedImage(Mat mat) throws IOException {
