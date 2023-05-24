@@ -33,23 +33,18 @@ public class PostTimingGUI extends JPanel {
         addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent e) {
-                if (SwingUtilities.isLeftMouseButton(e))
-                {
+                if (SwingUtilities.isLeftMouseButton(e)) {
                     finishes.add(new DraggableLine(new TimeFormat(), "a", e.getX()));
                     System.out.println("Clicked at " + e.getX());
                     repaint();
-                }
-                else if (SwingUtilities.isRightMouseButton(e))
-                {
+                } else if (SwingUtilities.isRightMouseButton(e)) {
                     for (int i = 0; i < finishes.size(); i++) {
                         if (finishes.get(i).getXPos() == e.getX()) {
                             finishes.remove(finishes.get(i));
                             repaint();
                         }
+                    }
                 }
-            }
-                
-
             }
 
             @Override
