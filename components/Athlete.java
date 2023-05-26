@@ -1,12 +1,24 @@
 package components;
-public class Athlete {
-    private String name;
-    private String school;
-    private int grade;
+
+/**
+ * The Athlete class stores relevant information about athletes who finish the
+ * races, enabling quick results summarization with names, grades, previous PRs,
+ * and other relevant imformation
+ */
+public class Athlete
+{
+    private String     name;
+    private String     school;
+    private int        grade;
     private TimeFormat PR;
     private TimeFormat seed;
 
-    public Athlete() {
+    /**
+     * No-args constructor for an Athlete Constructs a new Athlete with blank
+     * information
+     */
+    public Athlete()
+    {
         name = "*UNKNOWN*";
         school = "*UNAFFILIATED*";
         grade = 0;
@@ -14,7 +26,15 @@ public class Athlete {
         seed = new TimeFormat();
     }
 
-    public Athlete(String name) {
+
+    /**
+     * Constructs a new Athlete with fields other than name left blank
+     * 
+     * @param name
+     *            the athlete's name
+     */
+    public Athlete(String name)
+    {
         this.name = name;
         school = "*UNAFFILIATED*";
         grade = 0;
@@ -22,7 +42,18 @@ public class Athlete {
         seed = new TimeFormat();
     }
 
-    public Athlete(String name, String school) {
+
+    /**
+     * Constructs a new Athlete with fields other than name and school left
+     * blank
+     * 
+     * @param name
+     *            the athlete's name
+     * @param school
+     *            the athlete's school or affiliation (can be "unattached")
+     */
+    public Athlete(String name, String school)
+    {
         this.name = name;
         this.school = school;
         grade = 0;
@@ -30,7 +61,19 @@ public class Athlete {
         seed = new TimeFormat();
     }
 
-    public Athlete(String name, String school, int grade) {
+
+    /**
+     * Constructs a new Athlete with seed time and PR left blank
+     * 
+     * @param name
+     *            the athlete's name
+     * @param school
+     *            the athlete's school or affiliation (can be "unattached")
+     * @param grade
+     *            the athlete's grade or year in school
+     */
+    public Athlete(String name, String school, int grade)
+    {
         this.name = name;
         this.school = school;
         this.grade = grade;
@@ -38,7 +81,21 @@ public class Athlete {
         seed = new TimeFormat();
     }
 
-    public Athlete(String name, String school, int grade, TimeFormat seed) {
+
+    /**
+     * Constructs a new Athlete with PR left blank
+     * 
+     * @param name
+     *            the athlete's name
+     * @param school
+     *            the athlete's school or affiliation (can be "unattached")
+     * @param grade
+     *            the athlete's grade or year in school
+     * @param seed
+     *            the athlete's seed time
+     */
+    public Athlete(String name, String school, int grade, TimeFormat seed)
+    {
         this.name = name;
         this.school = school;
         this.grade = grade;
@@ -46,7 +103,24 @@ public class Athlete {
         this.seed = seed;
     }
 
-    public Athlete(String name, String school, int grade, TimeFormat seed, TimeFormat PR) {
+
+    /**
+     * Constructs a new Athlete with all fields filled out
+     * 
+     * @param name
+     *            the athlete's name
+     * @param school
+     *            the athlete's school or affiliation (can be "unattached")
+     * @param grade
+     *            the athlete's grade or year in school
+     * @param seed
+     *            the athlete's seed time
+     * @param PR
+     *            the athlete's previous personal best (can be the same as the
+     *            seed time)
+     */
+    public Athlete(String name, String school, int grade, TimeFormat seed, TimeFormat PR)
+    {
         this.name = name;
         this.school = school;
         this.grade = grade;
@@ -54,31 +128,80 @@ public class Athlete {
         this.seed = seed;
     }
 
-    public String getName() {
+
+    /**
+     * Getter method for the name
+     * 
+     * @return the athlete's name
+     */
+    public String getName()
+    {
         return name;
     }
 
-    public String getSchool() {
+
+    /**
+     * Getter method for the school or affiliation
+     * 
+     * @return the athlete's school or affiliation
+     */
+    public String getSchool()
+    {
         return school;
     }
 
-    public int getGrade() {
+
+    /**
+     * Getter method for the grade or year
+     * 
+     * @return the athlete's grade or year
+     */
+    public int getGrade()
+    {
         return grade;
     }
 
-    public TimeFormat getPR() {
+
+    /**
+     * Getter method for the personal best
+     * 
+     * @return the athlete's personal best
+     */
+    public TimeFormat getPR()
+    {
         return PR;
     }
 
-    public TimeFormat getSeed() {
+
+    /**
+     * Getter method for the seed time
+     * 
+     * @return the athlete's seed time
+     */
+    public TimeFormat getSeed()
+    {
         return seed;
     }
 
-    public boolean isPR(TimeFormat performance) {
+
+    /**
+     * Checks if the current performance is better than the athlete's PR
+     * 
+     * @param performance
+     *            a TimeFormat representing the athlete's recent performance
+     * @return whether or not the performance is better than the athlete's PR
+     */
+    public boolean isPR(TimeFormat performance)
+    {
         return (performance.compareTo(PR) < 0);
     }
 
-    public int hashCode() {
+
+    /**
+     * Hashcode method for storage within a Hashmap
+     */
+    public int hashCode()
+    {
         return name.hashCode() + school.hashCode();
     }
 }

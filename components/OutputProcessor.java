@@ -2,7 +2,7 @@ package components;
 
 import java.util.*;
 import java.util.HashMap;
-import org.opencv.core.*;
+import java.io.*;
 
 public class OutputProcessor {
     private HashMap<Integer, Athlete> athletes;
@@ -17,8 +17,6 @@ public class OutputProcessor {
         this.finishTimes = f;
         this.athletes = m;
     }
-
-    // TODO add formatting helper methods and private fields as needed
 
     public void addAthlete(Integer hipNumber, Athlete a) {
         athletes.put(hipNumber, a);
@@ -55,16 +53,16 @@ public class OutputProcessor {
             int number = d.getHipNumber();
             Athlete athlete = athletes.get(number);
             writer.write(String.format("%s,%s,%d,%s,%s,%s\n", athlete.getName(), athlete.getSchool(),
-                                       athlete.getGrade(), d.getTime(), athlete.getSeedTime(), athlete.getPRTime()));
+                                       athlete.getGrade(), d.getTimestamp(), athlete.getSeed(), athlete.getPR()));
         }
         writer.close();
     }
 
     private String leftPad(String s, int n) {
-        return String.format("%1$" + n + "s", s).substr(0, n);
+        return String.format("%1$" + n + "s", s).substring(0, n);
     }
 
-    public void exportText(String filepath) {
+    public void exportText(String filepath) throws IOException{
         BufferedWriter writer = new BufferedWriter(new FileWriter(filepath));
         writer.write(leftPad("Name", 20) + leftPad("School", 20) + leftPad("Grade", 5) + leftPad("Time", 10) +
                      leftPad("Seed Time", 10) + leftPad("PR Time", 10) + "\n");
@@ -72,13 +70,13 @@ public class OutputProcessor {
             int number = d.getHipNumber();
             Athlete athlete = athletes.get(number);
             writer.write(leftPad(athlete.getName(), 20) + leftPad(athlete.getSchool(), 20) +
-                         leftPad(Integer.toString(athlete.getGrade()), 5) + leftPad(d.getTime(), 10) +
-                         leftPad(athlete.getSeedTime(), 10) + leftPad(athlete.getPRTime(), 10) + "\n");
+                         leftPad(Integer.toString(athlete.getGrade()), 5) + leftPad(d.getTimestamp().toString(), 10) +
+                         leftPad(athlete.getSeed().toString(), 10) + leftPad(athlete.getPR().toString(), 10) + "\n");
         }
         writer.close();
     }
 
-    public void exportHTML(String filepath) {
+    public void exportHTML(String filepath) throws IOException{
         BufferedWriter writer = new BufferedWriter(new FileWriter(filepath));
         writer.write(
             "<html>\n<head>\n<title>Results</title>\n</head>\n<body>\n<table>\n<tr>\n<th>Name</th>\n<th>School</th>\n<th>Grade</th>\n<th>Time</th>\n<th>Seed Time</th>\n<th>PR Time</th>\n</tr>\n");
@@ -99,8 +97,8 @@ public class OutputProcessor {
             int number = d.getHipNumber();
             Athlete athlete = athletes.get(number);
             System.out.print(leftPad(athlete.getName(), 20) + leftPad(athlete.getSchool(), 20) +
-                             leftPad(Integer.toString(athlete.getGrade()), 5) + leftPad(d.getTime(), 10) +
-                             leftPad(athlete.getSeedTime(), 10) + leftPad(athlete.getPRTime(), 10) + "\n");
+                             leftPad(Integer.toString(athlete.getGrade()), 5) + leftPad(d.getTimestamp().toString(), 10) +
+                             leftPad(athlete.getSeed().toString(), 10) + leftPad(athlete.getPR().toString(), 10) + "\n");
         }
     }
 }

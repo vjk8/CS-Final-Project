@@ -10,8 +10,8 @@ public class DraggableLine implements Comparable {
 
     public DraggableLine() {
         // TODO complete no-args constructor
-        hipNumberLabel = "...";
-        xPos = -1;
+        hipNumberLabel = -1;
+        xPos = 0;
         timestamp = new TimeFormat();
     }
 
@@ -32,12 +32,10 @@ public class DraggableLine implements Comparable {
     }
 
     public void setColor() {
-        // TODO complete method
         color = Color.red;
     }
 
     public void updateTimestamp() {
-        // TODO complete method
         CompositeFrame c = new CompositeFrame();
         timestamp = c.getTimeAtPixel(xPos);
     }
@@ -52,8 +50,6 @@ public class DraggableLine implements Comparable {
     }
 
     public int compareTo(Object other) {
-        // TODO complete comparator
-
         return timestamp.compareTo(other);
     }
 }
