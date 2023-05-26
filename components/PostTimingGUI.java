@@ -1,11 +1,14 @@
 
 package components;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.*;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -20,10 +23,15 @@ public class PostTimingGUI extends JPanel {
     private ArrayList<DraggableLine> finishes;
     private static CompositeFrame finishImage;
     private static ArrayList<SingleFrame> OCRstream;
-    private OutputProcessor processor;
     private int check = 0;
     private JFrame frame;
     private AthleteOCR aOcr;
+    private JButton ocr;
+    private JButton exportCSV;
+    private JButton exportHtml;
+    private JButton exportText;
+    private JButton printResults;
+    // ocr button, export csv, export html, export text, print results
 
     public PostTimingGUI(CompositeFrame image, ArrayList<SingleFrame> ocr) {
         // TODO complete constructor
@@ -33,7 +41,6 @@ public class PostTimingGUI extends JPanel {
         finishes = new ArrayList<DraggableLine>();
         finishImage = image;
         finishes.add(new DraggableLine(new TimeFormat(), 5, 25, finishImage));
-        processor = new OutputProcessor(finishes);
     }
 
     public void addListener() {
@@ -41,6 +48,11 @@ public class PostTimingGUI extends JPanel {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent e) {
                 if (SwingUtilities.isLeftMouseButton(e)) {
+                    OutputProcessor op = new OutputProcessor(finishes);
+                    for (DraggableLine d: finishes)
+                    {
+                        op.addAthlete(d.getHipNumber());
+                    }
                     finishes.add(new DraggableLine(new TimeFormat(), -1, e.getX(), finishImage));
                     // PostTimingGUI.this.removeAll();
                     repaint();
@@ -129,6 +141,82 @@ public class PostTimingGUI extends JPanel {
     public void run() {
         // TODO GUI code, treat like a main method
 
+        // ocr button, export csv, export html, export text, print results
+
+        ocr.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                for (DraggableLine d: finishes)
+                {
+                    PostTimingGUI.this.getOCR(d.getXPos());
+                }
+                
+            }
+        });
+
+        exportCSV.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                OutputProcessor op = new OutputProcessor(finishes);
+                for (DraggableLine d: finishes)
+                    {
+                        op.addAthlete(d.getHipNumber());
+                    }
+                try {
+                    op.exportCSV(".\\finishes.csv");
+                }
+                catch(IOException a){
+                    System.out.println(a.getStackTrace());
+                }
+                
+            }
+        });
+
+        exportHtml.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                OutputProcessor op = new OutputProcessor(finishes);
+                for (DraggableLine d: finishes)
+                    {
+                        op.addAthlete(d.getHipNumber());
+                    }
+                try {
+                    op.exportHTML(".\\finishes.csv");
+                }
+                catch(IOException a){
+                    System.out.println(a.getStackTrace());
+                }
+            }
+        });
+
+        exportText.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                OutputProcessor op = new OutputProcessor(finishes);
+                for (DraggableLine d: finishes)
+                    {
+                        op.addAthlete(d.getHipNumber());
+                    }
+                try {
+                    op.exportText(".\\finishes.csv");
+                }
+                catch(IOException a){
+                    System.out.println(a.getStackTrace());
+                }
+            }
+        });
+
+        printResults.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                OutputProcessor op = new OutputProcessor(finishes);
+                for (DraggableLine d: finishes)
+                    {
+                        op.addAthlete(d.getHipNumber());
+                    }
+                op.printResults();
+            }
+        });
         addListener();
         frame = new JFrame();
         frame.setSize(1000, 500);
