@@ -176,8 +176,7 @@ public class Athlete {
      * Hashcode method for storage within a Hashmap
      */
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         return name.hashCode() + school.hashCode();
     }
 }
