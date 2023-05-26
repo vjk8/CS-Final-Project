@@ -1,6 +1,7 @@
 
 package components;
 
+import OCR_server.AthleteOCR;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
@@ -14,7 +15,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import org.opencv.core.*;
-import OCR_server.AthleteOCR;
 
 public class PostTimingGUI extends JPanel {
     private ArrayList<DraggableLine> finishes;
