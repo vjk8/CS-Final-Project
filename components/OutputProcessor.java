@@ -1,8 +1,8 @@
 package components;
 
+import java.io.*;
 import java.util.*;
 import java.util.HashMap;
-import java.io.*;
 
 /**
  * OutputProcessor handles the summarization of results in various formats
