@@ -21,8 +21,7 @@ public class OCRCapture {
     /**
      * Constructs an OCRCapture when the start time is not known and must be set later on when known
      */
-    public OCRCapture(int capIndex)
-    {
+    public OCRCapture(int capIndex) {
         OCRstream = new ArrayList<SingleFrame>();
         this.start = 0;
         cap = new VideoCapture();

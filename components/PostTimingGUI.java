@@ -93,8 +93,9 @@ public class PostTimingGUI extends JPanel {
         g.setColor(Color.RED);
         for (int i = 0; i < finishes.size(); i++) {
             g.drawLine(finishes.get(i).getXPos(), 0, finishes.get(i).getXPos(), this.getHeight());
-            g.drawString("" + finishes.get(i).getHipNumber(), finishes.get(i).getXPos()+6, 30);
-            g.drawString("" + finishes.get(i).getTimestamp(), finishes.get(i).getXPos()+6, (int) (Math.random() * 400) + 40);
+            g.drawString("" + finishes.get(i).getHipNumber(), finishes.get(i).getXPos() + 6, 30);
+            g.drawString("" + finishes.get(i).getTimestamp(), finishes.get(i).getXPos() + 6,
+                         (int)(Math.random() * 400) + 40);
         }
     }
 
