@@ -25,7 +25,8 @@ public class CompositeFrame {
     }
 
     /**
-     * appends the right edge of a SingleFrame to the composite image and stores the time. This enables the creation of the finish image
+     * appends the right edge of a SingleFrame to the composite image and stores the time. This enables the creation of
+     * the finish image
      * @param s the next SingleFrame to be appended to the composite image
      */
     public void processFrame(SingleFrame s) {
@@ -63,7 +64,8 @@ public class CompositeFrame {
     }
 
     /**
-     * Getter for a BufferedImage version of the finish image. Deprecated and unwieldy conversion, recommended not to use. Better conversion occurs in LiveTimingGUI
+     * Getter for a BufferedImage version of the finish image. Deprecated and unwieldy conversion, recommended not to
+     * use. Better conversion occurs in LiveTimingGUI
      * @return a BufferedImage version of the finish image Mat
      */
     public BufferedImage getImage() {
