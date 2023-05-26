@@ -28,8 +28,8 @@ public class PostTimingGUI extends JPanel {
 
         OCRstream = ocr;
         finishes = new ArrayList<DraggableLine>();
-        finishes.add(new DraggableLine(new TimeFormat(), 5, 25));
         finishImage = image;
+        finishes.add(new DraggableLine(new TimeFormat(), 5, 25, finishImage));
         processor = new OutputProcessor(finishes);
     }
 
@@ -38,7 +38,7 @@ public class PostTimingGUI extends JPanel {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent e) {
                 if (SwingUtilities.isLeftMouseButton(e)) {
-                    finishes.add(new DraggableLine(new TimeFormat(), 5, e.getX()));
+                    finishes.add(new DraggableLine(new TimeFormat(), -1, e.getX(), finishImage));
                     // PostTimingGUI.this.removeAll();
                     repaint();
                 } else if (SwingUtilities.isRightMouseButton(e)) {
@@ -93,6 +93,8 @@ public class PostTimingGUI extends JPanel {
         g.setColor(Color.RED);
         for (int i = 0; i < finishes.size(); i++) {
             g.drawLine(finishes.get(i).getXPos(), 0, finishes.get(i).getXPos(), this.getHeight());
+            g.drawString("" + finishes.get(i).getHipNumber(), finishes.get(i).getXPos()+6, 30);
+            g.drawString("" + finishes.get(i).getTimestamp(), finishes.get(i).getXPos()+6, (int) (Math.random() * 400) + 40);
         }
     }
 

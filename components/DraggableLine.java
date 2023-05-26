@@ -7,19 +7,24 @@ public class DraggableLine implements Comparable {
     private TimeFormat timestamp;
     private int hipNumberLabel;
     private int xPos;
+    private CompositeFrame frame;
 
-    public DraggableLine() {
+    public DraggableLine(CompositeFrame c) {
         // TODO complete no-args constructor
         hipNumberLabel = -1;
-        xPos = 0;
+        xPos = 5;
         timestamp = new TimeFormat();
+        this.frame = c;
+        updateTimestamp();
     }
 
-    public DraggableLine(TimeFormat t, int h, int x) {
+    public DraggableLine(TimeFormat t, int h, int x, CompositeFrame c) {
         // TODO complete constructor
         timestamp = t;
         hipNumberLabel = h;
         xPos = x;
+        this.frame = c;
+        updateTimestamp();
     }
 
     public int getXPos() {
@@ -28,6 +33,7 @@ public class DraggableLine implements Comparable {
 
     public int changeXPos(int newX) {
         xPos = newX;
+        updateTimestamp();
         return xPos;
     }
 
@@ -36,8 +42,7 @@ public class DraggableLine implements Comparable {
     }
 
     public void updateTimestamp() {
-        CompositeFrame c = new CompositeFrame();
-        timestamp = c.getTimeAtPixel(xPos);
+        timestamp = frame.getTimeAtPixel(xPos);
     }
 
     public TimeFormat getTimestamp() {

@@ -20,28 +20,16 @@ public class OCRCapture
     private Queue<String>                   mailbox;
 
     /**
-     * Constructs an OCRCapture when the start time is known
-     * @param startTime the system start time of the finish timing
-     */
-    public OCRCapture(long startTime)
-    {
-        OCRstream = new ArrayList<SingleFrame>();
-        this.start = startTime;
-        cap = new VideoCapture();
-        mailbox = new LinkedList<String>();
-        cap.open(0);
-    }
-
-    /**
      * Constructs an OCRCapture when the start time is not known and must be set later on when known
      */
-    public OCRCapture()
+    public OCRCapture(int capIndex)
     {
         OCRstream = new ArrayList<SingleFrame>();
         this.start = 0;
         cap = new VideoCapture();
         mailbox = new LinkedList<String>();
-        cap.open(0);
+        cap.open(capIndex);
+        System.out.println("OCR CAMERA OPENED");
     }
 
     /**
