@@ -100,7 +100,6 @@ public class PostTimingGUI extends JPanel {
     }
 
     private int getOCR(int xPos) {
-        // TODO don't worry about this one right now
         // each draggable line gets the ocr, every time the draggable line is
         // moved
         // find which frame has the x position, find where it is in the finished
