@@ -2,10 +2,10 @@
 package components;
 
 import OCR_server.AthleteOCR;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
@@ -49,8 +49,7 @@ public class PostTimingGUI extends JPanel {
             public void mouseClicked(java.awt.event.MouseEvent e) {
                 if (SwingUtilities.isLeftMouseButton(e)) {
                     OutputProcessor op = new OutputProcessor(finishes);
-                    for (DraggableLine d: finishes)
-                    {
+                    for (DraggableLine d : finishes) {
                         op.addAthlete(d.getHipNumber());
                     }
                     finishes.add(new DraggableLine(new TimeFormat(), -1, e.getX(), finishImage));
@@ -146,11 +145,9 @@ public class PostTimingGUI extends JPanel {
         ocr.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                for (DraggableLine d: finishes)
-                {
+                for (DraggableLine d : finishes) {
                     PostTimingGUI.this.getOCR(d.getXPos());
                 }
-                
             }
         });
 
@@ -158,17 +155,14 @@ public class PostTimingGUI extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 OutputProcessor op = new OutputProcessor(finishes);
-                for (DraggableLine d: finishes)
-                    {
-                        op.addAthlete(d.getHipNumber());
-                    }
+                for (DraggableLine d : finishes) {
+                    op.addAthlete(d.getHipNumber());
+                }
                 try {
                     op.exportCSV(".\\finishes.csv");
-                }
-                catch(IOException a){
+                } catch (IOException a) {
                     System.out.println(a.getStackTrace());
                 }
-                
             }
         });
 
@@ -176,14 +170,12 @@ public class PostTimingGUI extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 OutputProcessor op = new OutputProcessor(finishes);
-                for (DraggableLine d: finishes)
-                    {
-                        op.addAthlete(d.getHipNumber());
-                    }
+                for (DraggableLine d : finishes) {
+                    op.addAthlete(d.getHipNumber());
+                }
                 try {
                     op.exportHTML(".\\finishes.csv");
-                }
-                catch(IOException a){
+                } catch (IOException a) {
                     System.out.println(a.getStackTrace());
                 }
             }
@@ -193,14 +185,12 @@ public class PostTimingGUI extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 OutputProcessor op = new OutputProcessor(finishes);
-                for (DraggableLine d: finishes)
-                    {
-                        op.addAthlete(d.getHipNumber());
-                    }
+                for (DraggableLine d : finishes) {
+                    op.addAthlete(d.getHipNumber());
+                }
                 try {
                     op.exportText(".\\finishes.csv");
-                }
-                catch(IOException a){
+                } catch (IOException a) {
                     System.out.println(a.getStackTrace());
                 }
             }
@@ -210,10 +200,9 @@ public class PostTimingGUI extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 OutputProcessor op = new OutputProcessor(finishes);
-                for (DraggableLine d: finishes)
-                    {
-                        op.addAthlete(d.getHipNumber());
-                    }
+                for (DraggableLine d : finishes) {
+                    op.addAthlete(d.getHipNumber());
+                }
                 op.printResults();
             }
         });
