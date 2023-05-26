@@ -14,6 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import org.opencv.core.*;
+import OCR_server.AthleteOCR;
 
 public class PostTimingGUI extends JPanel {
     private ArrayList<DraggableLine> finishes;
@@ -22,11 +23,13 @@ public class PostTimingGUI extends JPanel {
     private OutputProcessor processor;
     private int check = 0;
     private JFrame frame;
+    private AthleteOCR aOcr;
 
     public PostTimingGUI(CompositeFrame image, ArrayList<SingleFrame> ocr) {
         // TODO complete constructor
 
         OCRstream = ocr;
+        aOcr = new AthleteOCR();
         finishes = new ArrayList<DraggableLine>();
         finishImage = image;
         finishes.add(new DraggableLine(new TimeFormat(), 5, 25, finishImage));
@@ -120,7 +123,7 @@ public class PostTimingGUI extends JPanel {
             }
         }
 
-        return getAthleteNumber(ret);
+        return aOcr.getAthleteNumber(ret);
     }
 
     public void run() {
