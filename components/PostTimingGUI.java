@@ -43,6 +43,11 @@ public class PostTimingGUI extends JPanel {
         finishes.add(new DraggableLine(new TimeFormat(), 5, 25, finishImage));
     }
 
+
+    /**
+     * 
+     * 
+     */
     public void addListener() {
         addMouseListener(new MouseListener() {
             @Override
