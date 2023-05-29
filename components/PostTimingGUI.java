@@ -55,8 +55,6 @@ public class PostTimingGUI extends JPanel {
     }
 
     /**
-     *
-     *
      * Adds a mouslistener that detects when the draggable lines
      * are pressed, then detects when the mouse is released and
      * translates the line to the new position. Also adds a new 
@@ -138,12 +136,14 @@ public class PostTimingGUI extends JPanel {
         }
     }
 
+    /**
+     * For each draggable line, every time it is moved, it gets the ocr.
+     * Then it finds which frame has the x position in the finished image.
+     * Finally calls the athlete ocr on it and returns the number.
+     * @param xPos the x position of the frame
+     * @return the hip number of the athlete
+     */
     private int getOCR(int xPos) {
-        // each draggable line gets the ocr, every time the draggable line is
-        // moved
-        // find which frame has the x position, find where it is in the finished
-        // image
-        // call the athlete ocr on it
         int i = 0;
         for (DraggableLine d : finishes) {
             if (d.getXPos() == xPos) {
@@ -162,6 +162,13 @@ public class PostTimingGUI extends JPanel {
         return aOcr.getAthleteNumber(ret);
     }
 
+    /**
+     * Creates 4 buttons, one that calls the ocr, the others
+     * call methods from the outputprocessor class. Then creates
+     * a JFrame and adds all of the buttons as well as a mouseListener
+     * to it. Also adds the finish image and calls the paint method
+     * to draw the draggable lines.
+     */
     public void run() {
         // TODO GUI code, treat like a main method
 
@@ -234,6 +241,12 @@ public class PostTimingGUI extends JPanel {
         addListener();
         frame = new JFrame();
         frame.setSize(1000, 500);
+        frame.add(ocr);
+        frame.add(exportCSV);
+        frame.add(exportHtml);
+        frame.add(exportText);
+        frame.add(printResults);
+
         if (finishImage != null) {
             add(new JLabel(new ImageIcon(finishImage.getImage())));
         }
@@ -243,6 +256,9 @@ public class PostTimingGUI extends JPanel {
     }
 }
 
+/**
+ * test class
+ */
 class PTGTester {
     public static void main(String[] args) {
         PostTimingGUI PTG = new PostTimingGUI(null, null);
