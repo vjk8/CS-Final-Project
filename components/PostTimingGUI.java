@@ -55,7 +55,7 @@ public class PostTimingGUI extends JPanel {
     }
 
     /**
-     * Adds a mouslistener that detects when the draggable lines
+     * Adds a mouselistener that detects when the draggable lines
      * are pressed, then detects when the mouse is released and
      * translates the line to the new position. Also adds a new
      * draggable line if the left button is clicked, and deletes a
@@ -115,7 +115,7 @@ public class PostTimingGUI extends JPanel {
 
     /**
      * for each draggable line in the array finishes, draws
-     * a line as well as the time and the hip number.
+     * a line as well as the finish time and the hip number.
      * @param g tool used to draw in GUI
      */
     public void paint(Graphics g) {
