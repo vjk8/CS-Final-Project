@@ -21,7 +21,7 @@ import org.opencv.core.*;
 
 /**
  * The PostTImingGUI class is called by LiveTiminGUI and adds
- * draggable lines corresponding to each athlete. Also creates 
+ * draggable lines corresponding to each athlete. Also creates
  * buttons that call the ocr and methods from the Outputprocessor.
  */
 public class PostTimingGUI extends JPanel {
@@ -57,7 +57,7 @@ public class PostTimingGUI extends JPanel {
     /**
      * Adds a mouslistener that detects when the draggable lines
      * are pressed, then detects when the mouse is released and
-     * translates the line to the new position. Also adds a new 
+     * translates the line to the new position. Also adds a new
      * draggable line if the left button is clicked, and deletes a
      * draggable line if the right button is clicked.
      */
