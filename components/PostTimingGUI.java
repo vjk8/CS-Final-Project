@@ -19,6 +19,11 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import org.opencv.core.*;
 
+/**
+ * The PostTImingGUI class is called by LiveTiminGUI and adds
+ * draggable lines corresponding to each athlete. Also creates 
+ * buttons that call the ocr and methods from the Outputprocessor.
+ */
 public class PostTimingGUI extends JPanel {
     private ArrayList<DraggableLine> finishes;
     private static CompositeFrame finishImage;
@@ -33,6 +38,12 @@ public class PostTimingGUI extends JPanel {
     private JButton printResults;
     // ocr button, export csv, export html, export text, print results
 
+    /**
+     * sets the background image, as well as initializes
+     * the arrays
+     * @param image the background image of the finish
+     * @param ocr an arraylist of frames
+     */
     public PostTimingGUI(CompositeFrame image, ArrayList<SingleFrame> ocr) {
         // TODO complete constructor
 
@@ -45,8 +56,11 @@ public class PostTimingGUI extends JPanel {
 
 
     /**
-     * 
-     * 
+     * Adds a mouslistener that detects when the draggable lines
+     * are pressed, then detects when the mouse is released and
+     * translates the line to the new position. Also adds a new 
+     * draggable line if the left button is clicked, and deletes a
+     * draggable line if the right button is clicked.
      */
     public void addListener() {
         addMouseListener(new MouseListener() {
@@ -100,6 +114,11 @@ public class PostTimingGUI extends JPanel {
         });
     }
 
+    /**
+     * for each draggable line in the array finishes, draws
+     * a line as well as the time and the hip number.
+     * @param g tool used to draw in GUI
+     */
     public void paint(Graphics g) {
         super.paint(g);
         /*if (finishImage != null)
