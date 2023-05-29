@@ -5,7 +5,7 @@ import java.awt.Color;
 /**
  * DraggableLine class stores information about each
  * of the draggable lines created in PostTimingGUI.
- * Has methods to find x position, hip number, 
+ * Has methods to find x position, hip number,
  * and seed time.
  */
 public class DraggableLine implements Comparable {
