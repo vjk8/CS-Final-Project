@@ -54,8 +54,9 @@ public class PostTimingGUI extends JPanel {
         finishes.add(new DraggableLine(new TimeFormat(), 5, 25, finishImage));
     }
 
-
     /**
+     *
+     *
      * Adds a mouslistener that detects when the draggable lines
      * are pressed, then detects when the mouse is released and
      * translates the line to the new position. Also adds a new 
