@@ -5,7 +5,7 @@ import java.awt.image.DataBufferByte;
 import org.opencv.core.*;
 
 /**
- * SingleFrame holds a frame of the camera capture with a timestamp 
+ * SingleFrame holds a frame of the camera capture with a timestamp
  */
 public class SingleFrame {
     private Mat frame;
