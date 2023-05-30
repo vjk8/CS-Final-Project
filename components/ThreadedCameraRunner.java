@@ -18,7 +18,7 @@ public class ThreadedCameraRunner {
     private volatile boolean terminated;
     private VideoCapture cap;
     private OCRCapture ocrc;
-    private boolean useOCR = true;
+    private boolean useOCR = false;
     private SingleFrame pauseFrame;
 
     public ThreadedCameraRunner(int soundThreshold) {
