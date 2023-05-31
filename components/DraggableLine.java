@@ -33,9 +33,15 @@ public class DraggableLine implements Comparable {
     }
 
 
-    public void setHipNumber(int hipNumber)
+    public void setHipNumber(String input)
     {
-        this.hipNumberLabel = hipNumber;
+        try{
+            this.hipNumberLabel = Integer.parseInt(input);
+        }
+        catch(NumberFormatException nfex) {
+            // do nothing
+        }
+        
     }
 
     /**
@@ -82,16 +88,10 @@ public class DraggableLine implements Comparable {
     {
         updateTimestamp();
         editableHipNumber = new JTextField("-1");
+        editableHipNumber.setEditable(true);
         if (hipNumberLabel != -1) {
             editableHipNumber.setText(((Integer)hipNumberLabel).toString());
         }
-
-        editableHipNumber.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent event)
-            {
-                hipNumberLabel = Integer.parseInt(editableHipNumber.getText());
-            }
-        });
     }
 
     /**

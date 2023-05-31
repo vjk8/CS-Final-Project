@@ -27,6 +27,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import org.opencv.core.*;
 import org.opencv.imgcodecs.Imgcodecs;
+import components.*;
 
 public class PTGEditableTest extends JPanel {
 
@@ -38,10 +39,11 @@ public class PTGEditableTest extends JPanel {
     {
         super();
         this.finishes = new ArrayList<DraggableLine>();
-        this.finishes.add(new DraggableLine(new TimeFormat(), 5, 25));
+        //this.finishes.add(new DraggableLine(new TimeFormat(), 5, 25));
         this.frame = new JFrame("Window title");
         frame.setLayout(null);
         frame.add(this);
+        repaint();
 
     }
 
@@ -49,29 +51,26 @@ public class PTGEditableTest extends JPanel {
         addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent e) {
-                if (SwingUtilities.isLeftMouseButton(e)) {
-                    // OutputProcessor op = new OutputProcessor(finishes);
-                    // for (DraggableLine d : finishes)
-                    // {
-                    // op.addAthlete(d.getHipNumber());
-                    // }
+                if (SwingUtilities.isLeftMouseButton(e) && e.getY() >= 50) {
                     finishes.add(new DraggableLine(new TimeFormat(), -1, e.getX()));
-                    // PostTimingGUI.this.removeAll();
                     repaint();
                 } else if (SwingUtilities.isRightMouseButton(e)) {
                     for (int i = 0; i < finishes.size(); i++) {
                         if (finishes.get(i).getXPos() == e.getX()) {
+                            PTGEditableTest.this.remove(finishes.get(i).editableHipNumber);
                             finishes.remove(finishes.get(i));
-                            // PostTimingGUI.this.removeAll();
+                            
                             repaint();
                         }
                     }
                 }
+                repaint();
             }
 
             @Override
             public void mousePressed(java.awt.event.MouseEvent e) {
                 check = e.getX();
+                repaint();
             }
 
             @Override
@@ -79,13 +78,10 @@ public class PTGEditableTest extends JPanel {
                 for (int i = 0; i < finishes.size(); i++) {
                     if (Math.abs(finishes.get(i).getXPos() - check) <= 5 /* Threshold for click error */) {
                         finishes.get(i).changeXPos(e.getX());
-                        // getOCR(finishes.get(i).getXPos()); This line is OK,
-                        // just need to disable while testing
-                        // e.translatePoint(e.getX(), 0);
-                        // PostTimingGUI.this.removeAll();
                         repaint();
                     }
                 }
+                repaint();
             }
 
             @Override
@@ -117,17 +113,29 @@ public class PTGEditableTest extends JPanel {
             g.drawLine(finishes.get(i).getXPos(), 0, finishes.get(i).getXPos(), this.getHeight());
             //g.drawString("" + finishes.get(i).getHipNumber(), finishes.get(i).getXPos() + 6, 30);
 
+            DraggableLine d = finishes.get(i);
             
-            //JTextField textField = finishes.get(i).editableHipNumber;
+            JTextField textField = d.editableHipNumber;
 
-            //System.out.println(textField);
+            textField.setBounds(d.getXPos()+6, 20, 20, 20);
+            textField.setVisible(true);
 
-            //this.add(textField);
+            textField.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent event)
+                {
+                    textField.setText(textField.getText());
+                    d.setHipNumber(textField.getText());
+                    textField.setText(((Integer)d.getHipNumber()).toString());
+                }
+            });
+
+
+            add(textField);
 
             g.drawString(
-                "" + finishes.get(i).getTimestamp(),
+                "TIME_PLACEHOLDER" + finishes.get(i).getTimestamp(),
                 finishes.get(i).getXPos() + 6,
-                (int)(Math.random() * 400) + 40);
+                (int)(Math.random() * 380) + 50);
         }
     }
 
