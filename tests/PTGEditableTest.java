@@ -1,7 +1,7 @@
 package tests;
 
-import javax.swing.JPanel;
 import OCR_server.AthleteOCR;
+import components.*;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
@@ -26,50 +26,36 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import org.opencv.core.*;
 import org.opencv.imgcodecs.Imgcodecs;
-import components.*;
 
-public class PTGEditableTest
-    extends JPanel
-{
+public class PTGEditableTest extends JPanel {
 
     private static ArrayList<DraggableLine> finishes;
-    private int                             check = 0;
-    private JFrame                          frame;
+    private int check = 0;
+    private JFrame frame;
 
-    public PTGEditableTest()
-    {
+    public PTGEditableTest() {
 
         this.finishes = new ArrayList<DraggableLine>();
         this.finishes.add(new DraggableLine(new TimeFormat(), 5, 25));
         this.frame = new JFrame("Window title");
-
     }
 
-
-    public void addListener()
-    {
+    public void addListener() {
         addMouseListener(new MouseListener() {
             @Override
-            public void mouseClicked(java.awt.event.MouseEvent e)
-            {
-                if (SwingUtilities.isLeftMouseButton(e))
-                {
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                if (SwingUtilities.isLeftMouseButton(e)) {
                     // OutputProcessor op = new OutputProcessor(finishes);
                     // for (DraggableLine d : finishes)
                     // {
                     // op.addAthlete(d.getHipNumber());
                     // }
-                    finishes.add(
-                        new DraggableLine(new TimeFormat(), -1, e.getX()));
+                    finishes.add(new DraggableLine(new TimeFormat(), -1, e.getX()));
                     // PostTimingGUI.this.removeAll();
                     repaint();
-                }
-                else if (SwingUtilities.isRightMouseButton(e))
-                {
-                    for (int i = 0; i < finishes.size(); i++)
-                    {
-                        if (finishes.get(i).getXPos() == e.getX())
-                        {
+                } else if (SwingUtilities.isRightMouseButton(e)) {
+                    for (int i = 0; i < finishes.size(); i++) {
+                        if (finishes.get(i).getXPos() == e.getX()) {
                             finishes.remove(finishes.get(i));
                             // PostTimingGUI.this.removeAll();
                             repaint();
@@ -78,23 +64,15 @@ public class PTGEditableTest
                 }
             }
 
-
             @Override
-            public void mousePressed(java.awt.event.MouseEvent e)
-            {
+            public void mousePressed(java.awt.event.MouseEvent e) {
                 check = e.getX();
             }
 
-
             @Override
-            public void mouseReleased(java.awt.event.MouseEvent e)
-            {
-                for (int i = 0; i < finishes.size(); i++)
-                {
-                    if (Math.abs(
-                        finishes.get(i).getXPos()
-                            - check) <= 5 /* Threshold for click error */)
-                    {
+            public void mouseReleased(java.awt.event.MouseEvent e) {
+                for (int i = 0; i < finishes.size(); i++) {
+                    if (Math.abs(finishes.get(i).getXPos() - check) <= 5 /* Threshold for click error */) {
                         finishes.get(i).changeXPos(e.getX());
                         // getOCR(finishes.get(i).getXPos()); This line is OK,
                         // just need to disable while testing
@@ -105,20 +83,15 @@ public class PTGEditableTest
                 }
             }
 
-
             @Override
-            public void mouseEntered(java.awt.event.MouseEvent e)
-            {
+            public void mouseEntered(java.awt.event.MouseEvent e) {
             }
 
-
             @Override
-            public void mouseExited(java.awt.event.MouseEvent e)
-            {
+            public void mouseExited(java.awt.event.MouseEvent e) {
             }
         });
     }
-
 
     /**
      * for each draggable line in the array finishes, draws a line as well as
@@ -127,8 +100,7 @@ public class PTGEditableTest
      * @param g
      *            tool used to draw in GUI
      */
-    public void paint(Graphics g)
-    {
+    public void paint(Graphics g) {
         super.paint(g);
         /*
          * if (finishImage != null) { add(new JLabel(new
@@ -136,19 +108,15 @@ public class PTGEditableTest
          */
 
         g.setColor(Color.RED);
-        for (int i = 0; i < finishes.size(); i++)
-        {
+        for (int i = 0; i < finishes.size(); i++) {
             g.drawLine(finishes.get(i).getXPos(), 0, finishes.get(i).getXPos(), this.getHeight());
             g.drawString("" + finishes.get(i).getHipNumber(), finishes.get(i).getXPos() + 6, 30);
-            g.drawString(
-                "" + finishes.get(i).getTimestamp(),
-                finishes.get(i).getXPos() + 6,
-                (int)(Math.random() * 400) + 40);
+            g.drawString("" + finishes.get(i).getTimestamp(), finishes.get(i).getXPos() + 6,
+                         (int)(Math.random() * 400) + 40);
         }
     }
 
-    public void run()
-    {
+    public void run() {
         addListener();
         frame = new JFrame("Window title");
         frame.setSize(1000, 500);
