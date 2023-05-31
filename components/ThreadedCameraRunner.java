@@ -37,7 +37,7 @@ public class ThreadedCameraRunner {
         toBeProcessed = new LinkedList<SingleFrame>();
         finishImage = new CompositeFrame();
         mailbox = new LinkedList<String>();
-        paused = false;
+        paused = true;
         terminated = false;
         cap = new VideoCapture();
         cap.open(1);

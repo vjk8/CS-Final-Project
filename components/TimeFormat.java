@@ -61,15 +61,15 @@ public class TimeFormat implements Comparable {
         }
         if (res.length() != 0 || seconds != 0) {
             if (seconds < 10 && minutes != 0)
-                res += "0" + String.valueOf(seconds) + ".";
+                res += "0" + String.valueOf(seconds);
             else
-                res += String.valueOf(seconds) + ".";
+                res += String.valueOf(seconds);
         }
         if (res.length() != 0 || millis != 0) {
             if (millis < 10)
-                res += "0" + String.valueOf(millis);
+                res += ".0";
             else
-                res += String.valueOf(millis);
+                res += "." + String.valueOf(millis / 10);
         }
         return res;
     }

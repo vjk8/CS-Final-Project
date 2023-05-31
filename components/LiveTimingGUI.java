@@ -41,12 +41,12 @@ public class LiveTimingGUI extends JPanel {
      */
     public LiveTimingGUI() {
         startB = new JButton("Start");
-        stop = new JButton("Stop");
-        pause = new JButton("Pause");
-        resume = new JButton("Resume");
+        stop = new JButton("Exit");
+        pause = new JButton("Camera Off");
+        resume = new JButton("Camera On");
         frame = new JFrame("Live Timing");
         label = new JLabel();
-        frame.setSize(200, 200);
+        frame.setSize(500, 200);
         camera = new ThreadedCameraRunner(20);
         terminated = false;
         timeLabel = new JLabel((new TimeFormat()).toString());
@@ -132,9 +132,10 @@ public class LiveTimingGUI extends JPanel {
         };
 
         add(startB);
-        add(stop);
-        add(pause);
         add(resume);
+        add(pause);
+        add(stop);
+        
         add(timeLabel);
         frame.add(this);
         frame.setVisible(true);

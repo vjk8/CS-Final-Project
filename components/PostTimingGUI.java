@@ -73,6 +73,15 @@ public class PostTimingGUI
             System.out.println(s.getTime());
         }
 
+        System.out.println(finishImage.getTimestampList());
+
+    }
+
+    private int validPos(int observedPos) {
+        while (finishImage.getTimeAtPixel(observedPos) == null) {
+            observedPos--;
+        }
+        return observedPos;
     }
 
 
@@ -90,12 +99,12 @@ public class PostTimingGUI
             {
                 if (SwingUtilities.isLeftMouseButton(e))
                 {
-                    OutputProcessor op = new OutputProcessor(finishes);
-                    for (DraggableLine d : finishes)
-                    {
-                        op.addAthlete(d.getHipNumber());
-                    }
-                    finishes.add(new DraggableLine(new TimeFormat(), -1, e.getX(), finishImage));
+                    //OutputProcessor op = new OutputProcessor(finishes);
+                    //for (DraggableLine d : finishes)
+                    //{
+                        //op.addAthlete(d.getHipNumber());
+                    //}
+                    finishes.add(new DraggableLine(new TimeFormat(), -1, validPos(e.getX()), finishImage));
                     // PostTimingGUI.this.removeAll();
                     repaint();
                 }
@@ -130,7 +139,7 @@ public class PostTimingGUI
                         finishes.get(i).getXPos()
                             - check) <= 5 /* Threshold for click error */)
                     {
-                        finishes.get(i).changeXPos(e.getX());
+                        finishes.get(i).changeXPos(validPos(e.getX()));
                         // getOCR(finishes.get(i).getXPos()); This line is OK,
                         // just need to disable while testing
                         // e.translatePoint(e.getX(), 0);
@@ -208,12 +217,15 @@ public class PostTimingGUI
         Mat ret = null;
         for (SingleFrame f : OCRstream)
         {
-            if (Math
-                .abs(f.getTime().intValue() - finishes.get(i).getTimestamp().intValue()) <= 1000)
+            if (Math.abs(f.getTime().intValue() - finishes.get(i).getTimestamp().intValue()) <= 50)
             {
                 ret = f.getMat();
-                testimshow(ret);
-                break;
+                if (ret != null)
+                {
+                    testimshow(ret);
+                    System.out.println("SingleFrame time: " + f.getTime());
+                    break;
+                }
             }
         }
 
@@ -235,6 +247,37 @@ public class PostTimingGUI
         }
 
         return -1;
+
+    }
+
+
+    // to prevent code duplication
+    private OutputProcessor preppedProcessor()
+    {
+        return preppedProcessor(null);
+    }
+
+
+    // to prevent code duplication
+    private OutputProcessor preppedProcessor(HashMap<Integer, Athlete> initHashMap)
+    {
+        OutputProcessor op;
+        Collections.sort(finishes);
+        if (initHashMap == null)
+        {
+            op = new OutputProcessor(finishes);
+        }
+        else
+        {
+            op = new OutputProcessor(finishes, initHashMap);
+        }
+        for (DraggableLine d : finishes)
+        {
+            if (!op.getHashMap().containsKey(d.getHipNumber()))
+                op.addAthlete(d.getHipNumber());
+        }
+
+        return op;
 
     }
 
@@ -269,11 +312,7 @@ public class PostTimingGUI
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                OutputProcessor op = new OutputProcessor(finishes);
-                for (DraggableLine d : finishes)
-                {
-                    op.addAthlete(d.getHipNumber());
-                }
+                OutputProcessor op = preppedProcessor();
                 try
                 {
                     op.exportCSV(".\\finishes.csv");
@@ -289,11 +328,7 @@ public class PostTimingGUI
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                OutputProcessor op = new OutputProcessor(finishes);
-                for (DraggableLine d : finishes)
-                {
-                    op.addAthlete(d.getHipNumber());
-                }
+                OutputProcessor op = preppedProcessor();
                 try
                 {
                     op.exportHTML(".\\finishes.html");
@@ -309,11 +344,7 @@ public class PostTimingGUI
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                OutputProcessor op = new OutputProcessor(finishes);
-                for (DraggableLine d : finishes)
-                {
-                    op.addAthlete(d.getHipNumber());
-                }
+                OutputProcessor op = preppedProcessor();
                 try
                 {
                     op.exportText(".\\finishes.txt");
@@ -329,11 +360,7 @@ public class PostTimingGUI
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                OutputProcessor op = new OutputProcessor(finishes);
-                for (DraggableLine d : finishes)
-                {
-                    op.addAthlete(d.getHipNumber());
-                }
+                OutputProcessor op = preppedProcessor();
                 op.printResults();
             }
         });
