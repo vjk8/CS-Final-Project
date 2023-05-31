@@ -70,7 +70,6 @@ public class PostTimingGUI extends JPanel {
         }
 
         System.out.println(finishImage.getTimestampList());
-
     }
 
     private int validPos(int observedPos) {
@@ -89,14 +88,12 @@ public class PostTimingGUI extends JPanel {
     public void addListener() {
         addMouseListener(new MouseListener() {
             @Override
-            public void mouseClicked(java.awt.event.MouseEvent e)
-            {
-                if (SwingUtilities.isLeftMouseButton(e))
-                {
-                    //OutputProcessor op = new OutputProcessor(finishes);
-                    //for (DraggableLine d : finishes)
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                if (SwingUtilities.isLeftMouseButton(e)) {
+                    // OutputProcessor op = new OutputProcessor(finishes);
+                    // for (DraggableLine d : finishes)
                     //{
-                        //op.addAthlete(d.getHipNumber());
+                    // op.addAthlete(d.getHipNumber());
                     //}
                     finishes.add(new DraggableLine(new TimeFormat(), -1, validPos(e.getX()), finishImage));
                     // PostTimingGUI.this.removeAll();
@@ -118,14 +115,9 @@ public class PostTimingGUI extends JPanel {
             }
 
             @Override
-            public void mouseReleased(java.awt.event.MouseEvent e)
-            {
-                for (int i = 0; i < finishes.size(); i++)
-                {
-                    if (Math.abs(
-                        finishes.get(i).getXPos()
-                            - check) <= 5 /* Threshold for click error */)
-                    {
+            public void mouseReleased(java.awt.event.MouseEvent e) {
+                for (int i = 0; i < finishes.size(); i++) {
+                    if (Math.abs(finishes.get(i).getXPos() - check) <= 5 /* Threshold for click error */) {
                         finishes.get(i).changeXPos(validPos(e.getX()));
                         // getOCR(finishes.get(i).getXPos()); This line is OK,
                         // just need to disable while testing
@@ -189,13 +181,10 @@ public class PostTimingGUI extends JPanel {
             i++;
         }
         Mat ret = null;
-        for (SingleFrame f : OCRstream)
-        {
-            if (Math.abs(f.getTime().intValue() - finishes.get(i).getTimestamp().intValue()) <= 100)
-            {
+        for (SingleFrame f : OCRstream) {
+            if (Math.abs(f.getTime().intValue() - finishes.get(i).getTimestamp().intValue()) <= 100) {
                 ret = f.getMat();
-                if (ret != null)
-                {
+                if (ret != null) {
                     testimshow(ret);
                     System.out.println("SingleFrame time: " + f.getTime());
                     break;
@@ -219,37 +208,26 @@ public class PostTimingGUI extends JPanel {
         return -1;
     }
 
-
     // to prevent code duplication
-    private OutputProcessor preppedProcessor()
-    {
+    private OutputProcessor preppedProcessor() {
         return preppedProcessor(null);
     }
 
-
     // to prevent code duplication
-    private OutputProcessor preppedProcessor(HashMap<Integer, Athlete> initHashMap)
-    {
+    private OutputProcessor preppedProcessor(HashMap<Integer, Athlete> initHashMap) {
         OutputProcessor op;
         Collections.sort(finishes);
-        if (initHashMap == null)
-        {
+        if (initHashMap == null) {
             op = new OutputProcessor(finishes);
-        }
-        else
-        {
+        } else {
             op = new OutputProcessor(finishes, initHashMap);
         }
-        for (DraggableLine d : finishes)
-        {
-            if (!op.getHashMap().containsKey(d.getHipNumber()))
-                op.addAthlete(d.getHipNumber());
+        for (DraggableLine d : finishes) {
+            if (!op.getHashMap().containsKey(d.getHipNumber())) op.addAthlete(d.getHipNumber());
         }
 
         return op;
-
     }
-
 
     /**
      * Creates 4 buttons, one that calls the ocr, the others call methods from
@@ -275,11 +253,9 @@ public class PostTimingGUI extends JPanel {
 
         exportCSV.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e) {
                 OutputProcessor op = preppedProcessor();
-                try
-                {
+                try {
                     op.exportCSV(".\\finishes.csv");
                 } catch (IOException a) {
                     System.out.println(a.getStackTrace());
@@ -289,11 +265,9 @@ public class PostTimingGUI extends JPanel {
 
         exportHtml.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e) {
                 OutputProcessor op = preppedProcessor();
-                try
-                {
+                try {
                     op.exportHTML(".\\finishes.html");
                 } catch (IOException a) {
                     System.out.println(a.getStackTrace());
@@ -303,11 +277,9 @@ public class PostTimingGUI extends JPanel {
 
         exportText.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e) {
                 OutputProcessor op = preppedProcessor();
-                try
-                {
+                try {
                     op.exportText(".\\finishes.txt");
                 } catch (IOException a) {
                     System.out.println(a.getStackTrace());
@@ -317,8 +289,7 @@ public class PostTimingGUI extends JPanel {
 
         printResults.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e) {
                 OutputProcessor op = preppedProcessor();
                 op.printResults();
             }

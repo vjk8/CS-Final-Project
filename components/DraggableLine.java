@@ -100,7 +100,7 @@ public class DraggableLine implements Comparable {
      * @return the two times compared to each other
      */
     public int compareTo(Object other) {
-        DraggableLine ot = (DraggableLine) other;
+        DraggableLine ot = (DraggableLine)other;
         return timestamp.compareTo(ot.getTimestamp());
     }
 }
