@@ -135,7 +135,7 @@ public class LiveTimingGUI extends JPanel {
         add(resume);
         add(pause);
         add(stop);
-        
+
         add(timeLabel);
         frame.add(this);
         frame.setVisible(true);
