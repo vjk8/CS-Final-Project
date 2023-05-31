@@ -42,7 +42,10 @@ public class OCRCapture {
                     long sampleTime = System.currentTimeMillis();
                     if (terminated) break;
                     boolean isRead = !terminated && !paused && cap.read(newFrame);
-                    if (isRead) OCRstream.add(new SingleFrame(newFrame, sampleTime, start));
+                    if (isRead) {
+                        OCRstream.add(new SingleFrame(newFrame, sampleTime, start));
+                        //System.out.println("Successful OCR capture");
+                    }
                 }
                 Thread.currentThread().interrupt();
                 return;

@@ -18,7 +18,7 @@ public class ThreadedCameraRunner {
     private volatile boolean terminated;
     private VideoCapture cap;
     private OCRCapture ocrc;
-    private boolean useOCR = false;
+    private boolean useOCR = true;
     private SingleFrame pauseFrame;
 
     public ThreadedCameraRunner(int soundThreshold) {
@@ -40,11 +40,11 @@ public class ThreadedCameraRunner {
         paused = false;
         terminated = false;
         cap = new VideoCapture();
-        cap.open(0);
+        cap.open(1);
         System.out.println("MAIN CAMERA OPENED");
         pauseFrame = new SingleFrame(new Mat(480, 2, CvType.CV_8UC3, new Scalar(0, 255, 0)), 0, 0);
         startTime = 0;
-        if (useOCR) ocrc = new OCRCapture(1);
+        if (useOCR) ocrc = new OCRCapture(0);
     }
 
     public void receiveMessage(String message) {
