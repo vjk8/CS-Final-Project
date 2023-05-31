@@ -1,6 +1,9 @@
 package components;
 
 import java.awt.Color;
+import javax.swing.JTextField;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * DraggableLine class stores information about each of the draggable lines
@@ -15,6 +18,7 @@ public class DraggableLine
     private int            hipNumberLabel;
     private int            xPos;
     private CompositeFrame frame;
+    public JTextField      editableHipNumber;
 
     /**
      * Initializes a draggable line with no info given.
@@ -28,7 +32,13 @@ public class DraggableLine
         xPos = 5;
         timestamp = new TimeFormat();
         this.frame = c;
-        updateTimestamp();
+        commonConfig();
+    }
+
+
+    public void setHipNumber(int hipNumber)
+    {
+        this.hipNumberLabel = hipNumber;
     }
 
 
@@ -50,7 +60,7 @@ public class DraggableLine
         hipNumberLabel = h;
         xPos = x;
         this.frame = c;
-        updateTimestamp();
+        commonConfig();
     }
 
 
@@ -71,7 +81,24 @@ public class DraggableLine
         hipNumberLabel = h;
         xPos = x;
         this.frame = null;
+        commonConfig();
+    }
+
+
+    public void commonConfig()
+    {
         updateTimestamp();
+        editableHipNumber = new JTextField("-1");
+        if (hipNumberLabel != -1) {
+            editableHipNumber.setText(((Integer)hipNumberLabel).toString());
+        }
+
+        editableHipNumber.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event)
+            {
+                hipNumberLabel = Integer.parseInt(editableHipNumber.getText());
+            }
+        });
     }
 
 

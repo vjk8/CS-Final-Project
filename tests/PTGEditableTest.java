@@ -2,10 +2,12 @@ package tests;
 
 import javax.swing.JPanel;
 import OCR_server.AthleteOCR;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -38,10 +40,12 @@ public class PTGEditableTest
 
     public PTGEditableTest()
     {
-
+        super();
         this.finishes = new ArrayList<DraggableLine>();
         this.finishes.add(new DraggableLine(new TimeFormat(), 5, 25));
         this.frame = new JFrame("Window title");
+        frame.setLayout(null);
+        frame.add(this);
 
     }
 
@@ -59,8 +63,7 @@ public class PTGEditableTest
                     // {
                     // op.addAthlete(d.getHipNumber());
                     // }
-                    finishes.add(
-                        new DraggableLine(new TimeFormat(), -1, e.getX()));
+                    finishes.add(new DraggableLine(new TimeFormat(), -1, e.getX()));
                     // PostTimingGUI.this.removeAll();
                     repaint();
                 }
@@ -139,7 +142,15 @@ public class PTGEditableTest
         for (int i = 0; i < finishes.size(); i++)
         {
             g.drawLine(finishes.get(i).getXPos(), 0, finishes.get(i).getXPos(), this.getHeight());
-            g.drawString("" + finishes.get(i).getHipNumber(), finishes.get(i).getXPos() + 6, 30);
+            //g.drawString("" + finishes.get(i).getHipNumber(), finishes.get(i).getXPos() + 6, 30);
+
+            
+            //JTextField textField = finishes.get(i).editableHipNumber;
+
+            //System.out.println(textField);
+
+            //this.add(textField);
+
             g.drawString(
                 "" + finishes.get(i).getTimestamp(),
                 finishes.get(i).getXPos() + 6,
@@ -147,10 +158,11 @@ public class PTGEditableTest
         }
     }
 
+
     public void run()
     {
         addListener();
-        frame = new JFrame("Window title");
+        frame = new JFrame();
         frame.setSize(1000, 500);
 
         frame.add(this);
@@ -159,8 +171,13 @@ public class PTGEditableTest
     }
 }
 
-class Tester {
-    public static void main(String[] args) {
+
+
+
+class Tester
+{
+    public static void main(String[] args)
+    {
         PTGEditableTest ptg = new PTGEditableTest();
         ptg.run();
     }
