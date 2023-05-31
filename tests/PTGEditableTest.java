@@ -1,6 +1,7 @@
 package tests;
 
 import OCR_server.AthleteOCR;
+import components.*;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
@@ -27,7 +28,6 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import org.opencv.core.*;
 import org.opencv.imgcodecs.Imgcodecs;
-import components.*;
 
 public class PTGEditableTest extends JPanel {
 
@@ -38,12 +38,11 @@ public class PTGEditableTest extends JPanel {
     public PTGEditableTest() {
         super();
         this.finishes = new ArrayList<DraggableLine>();
-        //this.finishes.add(new DraggableLine(new TimeFormat(), 5, 25));
+        // this.finishes.add(new DraggableLine(new TimeFormat(), 5, 25));
         this.frame = new JFrame("Window title");
         frame.setLayout(null);
         frame.add(this);
         repaint();
-
     }
 
     public void addListener() {
@@ -58,7 +57,7 @@ public class PTGEditableTest extends JPanel {
                         if (finishes.get(i).getXPos() == e.getX()) {
                             PTGEditableTest.this.remove(finishes.get(i).editableHipNumber);
                             finishes.remove(finishes.get(i));
-                            
+
                             repaint();
                         }
                     }
@@ -113,28 +112,24 @@ public class PTGEditableTest extends JPanel {
             // g.drawString("" + finishes.get(i).getHipNumber(), finishes.get(i).getXPos() + 6, 30);
 
             DraggableLine d = finishes.get(i);
-            
+
             JTextField textField = d.editableHipNumber;
 
-            textField.setBounds(d.getXPos()+6, 20, 20, 20);
+            textField.setBounds(d.getXPos() + 6, 20, 20, 20);
             textField.setVisible(true);
 
             textField.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent event)
-                {
+                public void actionPerformed(ActionEvent event) {
                     textField.setText(textField.getText());
                     d.setHipNumber(textField.getText());
                     textField.setText(((Integer)d.getHipNumber()).toString());
                 }
             });
 
-
             add(textField);
 
-            g.drawString(
-                "TIME_PLACEHOLDER" + finishes.get(i).getTimestamp(),
-                finishes.get(i).getXPos() + 6,
-                (int)(Math.random() * 380) + 50);
+            g.drawString("TIME_PLACEHOLDER" + finishes.get(i).getTimestamp(), finishes.get(i).getXPos() + 6,
+                         (int)(Math.random() * 380) + 50);
         }
     }
 
