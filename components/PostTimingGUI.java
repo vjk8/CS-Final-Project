@@ -5,6 +5,8 @@ import OCR_server.AthleteOCR;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -20,6 +22,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import org.opencv.core.*;
 import org.opencv.imgcodecs.Imgcodecs;
@@ -29,18 +32,20 @@ import org.opencv.imgcodecs.Imgcodecs;
  * corresponding to each athlete. Also creates buttons that call the ocr and
  * methods from the Outputprocessor.
  */
-public class PostTimingGUI extends JPanel {
+public class PostTimingGUI
+    extends JPanel
+{
     private static ArrayList<DraggableLine> finishes;
-    private static CompositeFrame finishImage;
-    private static ArrayList<SingleFrame> OCRstream;
-    private int check = 0;
-    private JFrame frame;
-    private static AthleteOCR aOcr;
-    private JButton ocr;
-    private JButton exportCSV;
-    private JButton exportHtml;
-    private JButton exportText;
-    private JButton printResults;
+    private static CompositeFrame           finishImage;
+    private static ArrayList<SingleFrame>   OCRstream;
+    private int                             check = 0;
+    private JFrame                          frame;
+    private static AthleteOCR               aOcr;
+    private JButton                         ocr;
+    private JButton                         exportCSV;
+    private JButton                         exportHtml;
+    private JButton                         exportText;
+    private JButton                         printResults;
     // ocr button, export csv, export html, export text, print results
 
     /**
@@ -51,7 +56,8 @@ public class PostTimingGUI extends JPanel {
      * @param ocr
      *            an arraylist of frames
      */
-    public PostTimingGUI(CompositeFrame image, ArrayList<SingleFrame> ocr) {
+    public PostTimingGUI(CompositeFrame image, ArrayList<SingleFrame> ocr)
+    {
         // TODO complete constructor
 
         this.OCRstream = ocr;
@@ -65,20 +71,20 @@ public class PostTimingGUI extends JPanel {
         this.exportText = new JButton("Export as Plaintext");
         this.printResults = new JButton("Print results to CLI");
 
-        for (SingleFrame s : this.OCRstream) {
-            System.out.println(s.getTime());
-        }
-
         System.out.println(finishImage.getTimestampList());
 
     }
 
-    private int validPos(int observedPos) {
-        while (finishImage.getTimeAtPixel(observedPos) == null) {
+
+    private int validPos(int observedPos)
+    {
+        while (finishImage.getTimeAtPixel(observedPos) == null)
+        {
             observedPos--;
         }
         return observedPos;
     }
+
 
     /**
      * Adds a mouselistener that detects when the draggable lines are pressed,
@@ -86,24 +92,30 @@ public class PostTimingGUI extends JPanel {
      * new position. Also adds a new draggable line if the left button is
      * clicked, and deletes a draggable line if the right button is clicked.
      */
-    public void addListener() {
+    public void addListener()
+    {
         addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent e)
             {
                 if (SwingUtilities.isLeftMouseButton(e))
                 {
-                    //OutputProcessor op = new OutputProcessor(finishes);
-                    //for (DraggableLine d : finishes)
-                    //{
-                        //op.addAthlete(d.getHipNumber());
-                    //}
-                    finishes.add(new DraggableLine(new TimeFormat(), -1, validPos(e.getX()), finishImage));
+                    // OutputProcessor op = new OutputProcessor(finishes);
+                    // for (DraggableLine d : finishes)
+                    // {
+                    // op.addAthlete(d.getHipNumber());
+                    // }
+                    finishes.add(
+                        new DraggableLine(new TimeFormat(), -1, validPos(e.getX()), finishImage));
                     // PostTimingGUI.this.removeAll();
                     repaint();
-                } else if (SwingUtilities.isRightMouseButton(e)) {
-                    for (int i = 0; i < finishes.size(); i++) {
-                        if (finishes.get(i).getXPos() == e.getX()) {
+                }
+                else if (SwingUtilities.isRightMouseButton(e))
+                {
+                    for (int i = 0; i < finishes.size(); i++)
+                    {
+                        if (finishes.get(i).getXPos() == e.getX())
+                        {
                             finishes.remove(finishes.get(i));
                             // PostTimingGUI.this.removeAll();
                             repaint();
@@ -112,10 +124,13 @@ public class PostTimingGUI extends JPanel {
                 }
             }
 
+
             @Override
-            public void mousePressed(java.awt.event.MouseEvent e) {
+            public void mousePressed(java.awt.event.MouseEvent e)
+            {
                 check = e.getX();
             }
+
 
             @Override
             public void mouseReleased(java.awt.event.MouseEvent e)
@@ -136,15 +151,20 @@ public class PostTimingGUI extends JPanel {
                 }
             }
 
-            @Override
-            public void mouseEntered(java.awt.event.MouseEvent e) {
-            }
 
             @Override
-            public void mouseExited(java.awt.event.MouseEvent e) {
+            public void mouseEntered(java.awt.event.MouseEvent e)
+            {
+            }
+
+
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent e)
+            {
             }
         });
     }
+
 
     /**
      * for each draggable line in the array finishes, draws a line as well as
@@ -153,7 +173,8 @@ public class PostTimingGUI extends JPanel {
      * @param g
      *            tool used to draw in GUI
      */
-    public void paint(Graphics g) {
+    public void paint(Graphics g)
+    {
         super.paint(g);
         /*
          * if (finishImage != null) { add(new JLabel(new
@@ -162,13 +183,17 @@ public class PostTimingGUI extends JPanel {
         frame.pack();
 
         g.setColor(Color.RED);
-        for (int i = 0; i < finishes.size(); i++) {
+        for (int i = 0; i < finishes.size(); i++)
+        {
             g.drawLine(finishes.get(i).getXPos(), 0, finishes.get(i).getXPos(), this.getHeight());
             g.drawString("" + finishes.get(i).getHipNumber(), finishes.get(i).getXPos() + 6, 30);
-            g.drawString("" + finishes.get(i).getTimestamp(), finishes.get(i).getXPos() + 6,
-                         (int)(Math.random() * 400) + 40);
+            g.drawString(
+                "" + finishes.get(i).getTimestamp(),
+                finishes.get(i).getXPos() + 6,
+                (int)(Math.random() * 400) + 40);
         }
     }
+
 
     /**
      * For each draggable line, every time it is moved, it gets the ocr. Then it
@@ -179,10 +204,13 @@ public class PostTimingGUI extends JPanel {
      *            the x position of the frame
      * @return the hip number of the athlete
      */
-    private static int getOCR(int xPos) {
+    private static int getOCR(int xPos)
+    {
         int i = 0;
-        for (DraggableLine d : finishes) {
-            if (d.getXPos() == xPos) {
+        for (DraggableLine d : finishes)
+        {
+            if (d.getXPos() == xPos)
+            {
                 d.updateTimestamp();
                 break;
             }
@@ -203,8 +231,10 @@ public class PostTimingGUI extends JPanel {
             }
         }
 
-        try {
-            if (ret != null) {
+        try
+        {
+            if (ret != null)
+            {
                 int OCR_ret = aOcr.getAthleteNumber(ret);
                 System.out.println("OCR found hip number of " + OCR_ret);
                 return OCR_ret;
@@ -212,7 +242,9 @@ public class PostTimingGUI extends JPanel {
 
             else
                 System.out.println("Mat ret is null");
-        } catch (IOException ioex) {
+        }
+        catch (IOException ioex)
+        {
             System.out.println(ioex.getStackTrace());
         }
 
@@ -257,16 +289,20 @@ public class PostTimingGUI extends JPanel {
      * buttons as well as a mouseListener to it. Also adds the finish image and
      * calls the paint method to draw the draggable lines.
      */
-    public void run() {
+    public void run()
+    {
         // TODO GUI code, treat like a main method
 
         // ocr button, export csv, export html, export text, print results
 
         ocr.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                if (OCRstream != null) {
-                    for (DraggableLine d : finishes) {
+            public void actionPerformed(ActionEvent e)
+            {
+                if (OCRstream != null)
+                {
+                    for (DraggableLine d : finishes)
+                    {
                         PostTimingGUI.this.getOCR(d.getXPos());
                     }
                 }
@@ -281,7 +317,9 @@ public class PostTimingGUI extends JPanel {
                 try
                 {
                     op.exportCSV(".\\finishes.csv");
-                } catch (IOException a) {
+                }
+                catch (IOException a)
+                {
                     System.out.println(a.getStackTrace());
                 }
             }
@@ -295,7 +333,9 @@ public class PostTimingGUI extends JPanel {
                 try
                 {
                     op.exportHTML(".\\finishes.html");
-                } catch (IOException a) {
+                }
+                catch (IOException a)
+                {
                     System.out.println(a.getStackTrace());
                 }
             }
@@ -309,7 +349,9 @@ public class PostTimingGUI extends JPanel {
                 try
                 {
                     op.exportText(".\\finishes.txt");
-                } catch (IOException a) {
+                }
+                catch (IOException a)
+                {
                     System.out.println(a.getStackTrace());
                 }
             }
@@ -332,7 +374,8 @@ public class PostTimingGUI extends JPanel {
         // frame.add(exportText);
         // frame.add(printResults);
 
-        if (finishImage != null) {
+        if (finishImage != null)
+        {
             add(new JLabel(new ImageIcon(finishImage.getImage())));
             add(ocr);
             add(exportCSV);
@@ -345,38 +388,54 @@ public class PostTimingGUI extends JPanel {
         repaint();
     }
 
-    private static void testimshow(Mat m) {
+
+    private static void testimshow(Mat m)
+    {
         JFrame f2 = new JFrame();
         f2.getContentPane().setLayout(new FlowLayout());
-        try {
+        try
+        {
             f2.getContentPane().add(new JLabel(new ImageIcon(Mat2BufferedImage(m))));
-        } catch (IOException e) {
+        }
+        catch (IOException e)
+        {
             System.out.println(e.getStackTrace());
         }
         f2.pack();
         f2.setVisible(true);
     }
 
-    private static BufferedImage Mat2BufferedImage(Mat mat) throws IOException {
-        try {
+
+    private static BufferedImage Mat2BufferedImage(Mat mat)
+        throws IOException
+    {
+        try
+        {
             MatOfByte matOfByte = new MatOfByte();
             Imgcodecs.imencode(".jpg", mat, matOfByte);
             byte[] byteArray = matOfByte.toArray();
             InputStream in = new ByteArrayInputStream(byteArray);
             BufferedImage bufImage = ImageIO.read(in);
             return bufImage;
-        } catch (CvException cvex) {
+        }
+        catch (CvException cvex)
+        {
             System.out.println(cvex.getStackTrace().toString());
             return null;
         }
     }
 }
 
+
+
+
 /**
  * test class
  */
-class PTGTester {
-    public static void main(String[] args) {
+class PTGTester
+{
+    public static void main(String[] args)
+    {
         PostTimingGUI PTG = new PostTimingGUI(null, null);
         PTG.run();
     }
