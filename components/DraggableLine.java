@@ -1,9 +1,9 @@
 package components;
 
 import java.awt.Color;
-import javax.swing.JTextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.JTextField;
 
 /**
  * DraggableLine class stores information about each of the draggable lines
@@ -16,7 +16,7 @@ public class DraggableLine implements Comparable {
     private int hipNumberLabel;
     private int xPos;
     private CompositeFrame frame;
-    public JTextField      editableHipNumber;
+    public JTextField editableHipNumber;
 
     /**
      * Initializes a draggable line with no info given.
@@ -32,9 +32,7 @@ public class DraggableLine implements Comparable {
         commonConfig();
     }
 
-
-    public void setHipNumber(int hipNumber)
-    {
+    public void setHipNumber(int hipNumber) {
         this.hipNumberLabel = hipNumber;
     }
 
@@ -77,9 +75,7 @@ public class DraggableLine implements Comparable {
         commonConfig();
     }
 
-
-    public void commonConfig()
-    {
+    public void commonConfig() {
         updateTimestamp();
         editableHipNumber = new JTextField("-1");
         if (hipNumberLabel != -1) {
@@ -87,8 +83,7 @@ public class DraggableLine implements Comparable {
         }
 
         editableHipNumber.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent event)
-            {
+            public void actionPerformed(ActionEvent event) {
                 hipNumberLabel = Integer.parseInt(editableHipNumber.getText());
             }
         });

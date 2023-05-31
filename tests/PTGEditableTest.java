@@ -34,15 +34,13 @@ public class PTGEditableTest extends JPanel {
     private int check = 0;
     private JFrame frame;
 
-    public PTGEditableTest()
-    {
+    public PTGEditableTest() {
         super();
         this.finishes = new ArrayList<DraggableLine>();
         this.finishes.add(new DraggableLine(new TimeFormat(), 5, 25));
         this.frame = new JFrame("Window title");
         frame.setLayout(null);
         frame.add(this);
-
     }
 
     public void addListener() {
@@ -115,25 +113,20 @@ public class PTGEditableTest extends JPanel {
         g.setColor(Color.RED);
         for (int i = 0; i < finishes.size(); i++) {
             g.drawLine(finishes.get(i).getXPos(), 0, finishes.get(i).getXPos(), this.getHeight());
-            //g.drawString("" + finishes.get(i).getHipNumber(), finishes.get(i).getXPos() + 6, 30);
+            // g.drawString("" + finishes.get(i).getHipNumber(), finishes.get(i).getXPos() + 6, 30);
 
-            
-            //JTextField textField = finishes.get(i).editableHipNumber;
+            // JTextField textField = finishes.get(i).editableHipNumber;
 
-            //System.out.println(textField);
+            // System.out.println(textField);
 
-            //this.add(textField);
+            // this.add(textField);
 
-            g.drawString(
-                "" + finishes.get(i).getTimestamp(),
-                finishes.get(i).getXPos() + 6,
-                (int)(Math.random() * 400) + 40);
+            g.drawString("" + finishes.get(i).getTimestamp(), finishes.get(i).getXPos() + 6,
+                         (int)(Math.random() * 400) + 40);
         }
     }
 
-
-    public void run()
-    {
+    public void run() {
         addListener();
         frame = new JFrame();
         frame.setSize(1000, 500);
@@ -144,13 +137,8 @@ public class PTGEditableTest extends JPanel {
     }
 }
 
-
-
-
-class Tester
-{
-    public static void main(String[] args)
-    {
+class Tester {
+    public static void main(String[] args) {
         PTGEditableTest ptg = new PTGEditableTest();
         ptg.run();
     }
