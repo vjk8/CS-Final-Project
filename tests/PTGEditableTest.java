@@ -24,15 +24,14 @@ import javax.swing.SwingUtilities;
 import org.opencv.core.*;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
-import components.*;
 
 public class PTGEditableTest extends JPanel {
 
     private static ArrayList<DraggableLine> finishes;
-    private int                             check = 0;
-    private JFrame                          frame;
-    private CompositeFrame                  finishImage;
-    private BufferedImage                   displayImage;
+    private int check = 0;
+    private JFrame frame;
+    private CompositeFrame finishImage;
+    private BufferedImage displayImage;
 
     public PTGEditableTest(CompositeFrame compframe) {
         super();
@@ -44,17 +43,14 @@ public class PTGEditableTest extends JPanel {
         repaint();
         this.finishImage = compframe;
         addAlphaStrip();
-
     }
 
-
-    public void addAlphaStrip()
-    {
+    public void addAlphaStrip() {
         Mat m1 = finishImage.getMat();
         Mat m = new Mat(m1.size(), CvType.CV_8UC4);
 
         System.out.println(m1.type());
-        
+
         Imgproc.cvtColor(m1, m, Imgproc.COLOR_BGR2BGRA);
         Mat alphastrip = new Mat(50, m.cols(), CvType.CV_8UC4, new Scalar(0, 0, 0, 0));
         List<Mat> toBeCombined = Arrays.asList(alphastrip, m);
@@ -63,19 +59,14 @@ public class PTGEditableTest extends JPanel {
         System.out.println(CvType.CV_8UC3);
         System.out.println(m.type());
         Core.vconcat(toBeCombined, m);
-        try
-        {
+        try {
             displayImage = Mat2BufferedImage(m);
-        }
-        catch (IOException ioe)
-        {
+        } catch (IOException ioe) {
             System.out.println(ioe.getStackTrace());
         }
     }
 
-
-    public void addLine(int eloc)
-    {
+    public void addLine(int eloc) {
         finishes.add(new DraggableLine(new TimeFormat(), -1, eloc, finishImage));
         repaint();
     }
@@ -101,9 +92,7 @@ public class PTGEditableTest extends JPanel {
         repaint();
     }
 
-
-    public void addnremove()
-    {
+    public void addnremove() {
         addLine(-10);
         removeLine(-10);
         System.out.println("addnremove()");
@@ -167,8 +156,7 @@ public class PTGEditableTest extends JPanel {
             textField.setVisible(true);
 
             textField.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent event)
-                {
+                public void actionPerformed(ActionEvent event) {
                     textField.setText(textField.getText());
                     d.setHipNumber(textField.getText());
                     textField.setText(((Integer)d.getHipNumber()).toString());
@@ -197,36 +185,29 @@ public class PTGEditableTest extends JPanel {
         repaint();
     }
 
-
     /**
      * A cleaner version of Mat to BufferedImage for displaying the finish
      * images live.
-     * 
+     *
      * @param mat
      *            the Mat to be displayed from the CompositeImage
      * @return a BufferedImage version of the Mat suitable for display in the
      * @throws IOException
      *             in the case that something goes wrong with the conversion
      */
-    private BufferedImage Mat2BufferedImage(Mat mat)
-        throws IOException
-    {
-        try
-        {
+    private BufferedImage Mat2BufferedImage(Mat mat) throws IOException {
+        try {
             MatOfByte matOfByte = new MatOfByte();
             Imgcodecs.imencode(".png", mat, matOfByte);
             byte[] byteArray = matOfByte.toArray();
             InputStream in = new ByteArrayInputStream(byteArray);
             BufferedImage bufImage = ImageIO.read(in);
             return bufImage;
-        }
-        catch (CvException cvex)
-        {
+        } catch (CvException cvex) {
             System.out.println(cvex.getStackTrace().toString());
             return null;
         }
     }
-
 }
 
 class Tester {

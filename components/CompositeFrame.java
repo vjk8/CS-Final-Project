@@ -51,7 +51,8 @@ public class CompositeFrame {
      * @return the TimeFormat elapsed time at pixelIndex
      */
     public TimeFormat getTimeAtPixel(int pixelIndex) {
-        if (pixelIndex < timestamps.size() && pixelIndex >= 0) return timestamps.get((timestamps.size() - 1 - pixelIndex));
+        if (pixelIndex < timestamps.size() && pixelIndex >= 0)
+            return timestamps.get((timestamps.size() - 1 - pixelIndex));
         return null;
     }
 

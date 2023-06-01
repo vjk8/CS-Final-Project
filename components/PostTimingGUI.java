@@ -73,7 +73,6 @@ public class PostTimingGUI extends JPanel {
         repaint();
 
         System.out.println(finishImage.getTimestampList());
-        
     }
 
     private int validPos(int observedPos) {
@@ -83,21 +82,17 @@ public class PostTimingGUI extends JPanel {
         return observedPos;
     }
 
-    public void addAlphaStrip()
-    {
+    public void addAlphaStrip() {
         Mat m1 = finishImage.getMat();
-        Mat m = new Mat(m1.size(), CvType.CV_8UC4);        
+        Mat m = new Mat(m1.size(), CvType.CV_8UC4);
         Imgproc.cvtColor(m1, m, Imgproc.COLOR_BGR2BGRA);
         Mat alphastrip = new Mat(50, m.cols(), CvType.CV_8UC4, new Scalar(0, 0, 0, 0));
 
         List<Mat> toBeCombined = Arrays.asList(alphastrip, m, alphastrip);
         Core.vconcat(toBeCombined, m);
-        try
-        {
+        try {
             displayImage = Mat2BufferedImage(m);
-        }
-        catch (IOException ioe)
-        {
+        } catch (IOException ioe) {
             System.out.println(ioe.getStackTrace());
         }
     }
@@ -155,7 +150,7 @@ public class PostTimingGUI extends JPanel {
                 }
                 repaint();
                 System.out.println("mouseReleased repaint() called");
-                //frame.setSize(frame.getPreferredSize());
+                // frame.setSize(frame.getPreferredSize());
             }
 
             @Override
@@ -193,16 +188,13 @@ public class PostTimingGUI extends JPanel {
                 public void actionPerformed(ActionEvent event) {
                     textField.setText(textField.getText());
                     d.setHipNumber(textField.getText());
-                    textField.setText(((Integer) d.getHipNumber()).toString());
+                    textField.setText(((Integer)d.getHipNumber()).toString());
                 }
             });
 
             add(textField);
 
-            g.drawString("" + finishes.get(i).getTimestamp(), finishes.get(i).getXPos() + 6,
-                         getHeight() - 40);
-            
-            
+            g.drawString("" + finishes.get(i).getTimestamp(), finishes.get(i).getXPos() + 6, getHeight() - 40);
         }
         frame.setSize(frame.getPreferredSize());
         System.out.println("repainted");
@@ -347,11 +339,11 @@ public class PostTimingGUI extends JPanel {
 
         if (finishImage != null) {
             add(new JLabel(new ImageIcon(displayImage)));
-            //add(ocr);
-            //add(exportCSV);
-            //add(exportHtml);
-            //add(exportText);
-            //add(printResults);
+            // add(ocr);
+            // add(exportCSV);
+            // add(exportHtml);
+            // add(exportText);
+            // add(printResults);
         }
         frame.add(this);
         frame.setVisible(true);
