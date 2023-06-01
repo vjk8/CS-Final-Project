@@ -9,7 +9,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -18,6 +23,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import org.opencv.core.*;
 import org.opencv.imgcodecs.Imgcodecs;
+import org.opencv.imgproc.Imgproc;
 import components.*;
 
 public class PTGEditableTest
@@ -28,6 +34,7 @@ public class PTGEditableTest
     private int                             check = 0;
     private JFrame                          frame;
     private CompositeFrame                  finishImage;
+    private BufferedImage                   displayImage;
 
     public PTGEditableTest(CompositeFrame compframe)
     {
@@ -39,7 +46,34 @@ public class PTGEditableTest
         frame.add(this);
         repaint();
         this.finishImage = compframe;
+        addAlphaStrip();
 
+    }
+
+
+    public void addAlphaStrip()
+    {
+        Mat m1 = finishImage.getMat();
+        Mat m = new Mat(m1.size(), CvType.CV_8UC4);
+
+        System.out.println(m1.type());
+        
+        Imgproc.cvtColor(m1, m, Imgproc.COLOR_BGR2BGRA);
+        Mat alphastrip = new Mat(50, m.cols(), CvType.CV_8UC4, new Scalar(0, 0, 0, 0));
+        List<Mat> toBeCombined = Arrays.asList(alphastrip, m);
+        System.out.println(CvType.CV_8UC4);
+        System.out.println(alphastrip.type());
+        System.out.println(CvType.CV_8UC3);
+        System.out.println(m.type());
+        Core.vconcat(toBeCombined, m);
+        try
+        {
+            displayImage = Mat2BufferedImage(m);
+        }
+        catch (IOException ioe)
+        {
+            System.out.println(ioe.getStackTrace());
+        }
     }
 
 
@@ -78,15 +112,14 @@ public class PTGEditableTest
             }
         }
         repaint();
-        addnremove();
     }
 
-    public void addnremove() {
-        DraggableLine d = new DraggableLine(new TimeFormat(), 5, -1);
-        this.finishes.add(d);
-        repaint();
-        this.finishes.remove(d);
-        repaint();
+
+    public void addnremove()
+    {
+        addLine(-10);
+        removeLine(-10);
+        System.out.println("addnremove()");
     }
 
 
@@ -120,6 +153,7 @@ public class PTGEditableTest
             public void mouseReleased(java.awt.event.MouseEvent e)
             {
                 moveLine(e.getX());
+                addnremove();
             }
 
 
@@ -163,7 +197,8 @@ public class PTGEditableTest
             textField.setVisible(true);
 
             textField.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent event) {
+                public void actionPerformed(ActionEvent event)
+                {
                     textField.setText(textField.getText());
                     d.setHipNumber(textField.getText());
                     textField.setText(((Integer)d.getHipNumber()).toString());
@@ -177,7 +212,7 @@ public class PTGEditableTest
                 finishes.get(i).getXPos() + 6,
                 (int)(Math.random() * 380) + 50);
 
-            frame.setSize(frame.getPreferredSize());
+            // frame.setSize(frame.getPreferredSize());
         }
         System.out.println("repainted");
     }
@@ -188,13 +223,44 @@ public class PTGEditableTest
         addListener();
         frame = new JFrame();
         frame.setSize(1000, 500);
-        add(new JLabel(new ImageIcon(finishImage.getImage())));
+        add(new JLabel(new ImageIcon(displayImage)));
         repaint();
 
         frame.add(this);
         frame.setVisible(true);
         repaint();
     }
+
+
+    /**
+     * A cleaner version of Mat to BufferedImage for displaying the finish
+     * images live.
+     * 
+     * @param mat
+     *            the Mat to be displayed from the CompositeImage
+     * @return a BufferedImage version of the Mat suitable for display in the
+     * @throws IOException
+     *             in the case that something goes wrong with the conversion
+     */
+    private BufferedImage Mat2BufferedImage(Mat mat)
+        throws IOException
+    {
+        try
+        {
+            MatOfByte matOfByte = new MatOfByte();
+            Imgcodecs.imencode(".png", mat, matOfByte);
+            byte[] byteArray = matOfByte.toArray();
+            InputStream in = new ByteArrayInputStream(byteArray);
+            BufferedImage bufImage = ImageIO.read(in);
+            return bufImage;
+        }
+        catch (CvException cvex)
+        {
+            System.out.println(cvex.getStackTrace().toString());
+            return null;
+        }
+    }
+
 }
 
 

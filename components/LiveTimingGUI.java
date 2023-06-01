@@ -147,8 +147,8 @@ public class LiveTimingGUI extends JPanel {
     private void startPTG() {
         PostTimingGUI PTG = new PostTimingGUI(camera.getCompositeFrame(), camera.getOCRStream());
         PTG.run();
-        PTGEditableTest PTGtest = new PTGEditableTest(camera.getCompositeFrame());
-        PTGtest.run();
+        //PTGEditableTest PTGtest = new PTGEditableTest(camera.getCompositeFrame());
+        //PTGtest.run();
     }
 
     /**

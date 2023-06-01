@@ -24,6 +24,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import org.opencv.core.*;
 import org.opencv.imgcodecs.Imgcodecs;
+import org.opencv.imgproc.Imgproc;
 
 /**
  * The PostTImingGUI class is called by LiveTiminGUI and adds draggable lines
@@ -42,6 +43,7 @@ public class PostTimingGUI extends JPanel {
     private JButton exportHtml;
     private JButton exportText;
     private JButton printResults;
+    BufferedImage displayImage;
     // ocr button, export csv, export html, export text, print results
 
     /**
@@ -67,9 +69,11 @@ public class PostTimingGUI extends JPanel {
         this.frame = new JFrame("Post Timing");
         //this.frame.setLayout(null);
         frame.add(this);
+        addAlphaStrip();
         repaint();
 
         System.out.println(finishImage.getTimestampList());
+        
     }
 
     private int validPos(int observedPos) {
@@ -77,6 +81,25 @@ public class PostTimingGUI extends JPanel {
             observedPos--;
         }
         return observedPos;
+    }
+
+    public void addAlphaStrip()
+    {
+        Mat m1 = finishImage.getMat();
+        Mat m = new Mat(m1.size(), CvType.CV_8UC4);        
+        Imgproc.cvtColor(m1, m, Imgproc.COLOR_BGR2BGRA);
+        Mat alphastrip = new Mat(50, m.cols(), CvType.CV_8UC4, new Scalar(0, 0, 0, 0));
+
+        List<Mat> toBeCombined = Arrays.asList(alphastrip, m, alphastrip);
+        Core.vconcat(toBeCombined, m);
+        try
+        {
+            displayImage = Mat2BufferedImage(m);
+        }
+        catch (IOException ioe)
+        {
+            System.out.println(ioe.getStackTrace());
+        }
     }
 
     /**
@@ -132,7 +155,7 @@ public class PostTimingGUI extends JPanel {
                 }
                 repaint();
                 System.out.println("mouseReleased repaint() called");
-                frame.setSize(frame.getPreferredSize());
+                //frame.setSize(frame.getPreferredSize());
             }
 
             @Override
@@ -171,7 +194,7 @@ public class PostTimingGUI extends JPanel {
                 {
                     textField.setText(textField.getText());
                     d.setHipNumber(textField.getText());
-                    textField.setText(((Integer)d.getHipNumber()).toString());
+                    textField.setText(((Integer) d.getHipNumber()).toString());
                 }
             });
 
@@ -179,10 +202,11 @@ public class PostTimingGUI extends JPanel {
             add(textField);
 
             g.drawString("" + finishes.get(i).getTimestamp(), finishes.get(i).getXPos() + 6,
-                         (int)(Math.random() * 380) + 50);
+                         getHeight() - 40);
             
-            frame.setSize(frame.getPreferredSize());
+            
         }
+        frame.setSize(frame.getPreferredSize());
         System.out.println("repainted");
     }
 
@@ -325,7 +349,7 @@ public class PostTimingGUI extends JPanel {
         frame.setSize(1000, 500);
 
         if (finishImage != null) {
-            add(new JLabel(new ImageIcon(finishImage.getImage())));
+            add(new JLabel(new ImageIcon(displayImage)));
             //add(ocr);
             //add(exportCSV);
             //add(exportHtml);
@@ -352,7 +376,7 @@ public class PostTimingGUI extends JPanel {
     private static BufferedImage Mat2BufferedImage(Mat mat) throws IOException {
         try {
             MatOfByte matOfByte = new MatOfByte();
-            Imgcodecs.imencode(".jpg", mat, matOfByte);
+            Imgcodecs.imencode(".png", mat, matOfByte);
             byte[] byteArray = matOfByte.toArray();
             InputStream in = new ByteArrayInputStream(byteArray);
             BufferedImage bufImage = ImageIO.read(in);
