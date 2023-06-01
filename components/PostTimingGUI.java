@@ -95,12 +95,9 @@ public class PostTimingGUI
 
         List<Mat> toBeCombined = Arrays.asList(alphastrip, m, alphastrip);
         Core.vconcat(toBeCombined, m);
-        try
-        {
+        try {
             displayImage = Mat2BufferedImage(m);
-        }
-        catch (IOException ioe)
-        {
+        } catch (IOException ioe) {
             System.out.println(ioe.getStackTrace());
         }
     }
