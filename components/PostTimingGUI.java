@@ -67,7 +67,7 @@ public class PostTimingGUI extends JPanel {
         this.exportText = new JButton("Export as Plaintext");
         this.printResults = new JButton("Print results to CLI");
         this.frame = new JFrame("Post Timing");
-        //this.frame.setLayout(null);
+        // this.frame.setLayout(null);
         frame.add(this);
         addAlphaStrip();
         repaint();
@@ -116,7 +116,7 @@ public class PostTimingGUI extends JPanel {
                     finishes.add(new DraggableLine(new TimeFormat(), -1, validPos(e.getX()), finishImage));
                     repaint();
                     System.out.println("Mouse Clicked left repaint() called");
-                    //frame.setSize(frame.getPreferredSize());
+                    // frame.setSize(frame.getPreferredSize());
                 } else if (SwingUtilities.isRightMouseButton(e)) {
                     for (int i = 0; i < finishes.size(); i++) {
                         if (finishes.get(i).getXPos() == e.getX()) {
@@ -124,13 +124,13 @@ public class PostTimingGUI extends JPanel {
                             finishes.remove(finishes.get(i));
                             repaint();
                             System.out.println("Mouse Clicked right repaint() called");
-                            //frame.setSize(frame.getPreferredSize());
+                            // frame.setSize(frame.getPreferredSize());
                         }
                     }
                 }
                 repaint();
                 System.out.println("Mouse Clicked catch-all repaint() called");
-                //frame.setSize(frame.getPreferredSize());
+                // frame.setSize(frame.getPreferredSize());
             }
 
             @Override
@@ -138,7 +138,7 @@ public class PostTimingGUI extends JPanel {
                 check = e.getX();
                 repaint();
                 System.out.println("Mouse Pressed repaint() called");
-                //frame.setSize(frame.getPreferredSize());
+                // frame.setSize(frame.getPreferredSize());
             }
 
             @Override
@@ -146,12 +146,12 @@ public class PostTimingGUI extends JPanel {
                 for (int i = 0; i < finishes.size(); i++) {
                     if (Math.abs(finishes.get(i).getXPos() - check) <= 5 /* Threshold for click error */) {
                         finishes.get(i).changeXPos(validPos(e.getX()));
-                        //repaint();
-                        //System.out.println("if condition repaint() called");
-                        //frame.setSize(frame.getPreferredSize());
+                        // repaint();
+                        // System.out.println("if condition repaint() called");
+                        // frame.setSize(frame.getPreferredSize());
                     }
-                    //repaint();
-                    //frame.setSize(frame.getPreferredSize());
+                    // repaint();
+                    // frame.setSize(frame.getPreferredSize());
                 }
                 repaint();
                 System.out.println("mouseReleased repaint() called");
@@ -177,27 +177,25 @@ public class PostTimingGUI extends JPanel {
      */
     public void paint(Graphics g) {
         super.paint(g);
-        //frame.pack();
+        // frame.pack();
 
         g.setColor(Color.RED);
         for (int i = 0; i < finishes.size(); i++) {
             g.drawLine(finishes.get(i).getXPos(), 0, finishes.get(i).getXPos(), this.getHeight());
             DraggableLine d = finishes.get(i);
-            
+
             JTextField textField = d.editableHipNumber;
 
-            textField.setBounds(d.getXPos()+6, 20, 20, 20);
+            textField.setBounds(d.getXPos() + 6, 20, 20, 20);
             textField.setVisible(true);
 
             textField.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent event)
-                {
+                public void actionPerformed(ActionEvent event) {
                     textField.setText(textField.getText());
                     d.setHipNumber(textField.getText());
                     textField.setText(((Integer) d.getHipNumber()).toString());
                 }
             });
-
 
             add(textField);
 
@@ -342,7 +340,6 @@ public class PostTimingGUI extends JPanel {
                 op.printResults();
             }
         }); */
-
 
         addListener();
         frame = new JFrame("Post Timing");

@@ -26,9 +26,7 @@ import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 import components.*;
 
-public class PTGEditableTest
-    extends JPanel
-{
+public class PTGEditableTest extends JPanel {
 
     private static ArrayList<DraggableLine> finishes;
     private int                             check = 0;
@@ -36,8 +34,7 @@ public class PTGEditableTest
     private CompositeFrame                  finishImage;
     private BufferedImage                   displayImage;
 
-    public PTGEditableTest(CompositeFrame compframe)
-    {
+    public PTGEditableTest(CompositeFrame compframe) {
         super();
         this.finishes = new ArrayList<DraggableLine>();
         // this.finishes.add(new DraggableLine(new TimeFormat(), 5, 25));
@@ -83,13 +80,9 @@ public class PTGEditableTest
         repaint();
     }
 
-
-    public void removeLine(int eloc)
-    {
-        for (int i = 0; i < finishes.size(); i++)
-        {
-            if (finishes.get(i).getXPos() == eloc)
-            {
+    public void removeLine(int eloc) {
+        for (int i = 0; i < finishes.size(); i++) {
+            if (finishes.get(i).getXPos() == eloc) {
                 PTGEditableTest.this.remove(finishes.get(i).editableHipNumber);
                 finishes.remove(finishes.get(i));
 
@@ -98,15 +91,9 @@ public class PTGEditableTest
         }
     }
 
-
-    public void moveLine(int eloc)
-    {
-        for (int i = 0; i < finishes.size(); i++)
-        {
-            if (Math.abs(
-                finishes.get(i).getXPos()
-                    - check) <= 5 /* Threshold for click error */)
-            {
+    public void moveLine(int eloc) {
+        for (int i = 0; i < finishes.size(); i++) {
+            if (Math.abs(finishes.get(i).getXPos() - check) <= 5 /* Threshold for click error */) {
                 finishes.get(i).changeXPos(eloc);
                 repaint();
             }
@@ -122,54 +109,39 @@ public class PTGEditableTest
         System.out.println("addnremove()");
     }
 
-
-    public void addListener()
-    {
+    public void addListener() {
         addMouseListener(new MouseListener() {
             @Override
-            public void mouseClicked(java.awt.event.MouseEvent e)
-            {
-                if (SwingUtilities.isLeftMouseButton(e) && e.getY() >= 50)
-                {
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                if (SwingUtilities.isLeftMouseButton(e) && e.getY() >= 50) {
                     addLine(e.getX());
-                }
-                else if (SwingUtilities.isRightMouseButton(e))
-                {
+                } else if (SwingUtilities.isRightMouseButton(e)) {
                     removeLine(e.getX());
                 }
                 repaint();
             }
 
-
             @Override
-            public void mousePressed(java.awt.event.MouseEvent e)
-            {
+            public void mousePressed(java.awt.event.MouseEvent e) {
                 check = e.getX();
                 repaint();
             }
 
-
             @Override
-            public void mouseReleased(java.awt.event.MouseEvent e)
-            {
+            public void mouseReleased(java.awt.event.MouseEvent e) {
                 moveLine(e.getX());
                 addnremove();
             }
 
-
             @Override
-            public void mouseEntered(java.awt.event.MouseEvent e)
-            {
+            public void mouseEntered(java.awt.event.MouseEvent e) {
             }
 
-
             @Override
-            public void mouseExited(java.awt.event.MouseEvent e)
-            {
+            public void mouseExited(java.awt.event.MouseEvent e) {
             }
         });
     }
-
 
     /**
      * for each draggable line in the array finishes, draws a line as well as
@@ -178,13 +150,11 @@ public class PTGEditableTest
      * @param g
      *            tool used to draw in GUI
      */
-    public void paint(Graphics g)
-    {
+    public void paint(Graphics g) {
         super.paint(g);
 
         g.setColor(Color.RED);
-        for (int i = 0; i < finishes.size(); i++)
-        {
+        for (int i = 0; i < finishes.size(); i++) {
             g.drawLine(finishes.get(i).getXPos(), 0, finishes.get(i).getXPos(), this.getHeight());
             // g.drawString("" + finishes.get(i).getHipNumber(),
             // finishes.get(i).getXPos() + 6, 30);
@@ -207,19 +177,15 @@ public class PTGEditableTest
 
             add(textField);
 
-            g.drawString(
-                "" + finishes.get(i).getTimestamp(),
-                finishes.get(i).getXPos() + 6,
-                (int)(Math.random() * 380) + 50);
+            g.drawString("" + finishes.get(i).getTimestamp(), finishes.get(i).getXPos() + 6,
+                         (int)(Math.random() * 380) + 50);
 
             // frame.setSize(frame.getPreferredSize());
         }
         System.out.println("repainted");
     }
 
-
-    public void run()
-    {
+    public void run() {
         addListener();
         frame = new JFrame();
         frame.setSize(1000, 500);
@@ -263,13 +229,8 @@ public class PTGEditableTest
 
 }
 
-
-
-
-class Tester
-{
-    public static void main(String[] args)
-    {
+class Tester {
+    public static void main(String[] args) {
         // PTGEditableTest ptg = new PTGEditableTest();
         // ptg.run();
         System.out.println("deprecated main method of PTGEditable");
