@@ -211,7 +211,6 @@ public class PostTimingGUI extends JPanel {
             if (Math.abs(f.getTime().intValue() - finishes.get(i).getTimestamp().intValue()) <= 100) {
                 ret = f.getMat();
                 if (ret != null) {
-                    testimshow(ret);
                     break;
                 }
             }
