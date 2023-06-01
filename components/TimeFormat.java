@@ -56,12 +56,14 @@ public class TimeFormat implements Comparable {
             Minutes += originalTime.charAt(i);
         }
         numberSeconds += Double.parseDouble(Minutes) * 60;
-        numberSeconds += Double.parseDouble(originalTime.substring(firstColonIndex+1, firstColonIndex+3));
-        double mils = Double.parseDouble(originalTime.substring(firstColonIndex+4, Math.min(firstColonIndex+6, originalTime.length()))) / 100.0;
+        numberSeconds += Double.parseDouble(originalTime.substring(firstColonIndex + 1, firstColonIndex + 3));
+        double mils = Double.parseDouble(originalTime.substring(firstColonIndex + 4,
+                                                                Math.min(firstColonIndex + 6, originalTime.length()))) /
+                      100.0;
         if (mils < .1) mils *= 10;
         numberSeconds += mils;
-        
-        int timeMillis = (int) (numberSeconds * 1000);
+
+        int timeMillis = (int)(numberSeconds * 1000);
 
         hours = timeMillis / 3600000;
         timeMillis -= 3600000 * hours;

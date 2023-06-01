@@ -297,8 +297,7 @@ public class PostTimingGUI
 
 
     // to prevent code duplication
-    private OutputProcessor preppedProcessor()
-    {
+    private OutputProcessor preppedProcessor() {
         return preppedProcessor(outputProcessorHashMap);
     }
 
