@@ -359,18 +359,6 @@ public class PostTimingGUI extends JPanel {
         repaint();
     }
 
-    private static void testimshow(Mat m) {
-        JFrame f2 = new JFrame();
-        f2.getContentPane().setLayout(new FlowLayout());
-        try {
-            f2.getContentPane().add(new JLabel(new ImageIcon(Mat2BufferedImage(m))));
-        } catch (IOException e) {
-            System.out.println(e.getStackTrace());
-        }
-        f2.pack();
-        f2.setVisible(true);
-    }
-
     private static BufferedImage Mat2BufferedImage(Mat mat) throws IOException {
         try {
             MatOfByte matOfByte = new MatOfByte();
