@@ -53,7 +53,7 @@ public class LiveTimingGUI extends JPanel {
     }
 
     /**
-     * called once to execute, this method handles the starting, running, and button listening functions of the
+     * Called once to execute, this method handles the starting, running, and button listening functions of the
      * LiveTimingGUI
      */
     public void runTiming() {

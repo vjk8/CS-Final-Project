@@ -46,7 +46,7 @@ public class CompositeFrame {
     }
 
     /**
-     * Gives the TimeFormat elapsed time at a certain x position in the image
+     * Gives the TimeFormat elapsed time at a certain x position in the image, used for querying times in PostTimingGUI
      * @param pixelIndex the index (x position) of the pixel within the image
      * @return the TimeFormat elapsed time at pixelIndex
      */
@@ -62,45 +62,5 @@ public class CompositeFrame {
      */
     public Mat getMat() {
         return composite;
-    }
-
-    /**
-     * Getter for a BufferedImage version of the finish image. Deprecated and unwieldy conversion, recommended not to
-     * use. Better conversion occurs in LiveTimingGUI
-     * @return a BufferedImage version of the finish image Mat
-     */
-    public BufferedImage getImage() {
-        return matToBufferedImage(composite);
-    }
-
-    private static BufferedImage matToBufferedImage(Mat mat) {
-        if (mat == null) return null;
-        Mat m;
-        try {
-            m = mat.clone();
-        } catch (CvException cvEx) {
-            return null;
-        }
-
-        int type = BufferedImage.TYPE_3BYTE_BGR;
-        int bufferSize = m.channels() * m.cols() * m.rows();
-        byte[] b = new byte[bufferSize];
-        m.get(0, 0, b); // get all the pixels
-
-        if (m.cols() == 0 || m.rows() == 0) return null;
-        BufferedImage image = new BufferedImage(m.cols(), m.rows(), type);
-        final byte[] targetPixels = ((DataBufferByte)image.getRaster().getDataBuffer()).getData();
-        System.arraycopy(b, 0, targetPixels, 0, b.length);
-        return image;
-    }
-
-    // for testing only
-
-    /**
-     * For testing purposes only
-     * @return the arraylist containing all of the timestamps for the image
-     */
-    public ArrayList<TimeFormat> getTimestampList() {
-        return (ArrayList<TimeFormat>)timestamps.clone();
     }
 }

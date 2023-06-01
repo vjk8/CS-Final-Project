@@ -20,6 +20,7 @@ public class OCRCapture {
 
     /**
      * Constructs an OCRCapture when the start time is not known and must be set later on when known
+     * @param capIndex the system index (e.g., 0, 1, 2, 3) of the camera to be used for OCR
      */
     public OCRCapture(int capIndex) {
         OCRstream = new ArrayList<SingleFrame>();

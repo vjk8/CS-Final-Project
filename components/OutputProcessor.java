@@ -39,6 +39,10 @@ public class OutputProcessor {
         this.athletes = m;
     }
 
+    /**
+     * getter for the HashMap of hip numbers to athletes
+     * @return the hashmap of integers to athletes
+     */
     public HashMap<Integer, Athlete> getHashMap() {
         return athletes;
     }

@@ -174,6 +174,7 @@ public class Athlete {
 
     /**
      * Hashcode method for storage within a Hashmap
+     * @return an int representing the hashCode for this Athlete
      */
     @Override
     public int hashCode() {
