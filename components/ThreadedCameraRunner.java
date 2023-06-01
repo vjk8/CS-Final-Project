@@ -70,7 +70,6 @@ public class ThreadedCameraRunner {
                 Mat newFrame = new Mat();
                 while (!terminated) {
                     while (!paused) {
-                        // System.out.println("capturing");
                         long sampleTime = System.currentTimeMillis();
                         if (terminated) break;
                         boolean isRead = !terminated && !paused && cap.read(newFrame);
@@ -86,7 +85,6 @@ public class ThreadedCameraRunner {
             @Override
             public void run() {
                 while (!terminated || !toBeProcessed.isEmpty()) {
-                    // System.out.println("processing");
                     if (!toBeProcessed.isEmpty()) finishImage.processFrame(toBeProcessed.poll());
                 }
                 Thread.currentThread().interrupt();
@@ -98,7 +96,6 @@ public class ThreadedCameraRunner {
             @Override
             public void run() {
                 while (!terminated) {
-                    // System.out.println("controlling");
                     if (!mailbox.isEmpty()) {
                         String msg = mailbox.remove();
                         if (msg.equals("RESUME")) {

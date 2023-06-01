@@ -1,8 +1,6 @@
 package components;
 
-import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
 import javax.swing.JTextField;
 
 /**
@@ -11,7 +9,6 @@ import javax.swing.JTextField;
  * seed time.
  */
 public class DraggableLine implements Comparable {
-    private Color color;
     private TimeFormat timestamp;
     private int hipNumberLabel;
     private int xPos;
@@ -109,13 +106,6 @@ public class DraggableLine implements Comparable {
         xPos = newX;
         updateTimestamp();
         return xPos;
-    }
-
-    /**
-     * Sets the color of the draggable line.
-     */
-    public void setColor() {
-        color = Color.red;
     }
 
     /**
