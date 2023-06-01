@@ -33,16 +33,16 @@ import org.opencv.imgproc.Imgproc;
  */
 public class PostTimingGUI extends JPanel {
     private static ArrayList<DraggableLine> finishes;
-    private static CompositeFrame           finishImage;
-    private static ArrayList<SingleFrame>   OCRstream;
-    private int                             check = 0;
-    private JFrame                          frame;
-    private static AthleteOCR               aOcr;
-    private JButton                         ocr;
-    private JButton                         exportCSV;
-    private JButton                         exportText;
-    private JButton                         printResults;
-    private BufferedImage                   displayImage;
+    private static CompositeFrame finishImage;
+    private static ArrayList<SingleFrame> OCRstream;
+    private int check = 0;
+    private JFrame frame;
+    private static AthleteOCR aOcr;
+    private JButton ocr;
+    private JButton exportCSV;
+    private JButton exportText;
+    private JButton printResults;
+    private BufferedImage displayImage;
     private HashMap<Integer, Athlete> outputProcessorHashMap;
 
     /**
@@ -71,9 +71,6 @@ public class PostTimingGUI extends JPanel {
         repaint();
     }
 
-
-    
-
     public void addAlphaStrip() {
         Mat m1 = finishImage.getMat();
         Mat m = new Mat(m1.size(), CvType.CV_8UC4);
@@ -89,18 +86,14 @@ public class PostTimingGUI extends JPanel {
         }
     }
 
-    private int validPos(int observedPos)
-    {
-        while (finishImage.getTimeAtPixel(observedPos) == null)
-        {
+    private int validPos(int observedPos) {
+        while (finishImage.getTimeAtPixel(observedPos) == null) {
             observedPos--;
         }
         return observedPos;
     }
 
-
-    private void addLine(MouseEvent e)
-    {
+    private void addLine(MouseEvent e) {
         if (e.getX() == validPos(e.getX())) {
             finishes.add(new DraggableLine(new TimeFormat(), -1, e.getX(), finishImage));
         }
@@ -246,27 +239,31 @@ public class PostTimingGUI extends JPanel {
     }
 
     // to prevent code duplication
-    private OutputProcessor preppedProcessor()
-    {
+    private OutputProcessor preppedProcessor() {
         return preppedProcessor(outputProcessorHashMap);
     }
 
     // to prevent code duplication
-    private OutputProcessor preppedProcessor(HashMap<Integer, Athlete> initHashMap)
-    {
+    private OutputProcessor preppedProcessor(HashMap<Integer, Athlete> initHashMap) {
         Scanner scan = new Scanner(System.in);
         OutputProcessor op;
         Collections.sort(finishes);
         op = new OutputProcessor(finishes, initHashMap);
-        for (DraggableLine d : finishes)
-        {
+        for (DraggableLine d : finishes) {
             if (!op.getHashMap().containsKey(d.getHipNumber())) {
-                System.out.print("Enter space-separated FirstName, LastName, Team, Grade, Seed Time, and PR (in that order) for athlete with hip number " + d.getHipNumber() + ": ");
-                String nm = scan.next(); nm = nm + " " + scan.next(); String tm = scan.next(); int gr = scan.nextInt(); String sd = scan.next(); String pr = scan.next();
+                System.out.print(
+                    "Enter space-separated FirstName, LastName, Team, Grade, Seed Time, and PR (in that order) for athlete with hip number " +
+                    d.getHipNumber() + ": ");
+                String nm = scan.next();
+                nm = nm + " " + scan.next();
+                String tm = scan.next();
+                int gr = scan.nextInt();
+                String sd = scan.next();
+                String pr = scan.next();
                 op.addAthlete(d.getHipNumber(), new Athlete(nm, tm, gr, new TimeFormat(sd), new TimeFormat(pr)));
-                outputProcessorHashMap.put(d.getHipNumber(), new Athlete(nm, tm, gr, new TimeFormat(sd), new TimeFormat(pr)));
+                outputProcessorHashMap.put(d.getHipNumber(),
+                                           new Athlete(nm, tm, gr, new TimeFormat(sd), new TimeFormat(pr)));
             }
-                
         }
 
         return op;

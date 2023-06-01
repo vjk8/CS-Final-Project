@@ -170,8 +170,8 @@ public class OutputProcessor {
             if (athlete.isPR(d.getTimestamp())) {
                 performance += " (PR)";
             }
-            writer.write(String.format("%s,%s,%d,%s,%s\n", athlete.getName(), athlete.getSchool(),
-                                       athlete.getGrade(), performance, athlete.getSeed()));
+            writer.write(String.format("%s,%s,%d,%s,%s\n", athlete.getName(), athlete.getSchool(), athlete.getGrade(),
+                                       performance, athlete.getSeed()));
         }
         writer.close();
     }
@@ -191,7 +191,7 @@ public class OutputProcessor {
     public void exportText(String filepath) throws IOException {
         BufferedWriter writer = new BufferedWriter(new FileWriter(filepath));
         writer.write(leftPad("Name", 20) + leftPad("School", 20) + leftPad("Grade", 10) + leftPad("Time", 10) +
-        leftPad("Seed Time", 15) + "\n");
+                     leftPad("Seed Time", 15) + "\n");
         for (DraggableLine d : finishTimes) {
             int number = d.getHipNumber();
             Athlete athlete = athletes.get(number);
@@ -200,8 +200,8 @@ public class OutputProcessor {
                 performance += " (PR)";
             }
             writer.write(leftPad(athlete.getName(), 20) + leftPad(athlete.getSchool(), 20) +
-            leftPad(Integer.toString(athlete.getGrade()), 10) + leftPad(performance, 10) +
-            leftPad(athlete.getSeed().toString(), 10) + "\n");
+                         leftPad(Integer.toString(athlete.getGrade()), 10) + leftPad(performance, 10) +
+                         leftPad(athlete.getSeed().toString(), 10) + "\n");
         }
         writer.close();
     }
