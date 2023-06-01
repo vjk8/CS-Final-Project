@@ -1,6 +1,5 @@
 package components;
 
-
 import javax.swing.JTextField;
 
 /**
