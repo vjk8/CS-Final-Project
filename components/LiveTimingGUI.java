@@ -18,6 +18,7 @@ import org.opencv.core.Mat;
 import org.opencv.core.MatOfByte;
 import org.opencv.core.Rect;
 import org.opencv.imgcodecs.Imgcodecs;
+import tests.PTGEditableTest;
 
 /**
  * LiveTimingGUI is the Main component of FinishCam. It handles the starting,
@@ -146,6 +147,8 @@ public class LiveTimingGUI extends JPanel {
     private void startPTG() {
         PostTimingGUI PTG = new PostTimingGUI(camera.getCompositeFrame(), camera.getOCRStream());
         PTG.run();
+        PTGEditableTest PTGtest = new PTGEditableTest(camera.getCompositeFrame());
+        PTGtest.run();
     }
 
     /**

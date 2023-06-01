@@ -5,8 +5,6 @@ import OCR_server.AthleteOCR;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -56,17 +54,20 @@ public class PostTimingGUI extends JPanel {
      */
     public PostTimingGUI(CompositeFrame image, ArrayList<SingleFrame> ocr) {
         // TODO complete constructor
-
+        super();
         this.OCRstream = ocr;
         this.aOcr = new AthleteOCR();
         this.finishes = new ArrayList<DraggableLine>();
         this.finishImage = image;
-        this.finishes.add(new DraggableLine(new TimeFormat(), 5, 25, finishImage));
         this.ocr = new JButton("Run OCR");
         this.exportCSV = new JButton("Export as .CSV");
         this.exportHtml = new JButton("Export as HTML");
         this.exportText = new JButton("Export as Plaintext");
         this.printResults = new JButton("Print results to CLI");
+        this.frame = new JFrame("Post Timing");
+        //this.frame.setLayout(null);
+        frame.add(this);
+        repaint();
 
         System.out.println(finishImage.getTimestampList());
     }
@@ -88,29 +89,33 @@ public class PostTimingGUI extends JPanel {
         addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent e) {
-                if (SwingUtilities.isLeftMouseButton(e)) {
-                    // OutputProcessor op = new OutputProcessor(finishes);
-                    // for (DraggableLine d : finishes)
-                    // {
-                    // op.addAthlete(d.getHipNumber());
-                    // }
+                if (SwingUtilities.isLeftMouseButton(e) && e.getY() >= 50) {
                     finishes.add(new DraggableLine(new TimeFormat(), -1, validPos(e.getX()), finishImage));
-                    // PostTimingGUI.this.removeAll();
                     repaint();
+                    System.out.println("Mouse Clicked left repaint() called");
+                    //frame.setSize(frame.getPreferredSize());
                 } else if (SwingUtilities.isRightMouseButton(e)) {
                     for (int i = 0; i < finishes.size(); i++) {
                         if (finishes.get(i).getXPos() == e.getX()) {
+                            PostTimingGUI.this.remove(finishes.get(i).editableHipNumber);
                             finishes.remove(finishes.get(i));
-                            // PostTimingGUI.this.removeAll();
                             repaint();
+                            System.out.println("Mouse Clicked right repaint() called");
+                            //frame.setSize(frame.getPreferredSize());
                         }
                     }
                 }
+                repaint();
+                System.out.println("Mouse Clicked catch-all repaint() called");
+                //frame.setSize(frame.getPreferredSize());
             }
 
             @Override
             public void mousePressed(java.awt.event.MouseEvent e) {
                 check = e.getX();
+                repaint();
+                System.out.println("Mouse Pressed repaint() called");
+                //frame.setSize(frame.getPreferredSize());
             }
 
             @Override
@@ -118,13 +123,16 @@ public class PostTimingGUI extends JPanel {
                 for (int i = 0; i < finishes.size(); i++) {
                     if (Math.abs(finishes.get(i).getXPos() - check) <= 5 /* Threshold for click error */) {
                         finishes.get(i).changeXPos(validPos(e.getX()));
-                        // getOCR(finishes.get(i).getXPos()); This line is OK,
-                        // just need to disable while testing
-                        // e.translatePoint(e.getX(), 0);
-                        // PostTimingGUI.this.removeAll();
-                        repaint();
+                        //repaint();
+                        //System.out.println("if condition repaint() called");
+                        //frame.setSize(frame.getPreferredSize());
                     }
+                    //repaint();
+                    //frame.setSize(frame.getPreferredSize());
                 }
+                repaint();
+                System.out.println("mouseReleased repaint() called");
+                frame.setSize(frame.getPreferredSize());
             }
 
             @Override
@@ -146,19 +154,36 @@ public class PostTimingGUI extends JPanel {
      */
     public void paint(Graphics g) {
         super.paint(g);
-        /*
-         * if (finishImage != null) { add(new JLabel(new
-         * ImageIcon(finishImage.getImage()))); frame.pack(); }
-         */
-        frame.pack();
+        //frame.pack();
 
         g.setColor(Color.RED);
         for (int i = 0; i < finishes.size(); i++) {
             g.drawLine(finishes.get(i).getXPos(), 0, finishes.get(i).getXPos(), this.getHeight());
-            g.drawString("" + finishes.get(i).getHipNumber(), finishes.get(i).getXPos() + 6, 30);
+            DraggableLine d = finishes.get(i);
+            
+            JTextField textField = d.editableHipNumber;
+
+            textField.setBounds(d.getXPos()+6, 20, 20, 20);
+            textField.setVisible(true);
+
+            textField.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent event)
+                {
+                    textField.setText(textField.getText());
+                    d.setHipNumber(textField.getText());
+                    textField.setText(((Integer)d.getHipNumber()).toString());
+                }
+            });
+
+
+            add(textField);
+
             g.drawString("" + finishes.get(i).getTimestamp(), finishes.get(i).getXPos() + 6,
-                         (int)(Math.random() * 400) + 40);
+                         (int)(Math.random() * 380) + 50);
+            
+            frame.setSize(frame.getPreferredSize());
         }
+        System.out.println("repainted");
     }
 
     /**
@@ -239,7 +264,7 @@ public class PostTimingGUI extends JPanel {
 
         // ocr button, export csv, export html, export text, print results
 
-        ocr.addActionListener(new ActionListener() {
+        /*ocr.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (OCRstream != null) {
@@ -292,23 +317,20 @@ public class PostTimingGUI extends JPanel {
                 OutputProcessor op = preppedProcessor();
                 op.printResults();
             }
-        });
+        }); */
+
+
         addListener();
-        frame = new JFrame();
+        frame = new JFrame("Post Timing");
         frame.setSize(1000, 500);
-        // frame.add(ocr);
-        // frame.add(exportCSV);
-        // frame.add(exportHtml);
-        // frame.add(exportText);
-        // frame.add(printResults);
 
         if (finishImage != null) {
             add(new JLabel(new ImageIcon(finishImage.getImage())));
-            add(ocr);
-            add(exportCSV);
-            add(exportHtml);
-            add(exportText);
-            add(printResults);
+            //add(ocr);
+            //add(exportCSV);
+            //add(exportHtml);
+            //add(exportText);
+            //add(printResults);
         }
         frame.add(this);
         frame.setVisible(true);
