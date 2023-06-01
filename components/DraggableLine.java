@@ -32,16 +32,12 @@ public class DraggableLine implements Comparable {
         commonConfig();
     }
 
-
-    public void setHipNumber(String input)
-    {
-        try{
+    public void setHipNumber(String input) {
+        try {
             this.hipNumberLabel = Integer.parseInt(input);
-        }
-        catch(NumberFormatException nfex) {
+        } catch (NumberFormatException nfex) {
             // do nothing
         }
-        
     }
 
     /**

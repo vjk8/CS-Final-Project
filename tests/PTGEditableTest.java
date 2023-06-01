@@ -1,5 +1,8 @@
 package tests;
 
+import OCR_server.AthleteOCR;
+import components.*;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
@@ -13,6 +16,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
+import org.opencv.core.*;
+import org.opencv.imgcodecs.Imgcodecs;
 import components.*;
 
 public class PTGEditableTest
@@ -158,8 +163,7 @@ public class PTGEditableTest
             textField.setVisible(true);
 
             textField.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent event)
-                {
+                public void actionPerformed(ActionEvent event) {
                     textField.setText(textField.getText());
                     d.setHipNumber(textField.getText());
                     textField.setText(((Integer)d.getHipNumber()).toString());
