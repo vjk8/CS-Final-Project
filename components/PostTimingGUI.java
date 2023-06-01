@@ -42,10 +42,10 @@ public class PostTimingGUI
     private static AthleteOCR               aOcr;
     private JButton                         ocr;
     private JButton                         exportCSV;
-    private JButton                         exportHtml;
     private JButton                         exportText;
     private JButton                         printResults;
     private BufferedImage                   displayImage;
+    private HashMap<Integer, Athlete> outputProcessorHashMap;
 
     /**
      * sets the background image, as well as initializes the arrays
@@ -58,15 +58,15 @@ public class PostTimingGUI
     public PostTimingGUI(CompositeFrame image, ArrayList<SingleFrame> ocr)
     {
         super();
+        this.outputProcessorHashMap = new HashMap<Integer, Athlete>();
         this.OCRstream = ocr;
         this.aOcr = new AthleteOCR();
         this.finishes = new ArrayList<DraggableLine>();
         this.finishImage = image;
         this.ocr = new JButton("Run OCR");
-        this.exportCSV = new JButton("Export as .CSV");
-        this.exportHtml = new JButton("Export as HTML");
-        this.exportText = new JButton("Export as Plaintext");
-        this.printResults = new JButton("Print results to CLI");
+        this.exportCSV = new JButton("Export .CSV");
+        this.exportText = new JButton("Export .TXT");
+        this.printResults = new JButton("Print to Terminal");
         this.frame = new JFrame("Post Timing");
         // this.frame.setLayout(null);
         frame.add(this);
@@ -76,14 +76,7 @@ public class PostTimingGUI
     }
 
 
-    private int validPos(int observedPos)
-    {
-        while (finishImage.getTimeAtPixel(observedPos) == null)
-        {
-            observedPos--;
-        }
-        return observedPos;
-    }
+    
 
 
     public void addAlphaStrip()
@@ -102,10 +95,21 @@ public class PostTimingGUI
         }
     }
 
+    private int validPos(int observedPos)
+    {
+        while (finishImage.getTimeAtPixel(observedPos) == null)
+        {
+            observedPos--;
+        }
+        return observedPos;
+    }
+
 
     private void addLine(MouseEvent e)
     {
-        finishes.add(new DraggableLine(new TimeFormat(), -1, validPos(e.getX()), finishImage));
+        if (e.getX() == validPos(e.getX())) {
+            finishes.add(new DraggableLine(new TimeFormat(), -1, e.getX(), finishImage));
+        }
         repaint();
     }
 
@@ -294,27 +298,26 @@ public class PostTimingGUI
     // to prevent code duplication
     private OutputProcessor preppedProcessor()
     {
-        return preppedProcessor(null);
+        return preppedProcessor(outputProcessorHashMap);
     }
 
 
     // to prevent code duplication
     private OutputProcessor preppedProcessor(HashMap<Integer, Athlete> initHashMap)
     {
+        Scanner scan = new Scanner(System.in);
         OutputProcessor op;
         Collections.sort(finishes);
-        if (initHashMap == null)
-        {
-            op = new OutputProcessor(finishes);
-        }
-        else
-        {
-            op = new OutputProcessor(finishes, initHashMap);
-        }
+        op = new OutputProcessor(finishes, initHashMap);
         for (DraggableLine d : finishes)
         {
-            if (!op.getHashMap().containsKey(d.getHipNumber()))
-                op.addAthlete(d.getHipNumber());
+            if (!op.getHashMap().containsKey(d.getHipNumber())) {
+                System.out.print("Enter space-separated FirstName, LastName, Team, Grade, Seed Time, and PR (in that order) for athlete with hip number " + d.getHipNumber() + ": ");
+                String nm = scan.next(); nm = nm + " " + scan.next(); String tm = scan.next(); int gr = scan.nextInt(); String sd = scan.next(); String pr = scan.next();
+                op.addAthlete(d.getHipNumber(), new Athlete(nm, tm, gr, new TimeFormat(sd), new TimeFormat(pr)));
+                outputProcessorHashMap.put(d.getHipNumber(), new Athlete(nm, tm, gr, new TimeFormat(sd), new TimeFormat(pr)));
+            }
+                
         }
 
         return op;
@@ -360,22 +363,6 @@ public class PostTimingGUI
             }
         });
 
-        exportHtml.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                OutputProcessor op = preppedProcessor();
-                try
-                {
-                    op.exportHTML(".\\finishes.html");
-                }
-                catch (IOException a)
-                {
-                    System.out.println(a.getStackTrace());
-                }
-            }
-        });
-
         exportText.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e)
@@ -410,7 +397,6 @@ public class PostTimingGUI
             add(new JLabel(new ImageIcon(displayImage)));
             add(ocr);
             add(exportCSV);
-            add(exportHtml);
             add(exportText);
             add(printResults);
         }

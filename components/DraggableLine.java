@@ -1,6 +1,5 @@
 package components;
 
-
 import javax.swing.JTextField;
 
 /**
@@ -8,12 +7,14 @@ import javax.swing.JTextField;
  * created in PostTimingGUI. Has methods to find x position, hip number, and
  * seed time.
  */
-public class DraggableLine implements Comparable {
-    private TimeFormat timestamp;
-    private int hipNumberLabel;
-    private int xPos;
+public class DraggableLine
+    implements Comparable
+{
+    private TimeFormat     timestamp;
+    private int            hipNumberLabel;
+    private int            xPos;
     private CompositeFrame frame;
-    public JTextField editableHipNumber;
+    public JTextField      editableHipNumber;
 
     /**
      * Initializes a draggable line with no info given.
@@ -21,7 +22,8 @@ public class DraggableLine implements Comparable {
      * @param c
      *            the image of the finish
      */
-    public DraggableLine(CompositeFrame c) {
+    public DraggableLine(CompositeFrame c)
+    {
         hipNumberLabel = -1;
         xPos = 5;
         timestamp = new TimeFormat();
@@ -29,13 +31,6 @@ public class DraggableLine implements Comparable {
         commonConfig();
     }
 
-    public void setHipNumber(String input) {
-        try {
-            this.hipNumberLabel = Integer.parseInt(input);
-        } catch (NumberFormatException nfex) {
-            // do nothing
-        }
-    }
 
     /**
      * Initializes a draggable line with seed time, hip number, and x position.
@@ -49,13 +44,15 @@ public class DraggableLine implements Comparable {
      * @param c
      *            the image of the finish
      */
-    public DraggableLine(TimeFormat t, int h, int x, CompositeFrame c) {
+    public DraggableLine(TimeFormat t, int h, int x, CompositeFrame c)
+    {
         timestamp = t;
         hipNumberLabel = h;
         xPos = x;
         this.frame = c;
         commonConfig();
     }
+
 
     /**
      * Initializes a draggable line with seed time, hip number, and x position.
@@ -68,7 +65,8 @@ public class DraggableLine implements Comparable {
      * @param x
      *            the x position of the line
      */
-    public DraggableLine(TimeFormat t, int h, int x) {
+    public DraggableLine(TimeFormat t, int h, int x)
+    {
         timestamp = t;
         hipNumberLabel = h;
         xPos = x;
@@ -76,23 +74,29 @@ public class DraggableLine implements Comparable {
         commonConfig();
     }
 
-    public void commonConfig() {
+
+    public void commonConfig()
+    {
         updateTimestamp();
         editableHipNumber = new JTextField("-1");
         editableHipNumber.setEditable(true);
-        if (hipNumberLabel != -1) {
+        if (hipNumberLabel != -1)
+        {
             editableHipNumber.setText(((Integer)hipNumberLabel).toString());
         }
     }
+
 
     /**
      * Returns the x position.
      *
      * @return the x position of the draggable line
      */
-    public int getXPos() {
+    public int getXPos()
+    {
         return xPos;
     }
+
 
     /**
      * When the draggable line is dragged, changes the x position. Also updates
@@ -102,47 +106,69 @@ public class DraggableLine implements Comparable {
      *            the new x position
      * @return
      */
-    public int changeXPos(int newX) {
+    public int changeXPos(int newX)
+    {
         xPos = newX;
         updateTimestamp();
         return xPos;
     }
 
+
     /**
      * Updates the time of the athlete.
      */
-    public void updateTimestamp() {
+    public void updateTimestamp()
+    {
         if (frame == null)
             timestamp = new TimeFormat();
         else
             timestamp = frame.getTimeAtPixel(xPos);
     }
 
+
     /**
      * Returns the finish time.
      *
      * @return the finish time of the athlete.
      */
-    public TimeFormat getTimestamp() {
+    public TimeFormat getTimestamp()
+    {
         return timestamp;
     }
+
+
+    public void setHipNumber(String input)
+    {
+        try
+        {
+            this.hipNumberLabel = Integer.parseInt(input);
+        }
+        catch (NumberFormatException nfex)
+        {
+            // do nothing
+        }
+    }
+
 
     /**
      * Returs the hip number.
      *
      * @return the hip number of the athlete.
      */
-    public int getHipNumber() {
+    public int getHipNumber()
+    {
 
         return hipNumberLabel;
     }
+
 
     /**
      * Compares the draggable line to another based on the finish times.
      *
      * @return the two times compared to each other
      */
-    public int compareTo(Object other) {
+    public int compareTo(Object other)
+    {
         DraggableLine ot = (DraggableLine)other;
         return timestamp.compareTo(ot.getTimestamp());
     }

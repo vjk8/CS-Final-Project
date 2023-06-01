@@ -76,4 +76,17 @@ public class TimeFormatTester {
         assertEquals(mile.toString(), "3:43.13");
         assertEquals(marathon.toString(), "2:01:09.00");
     }
+
+    @Test
+    public void fromStringTest() {
+        TimeFormat t = new TimeFormat("9:35.81");
+        System.out.println(t.toString());
+    }
+
+    public static void main(String[] args) {
+        TimeFormat t = new TimeFormat("9:35.87");
+        System.out.println(t.toString());
+        TimeFormat t2 = new TimeFormat("9:35.1");
+        System.out.println(t2.toString());
+    }
 }

@@ -162,12 +162,16 @@ public class OutputProcessor {
      */
     public void exportCSV(String filepath) throws IOException {
         BufferedWriter writer = new BufferedWriter(new FileWriter(filepath));
-        writer.write("Name,School,Grade,Time,Seed Time,PR Time\n");
+        writer.write("Name,School,Grade,Time,Seed Time,\n");
         for (DraggableLine d : finishTimes) {
             int number = d.getHipNumber();
             Athlete athlete = athletes.get(number);
-            writer.write(String.format("%s,%s,%d,%s,%s,%s\n", athlete.getName(), athlete.getSchool(),
-                                       athlete.getGrade(), d.getTimestamp(), athlete.getSeed(), athlete.getPR()));
+            String performance = d.getTimestamp().toString();
+            if (athlete.isPR(d.getTimestamp())) {
+                performance += " (PR)";
+            }
+            writer.write(String.format("%s,%s,%d,%s,%s\n", athlete.getName(), athlete.getSchool(),
+                                       athlete.getGrade(), performance, athlete.getSeed()));
         }
         writer.close();
     }
@@ -186,37 +190,19 @@ public class OutputProcessor {
      */
     public void exportText(String filepath) throws IOException {
         BufferedWriter writer = new BufferedWriter(new FileWriter(filepath));
-        writer.write(leftPad("Name", 20) + leftPad("School", 20) + leftPad("Grade", 5) + leftPad("Time", 10) +
-                     leftPad("Seed Time", 10) + leftPad("PR Time", 10) + "\n");
+        writer.write(leftPad("Name", 20) + leftPad("School", 20) + leftPad("Grade", 10) + leftPad("Time", 10) +
+        leftPad("Seed Time", 15) + "\n");
         for (DraggableLine d : finishTimes) {
             int number = d.getHipNumber();
             Athlete athlete = athletes.get(number);
+            String performance = d.getTimestamp().toString();
+            if (athlete.isPR(d.getTimestamp())) {
+                performance += " (PR)";
+            }
             writer.write(leftPad(athlete.getName(), 20) + leftPad(athlete.getSchool(), 20) +
-                         leftPad(Integer.toString(athlete.getGrade()), 5) + leftPad(d.getTimestamp().toString(), 10) +
-                         leftPad(athlete.getSeed().toString(), 10) + leftPad(athlete.getPR().toString(), 10) + "\n");
+            leftPad(Integer.toString(athlete.getGrade()), 10) + leftPad(performance, 10) +
+            leftPad(athlete.getSeed().toString(), 10) + "\n");
         }
-        writer.close();
-    }
-
-    /**
-     * exports results as an HTML table in a .html file
-     *
-     * @param filepath
-     *            the filepath of the .html file for results to be saved in
-     * @throws IOException
-     *             Throws IOException if the filepath is invalid
-     */
-    public void exportHTML(String filepath) throws IOException {
-        BufferedWriter writer = new BufferedWriter(new FileWriter(filepath));
-        writer.write(
-            "<html>\n<head>\n<title>Results</title>\n</head>\n<body>\n<table>\n<tr>\n<th>Name</th>\n<th>School</th>\n<th>Grade</th>\n<th>Time</th>\n<th>Seed Time</th>\n<th>PR Time</th>\n</tr>\n");
-        for (DraggableLine d : finishTimes) {
-            int number = d.getHipNumber();
-            Athlete athlete = athletes.get(number);
-            writer.write(String.format(
-                "<tr>\n<td>%s</td>\n<td>%s</td>\n<td>%d</td>\n<td>%s</td>\n<td>%s</td>\n<td>%s</td>\n</tr>\n"));
-        }
-        writer.write("</table>\n</body>\n</html>");
         writer.close();
     }
 

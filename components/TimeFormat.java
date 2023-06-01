@@ -44,6 +44,34 @@ public class TimeFormat implements Comparable {
         millis = ms;
     }
 
+    public TimeFormat(String originalTime) {
+        double numberSeconds = 0;
+        String Minutes = "";
+        int firstColonIndex = 0;
+        for (int i = 0; i < 3; i++) {
+            if (originalTime.charAt(i) == ':') {
+                firstColonIndex = i;
+                break;
+            }
+            Minutes += originalTime.charAt(i);
+        }
+        numberSeconds += Double.parseDouble(Minutes) * 60;
+        numberSeconds += Double.parseDouble(originalTime.substring(firstColonIndex+1, firstColonIndex+3));
+        double mils = Double.parseDouble(originalTime.substring(firstColonIndex+4, Math.min(firstColonIndex+6, originalTime.length()))) / 100.0;
+        if (mils < .1) mils *= 10;
+        numberSeconds += mils;
+        
+        int timeMillis = (int) (numberSeconds * 1000);
+
+        hours = timeMillis / 3600000;
+        timeMillis -= 3600000 * hours;
+        minutes = timeMillis / 60000;
+        timeMillis -= 60000 * minutes;
+        seconds = timeMillis / 1000;
+        timeMillis -= 1000 * seconds;
+        millis = timeMillis / 10;
+    }
+
     public int compareTo(Object other) {
         TimeFormat ot = (TimeFormat)other;
         return (intValue() - ot.intValue());
