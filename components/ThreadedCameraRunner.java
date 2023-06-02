@@ -67,7 +67,7 @@ public class ThreadedCameraRunner
         if (useOCR)
             cap.open(1);
         else
-            cap.open(1); // change based on desired camera index
+            cap.open(0); // change based on desired camera index
         System.out.println("MAIN CAMERA OPENED");
         pauseFrame = new SingleFrame(new Mat(480, 2, CvType.CV_8UC3, new Scalar(0, 255, 0)), 0, 0);
         startTime = 0;
