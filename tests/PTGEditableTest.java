@@ -1,6 +1,5 @@
 package tests;
 
-import OCR_server.AthleteOCR;
 import components.*;
 import java.awt.BorderLayout;
 import java.awt.Color;
