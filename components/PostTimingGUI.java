@@ -1,7 +1,6 @@
 
 package components;
 
-import OCR_server.AthleteOCR;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Graphics;

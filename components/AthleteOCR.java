@@ -1,4 +1,4 @@
-package OCR_server;
+package components;
 
 import java.awt.image.*;
 import java.io.*;
