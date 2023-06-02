@@ -47,7 +47,7 @@ public class LiveTimingGUI extends JPanel {
         frame = new JFrame("Live Timing");
         label = new JLabel();
         frame.setSize(500, 200);
-        camera = new ThreadedCameraRunner(20);
+        camera = new ThreadedCameraRunner(150); // change based on sound requirements
         terminated = false;
         timeLabel = new JLabel((new TimeFormat()).toString());
     }
