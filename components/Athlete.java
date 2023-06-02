@@ -3,7 +3,7 @@ package components;
 /**
  * The Athlete class stores relevant information about athletes who finish the
  * races, enabling quick results summarization with names, grades, previous PRs,
- * and other relevant imformation
+ * and other relevant information
  */
 public class Athlete {
     private String name;

@@ -62,7 +62,7 @@ public class TimeFormat implements Comparable {
     }
 
     /**
-     * Constructs a TimeFormat when the time in question is in the order of hours
+     * Constructs a TimeFormat when the time in question is in the order of seconds
      * @param s seconds
      * @param ms milliseconds
      */
